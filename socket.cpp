@@ -30,6 +30,22 @@ namespace dromozoa {
         push_error(L);
       }
     }
+
+    void impl_bind(lua_State* L) {
+      if (zmq_bind(check_socket(L, 1), luaL_checkstring(L, 2)) == 0) {
+        luaX_push_success(L);
+      } else {
+        push_error(L);
+      }
+    }
+
+    void impl_connect(lua_State* L) {
+      if (zmq_connect(check_socket(L, 1), luaL_checkstring(L, 2)) == 0) {
+        luaX_push_success(L);
+      } else {
+        push_error(L);
+      }
+    }
   }
 
   socket_handle* check_socket_handle(lua_State* L, int arg) {
@@ -55,6 +71,8 @@ namespace dromozoa {
       lua_pop(L, 1);
 
       luaX_set_field(L, -1, "close", impl_close);
+      luaX_set_field(L, -1, "bind", impl_bind);
+      luaX_set_field(L, -1, "connect", impl_connect);
     }
     luaX_set_field(L, -2, "socket");
   }

@@ -19,6 +19,7 @@ local zmq = require "dromozoa.zmq"
 
 local ctx = assert(zmq.context())
 local socket = assert(ctx:socket(zmq.ZMQ_REP))
+assert(socket:bind("tcp://*:5555"))
 assert(socket:close())
 
 assert(ctx:term())
