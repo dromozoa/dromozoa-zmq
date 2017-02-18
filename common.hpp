@@ -18,6 +18,8 @@
 #ifndef DROMOZOA_COMMON_HPP
 #define DROMOZOA_COMMON_HPP
 
+#include <zmq.h>
+
 #include <dromozoa/bind.hpp>
 
 #endif

@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-CPPFLAGS = -Ibind -I$(LUA_INCDIR)
-CXXFLAGS = -Wall -W $(CFLAGS)
-LDFLAGS = -L$(LUA_LIBDIR) $(LIBFLAG)
-LDLIBS = -lzmq -ldl
+CPPFLAGS += -Ibind -I$(LUA_INCDIR)
+CXXFLAGS += -Wall -W $(CFLAGS)
+LDFLAGS += -L$(LUA_LIBDIR) $(LIBFLAG)
+LDLIBS += -lzmq -ldl
 
 OBJS = \
 	module.o
