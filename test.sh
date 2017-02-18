@@ -1,3 +1,5 @@
+#! /bin/sh -e
+
 # Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-zmq.
@@ -15,29 +17,12 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-CPPFLAGS += -Ibind -I$(LUA_INCDIR)
-CXXFLAGS += -Wall -W $(CFLAGS)
-LDFLAGS += -L$(LUA_LIBDIR) $(LIBFLAG)
-LDLIBS += -lzmq -ldl
+case x$1 in
+  x) lua=lua;;
+  *) lua=$1;;
+esac
 
-OBJS = \
-	context.o \
-	context_handle.o \
-	error.o \
-	module.o
-TARGET = zmq.so
-
-all: $(TARGET)
-
-clean:
-	rm -f *.o $(TARGET)
-
-zmq.so: $(OBJS)
-	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
-
-.cpp.o:
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
-
-install:
-	mkdir -p $(LIBDIR)/dromozoa
-	cp $(TARGET) $(LIBDIR)/dromozoa
+for i in test/test*.lua
+do
+  "$lua" "$i"
+done

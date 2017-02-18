@@ -18,15 +18,25 @@
 #include "common.hpp"
 
 namespace dromozoa {
-  void initialize_context(lua_State* L);
+  context_handle::context_handle(void* handle) : handle_(handle) {}
 
-  void initialize(lua_State* L) {
-    initialize_context(L);
+  context_handle::~context_handle() {
+    if (handle_) {
+      if (term() == -1) {
+        DROMOZOA_UNEXPECTED(zmq_strerror(zmq_errno()));
+      }
+    }
   }
-}
 
-extern "C" int luaopen_dromozoa_zmq(lua_State* L) {
-  lua_newtable(L);
-  dromozoa::initialize(L);
-  return 1;
+  int context_handle::term() {
+    int result = zmq_ctx_term(handle_);
+    if (result == 0) {
+      handle_ = 0;
+    }
+    return result;
+  }
+
+  void* context_handle::get() {
+    return handle_;
+  }
 }

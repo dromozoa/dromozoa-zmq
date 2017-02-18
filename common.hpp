@@ -22,4 +22,23 @@
 
 #include <dromozoa/bind.hpp>
 
+namespace dromozoa {
+  class context_handle {
+  public:
+    context_handle(void* handle);
+    ~context_handle();
+    int term();
+    void* get();
+  private:
+    void* handle_;
+    context_handle(const context_handle&);
+    context_handle& operator=(const context_handle&);
+  };
+
+  context_handle* check_context_handle(lua_State* L, int arg);
+  void* check_context(lua_State* L, int arg);
+
+  void push_error(lua_State* L);
+}
+
 #endif
