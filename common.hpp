@@ -38,6 +38,22 @@ namespace dromozoa {
   context_handle* check_context_handle(lua_State* L, int arg);
   void* check_context(lua_State* L, int arg);
 
+  class socket_handle {
+  public:
+    socket_handle(void* handle);
+    ~socket_handle();
+    int close();
+    void* get();
+  private:
+    void* handle_;
+    socket_handle(const socket_handle&);
+    socket_handle& operator=(const socket_handle&);
+  };
+
+  socket_handle* check_socket_handle(lua_State* L, int arg);
+  void* check_socket(lua_State* L, int arg);
+  void new_socket(lua_State* L, void* handle);
+
   void push_error(lua_State* L);
 }
 

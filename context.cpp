@@ -47,6 +47,14 @@ namespace dromozoa {
         push_error(L);
       }
     }
+
+    void impl_socket(lua_State* L) {
+      if (void* handle = zmq_socket(check_context(L, 1), luaX_check_integer<int>(L, 2))) {
+        new_socket(L, handle);
+      } else {
+        push_error(L);
+      }
+    }
   }
 
   context_handle* check_context_handle(lua_State* L, int arg) {
@@ -69,6 +77,7 @@ namespace dromozoa {
       luaX_set_metafield(L, -1, "__call", impl_call);
       luaX_set_field(L, -1, "term", impl_term);
       luaX_set_field(L, -1, "shutdown", impl_shutdown);
+      luaX_set_field(L, -1, "socket", impl_socket);
     }
     luaX_set_field(L, -2, "context");
   }

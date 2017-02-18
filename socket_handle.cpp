@@ -18,19 +18,25 @@
 #include "common.hpp"
 
 namespace dromozoa {
-  void initialize_context(lua_State* L);
-  void initialize_socket(lua_State* L);
-  void initialize_symbols(lua_State* L);
+  socket_handle::socket_handle(void* handle) : handle_(handle) {}
 
-  void initialize(lua_State* L) {
-    initialize_context(L);
-    initialize_socket(L);
-    initialize_symbols(L);
+  socket_handle::~socket_handle() {
+    if (handle_) {
+      if (close() == -1) {
+        DROMOZOA_UNEXPECTED(zmq_strerror(zmq_errno()));
+      }
+    }
   }
-}
 
-extern "C" int luaopen_dromozoa_zmq(lua_State* L) {
-  lua_newtable(L);
-  dromozoa::initialize(L);
-  return 1;
+  int socket_handle::close() {
+    int result = zmq_close(handle_);
+    if (result == 0) {
+      handle_ = 0;
+    }
+    return result;
+  }
+
+  void* socket_handle::get() {
+    return handle_;
+  }
 }

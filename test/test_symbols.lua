@@ -15,10 +15,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
+local pairs = require "dromozoa.commons.pairs"
 local zmq = require "dromozoa.zmq"
 
-local ctx = assert(zmq.context())
-local socket = assert(ctx:socket(zmq.ZMQ_REP))
-assert(socket:close())
-
-assert(ctx:term())
+for k, v in pairs(zmq) do
+  print(k, v)
+end

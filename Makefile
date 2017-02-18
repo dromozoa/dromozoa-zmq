@@ -25,6 +25,8 @@ OBJS = \
 	context_handle.o \
 	error.o \
 	module.o \
+	socket.o \
+	socket_handle.o \
 	symbols.o
 TARGET = zmq.so
 
