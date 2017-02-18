@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <vector>
+
 #include "common.hpp"
 
 namespace dromozoa {
@@ -32,7 +34,8 @@ namespace dromozoa {
     }
 
     void impl_bind(lua_State* L) {
-      if (zmq_bind(check_socket(L, 1), luaL_checkstring(L, 2)) == 0) {
+      const char* endpoint = luaL_checkstring(L, 2);
+      if (zmq_bind(check_socket(L, 1), endpoint) == 0) {
         luaX_push_success(L);
       } else {
         push_error(L);
@@ -40,10 +43,40 @@ namespace dromozoa {
     }
 
     void impl_connect(lua_State* L) {
-      if (zmq_connect(check_socket(L, 1), luaL_checkstring(L, 2)) == 0) {
+      const char* endpoint = luaL_checkstring(L, 2);
+      if (zmq_connect(check_socket(L, 1), endpoint) == 0) {
         luaX_push_success(L);
       } else {
         push_error(L);
+      }
+    }
+
+    void impl_recv(lua_State* L) {
+      size_t size = luaX_check_integer<size_t>(L, 2);
+      int flags = luaX_opt_integer<int>(L, 3, 0);
+      std::vector<char> buffer(size);
+      int result = zmq_recv(check_socket(L, 1), &buffer[0], size, flags);
+      if (result == -1) {
+        push_error(L);
+      } else {
+        lua_pushlstring(L, &buffer[0], size);
+      }
+    }
+
+    void impl_send(lua_State* L) {
+      size_t size = 0;
+      const char* buffer = luaL_checklstring(L, 2, &size);
+      size_t i = luaX_opt_range_i(L, 3, size);
+      size_t j = luaX_opt_range_j(L, 4, size);
+      if (j < i) {
+        j = i;
+      }
+      int flags = luaX_opt_integer<int>(L, 5, 0);
+      int result = zmq_send(check_socket(L, 1), buffer + i, j - i, flags);
+      if (result == -1) {
+        push_error(L);
+      } else {
+        luaX_push(L, result);
       }
     }
   }
@@ -73,6 +106,8 @@ namespace dromozoa {
       luaX_set_field(L, -1, "close", impl_close);
       luaX_set_field(L, -1, "bind", impl_bind);
       luaX_set_field(L, -1, "connect", impl_connect);
+      luaX_set_field(L, -1, "recv", impl_recv);
+      luaX_set_field(L, -1, "send", impl_send);
     }
     luaX_set_field(L, -2, "socket");
   }

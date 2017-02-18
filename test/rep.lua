@@ -15,23 +15,17 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-local unix = require "dromozoa.unix"
+local zmq = require "dromozoa.zmq"
 
-local PATH = os.getenv("PATH")
+local ctx = assert(zmq.context())
+local socket = assert(ctx:socket(zmq.ZMQ_REP))
+assert(socket:bind("tcp://*:5555"))
+-- assert(socket:connect("tcp://localhost:5555"))
 
-local process_req = assert(unix.process())
-local process_rep = assert(unix.process())
-assert(process_req:forkexec(PATH, { arg[-1], "test/req.lua" }))
-assert(process_rep:forkexec(PATH, { arg[-1], "test/rep.lua" }))
+local buffer = socket:recv(10)
+print(buffer)
+socket:send("world")
 
-local a, b, c = assert(unix.wait())
-print(a, b, c)
-assert(a == process_req[1] or a == process_rep[1])
-assert(b == "exit")
-assert(c == 0)
+assert(socket:close())
 
-local a, b, c = assert(unix.wait())
-print(a, b, c)
-assert(a == process_req[1] or a == process_rep[1])
-assert(b == "exit")
-assert(c == 0)
+assert(ctx:term())
