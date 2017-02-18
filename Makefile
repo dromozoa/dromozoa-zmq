@@ -24,7 +24,8 @@ OBJS = \
 	context.o \
 	context_handle.o \
 	error.o \
-	module.o
+	module.o \
+	symbols.o
 TARGET = zmq.so
 
 all: $(TARGET)

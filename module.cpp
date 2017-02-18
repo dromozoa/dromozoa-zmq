@@ -19,9 +19,11 @@
 
 namespace dromozoa {
   void initialize_context(lua_State* L);
+  void initialize_symbols(lua_State* L);
 
   void initialize(lua_State* L) {
     initialize_context(L);
+    initialize_symbols(L);
   }
 }
 
