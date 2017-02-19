@@ -25,6 +25,12 @@
 
 namespace dromozoa {
   namespace {
+    enum {
+      state_constructed,
+      state_initialized,
+      state_closed,
+    };
+
     void free_calback(void* data, void*) {
       free(data);
     }
@@ -34,7 +40,9 @@ namespace dromozoa {
 
   message_handle::~message_handle() {
     if (state_ == state_initialized) {
-      close();
+      if (close() == -1) {
+        DROMOZOA_UNEXPECTED(zmq_strerror(zmq_errno()));
+      }
     }
   }
 
