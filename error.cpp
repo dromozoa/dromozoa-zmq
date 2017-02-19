@@ -18,19 +18,10 @@
 #include "common.hpp"
 
 namespace dromozoa {
-  void initialize_context(lua_State* L);
-  void initialize_socket(lua_State* L);
-  void initialize_symbols(lua_State* L);
-
-  void initialize(lua_State* L) {
-    initialize_context(L);
-    initialize_socket(L);
-    initialize_symbols(L);
+  void push_error(lua_State* L) {
+    int code = zmq_errno();
+    luaX_push(L, luaX_nil);
+    luaX_push(L, zmq_strerror(code));
+    luaX_push(L, code);
   }
-}
-
-extern "C" int luaopen_dromozoa_zmq(lua_State* L) {
-  lua_newtable(L);
-  dromozoa::initialize(L);
-  return 1;
 }
