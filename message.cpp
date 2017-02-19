@@ -41,15 +41,6 @@ namespace dromozoa {
       }
     }
 
-    void impl_init_size(lua_State* L) {
-      size_t size = luaX_check_integer<size_t>(L, 2);
-      if (check_message_handle(L, 1)->init_size(size) == -1) {
-        push_error(L);
-      } else {
-        luaX_push_success(L);
-      }
-    }
-
     void impl_init_data(lua_State* L) {
       size_t size = 0;
       const char* data = luaL_checklstring(L, 2, &size);
@@ -109,7 +100,6 @@ namespace dromozoa {
 
       luaX_set_metafield(L, -1, "__call", impl_call);
       luaX_set_field(L, -1, "init", impl_init);
-      luaX_set_field(L, -1, "init_size", impl_init_size);
       luaX_set_field(L, -1, "init_data", impl_init_data);
       luaX_set_field(L, -1, "close", impl_close);
       luaX_set_field(L, -1, "recv", impl_recv);
