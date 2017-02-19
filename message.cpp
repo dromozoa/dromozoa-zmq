@@ -82,6 +82,11 @@ namespace dromozoa {
         luaX_push(L, result);
       }
     }
+
+    void impl_data(lua_State* L) {
+      message_handle* self = check_message_handle(L, 1);
+      lua_pushlstring(L, static_cast<const char*>(zmq_msg_data(self->get())), zmq_msg_size(self->get()));
+    }
   }
 
   message_handle* check_message_handle(lua_State* L, int arg) {
@@ -108,6 +113,7 @@ namespace dromozoa {
       luaX_set_field(L, -1, "close", impl_close);
       luaX_set_field(L, -1, "recv", impl_recv);
       luaX_set_field(L, -1, "send", impl_send);
+      luaX_set_field(L, -1, "data", impl_data);
     }
     luaX_set_field(L, -2, "message");
   }

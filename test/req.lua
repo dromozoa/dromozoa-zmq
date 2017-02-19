@@ -28,6 +28,7 @@ assert(msg:close())
 
 local msg = zmq.message():init_size(10)
 print(assert(msg:recv(socket)))
+print(msg:data())
 
 assert(socket:close())
 
