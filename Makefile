@@ -24,6 +24,8 @@ OBJS = \
 	context.o \
 	context_handle.o \
 	error.o \
+	message.o \
+	message_handle.o \
 	module.o \
 	socket.o \
 	socket_handle.o \
