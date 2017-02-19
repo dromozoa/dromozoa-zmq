@@ -59,19 +59,6 @@ namespace dromozoa {
     return result;
   }
 
-  int message_handle::init_size(size_t size) {
-    int result = -1;
-    if (state_ == state_constructed) {
-      result = zmq_msg_init_size(&message_, size);
-      if (result != -1) {
-        state_ = state_initialized;
-      }
-    } else {
-      errno = EINVAL;
-    }
-    return result;
-  }
-
   int message_handle::init_data(const void* data, size_t size) {
     int result = -1;
     if (state_ == state_constructed) {
