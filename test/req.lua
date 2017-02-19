@@ -27,8 +27,8 @@ assert(msg:send(socket))
 assert(msg:close())
 
 local msg = zmq.message():init_size(10)
-print(assert(msg:recv(socket)))
-print(msg:data())
+assert(msg:recv(socket) == 5)
+assert(tostring(msg) == "world")
 
 assert(socket:close())
 
