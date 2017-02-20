@@ -19,8 +19,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <new>
-
 #include "common.hpp"
 
 namespace dromozoa {

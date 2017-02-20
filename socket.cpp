@@ -26,28 +26,28 @@ namespace dromozoa {
     }
 
     void impl_close(lua_State* L) {
-      if (check_socket_handle(L, 1)->close() == 0) {
-        luaX_push_success(L);
-      } else {
+      if (check_socket_handle(L, 1)->close() == -1) {
         push_error(L);
+      } else {
+        luaX_push_success(L);
       }
     }
 
     void impl_bind(lua_State* L) {
       const char* endpoint = luaL_checkstring(L, 2);
-      if (zmq_bind(check_socket(L, 1), endpoint) == 0) {
-        luaX_push_success(L);
-      } else {
+      if (zmq_bind(check_socket(L, 1), endpoint) == -1) {
         push_error(L);
+      } else {
+        luaX_push_success(L);
       }
     }
 
     void impl_connect(lua_State* L) {
       const char* endpoint = luaL_checkstring(L, 2);
-      if (zmq_connect(check_socket(L, 1), endpoint) == 0) {
-        luaX_push_success(L);
-      } else {
+      if (zmq_connect(check_socket(L, 1), endpoint) == -1) {
         push_error(L);
+      } else {
+        luaX_push_success(L);
       }
     }
 
