@@ -56,6 +56,26 @@ namespace dromozoa {
         push_error(L);
       }
     }
+
+    void impl_get(lua_State* L) {
+      int name = luaX_check_integer<int>(L, 2);
+      int result = zmq_ctx_get(check_context(L, 1), name);
+      if (result == -1) {
+        push_error(L);
+      } else {
+        luaX_push(L, result);
+      }
+    }
+
+    void impl_set(lua_State* L) {
+      int name = luaX_check_integer<int>(L, 2);
+      int value = luaX_check_integer<int>(L, 3);
+      if (zmq_ctx_set(check_context(L, 1), name, value) == -1) {
+        push_error(L);
+      } else {
+        luaX_push_success(L);
+      }
+    }
   }
 
   context_handle* check_context_handle(lua_State* L, int arg) {
@@ -79,6 +99,8 @@ namespace dromozoa {
       luaX_set_field(L, -1, "term", impl_term);
       luaX_set_field(L, -1, "shutdown", impl_shutdown);
       luaX_set_field(L, -1, "socket", impl_socket);
+      luaX_set_field(L, -1, "get", impl_get);
+      luaX_set_field(L, -1, "set", impl_set);
     }
     luaX_set_field(L, -2, "context");
   }

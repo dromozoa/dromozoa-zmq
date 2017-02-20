@@ -17,23 +17,12 @@
 
 local zmq = require "dromozoa.zmq"
 
-local ctx = assert(zmq.context())
-local socket = assert(ctx:socket(zmq.ZMQ_REQ))
--- assert(socket:bind("tcp://*:5555"))
-assert(socket:connect("tcp://localhost:5555"))
+assert(zmq.poll({}, 100) == 0)
 
-local msg = assert(zmq.message("hello"))
-assert(msg:send(socket))
-assert(msg:close())
-
-local msg = zmq.message()
-assert(msg:set(-1, -1) == nil)
-assert(msg:recv(socket) == 5)
-assert(tostring(msg) == "world")
-assert(msg:get(zmq.ZMQ_MORE) == 0)
-assert(msg:gets("Socket-Type") == "REP")
-assert(msg:more() == 0)
-
-assert(socket:close())
-
-assert(ctx:term())
+local result, items = assert(zmq.poll({
+  { fd = 0, events = zmq.ZMQ_POLLIN };
+  { fd = 1, events = zmq.ZMQ_POLLOUT };
+}))
+assert(result == 1)
+assert(items[1].revents == 0)
+assert(items[2].revents == zmq.ZMQ_POLLOUT)
