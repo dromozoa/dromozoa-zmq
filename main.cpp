@@ -100,10 +100,15 @@ namespace dromozoa {
     void impl_z85_decode(lua_State* L) {
       size_t size = 0;
       const char* data = luaL_checklstring(L, 1, &size);
-      std::vector<uint8_t> buffer(size * 4 / 5);
-      if (const uint8_t* result = zmq_z85_decode(&buffer[0], data)) {
-        lua_pushlstring(L, reinterpret_cast<const char*>(result), buffer.size());
+      if (size % 5 == 0) {
+        std::vector<char> buffer(size * 4 / 5);
+        if (zmq_z85_decode(reinterpret_cast<uint8_t*>(&buffer[0]), data)) {
+          lua_pushlstring(L, &buffer[0], buffer.size());
+        } else {
+          push_error(L);
+        }
       } else {
+        errno = EINVAL;
         push_error(L);
       }
     }
@@ -111,10 +116,15 @@ namespace dromozoa {
     void impl_z85_encode(lua_State* L) {
       size_t size = 0;
       const char* data = luaL_checklstring(L, 1, &size);
-      std::vector<char> buffer(size * 5 / 4 + 1);
-      if (const char* result = zmq_z85_encode(&buffer[0], reinterpret_cast<const uint8_t*>(data), size)) {
-        luaX_push(L, result);
+      if (size % 4 == 0) {
+        std::vector<char> buffer(size * 5 / 4 + 1);
+        if (zmq_z85_encode(&buffer[0], reinterpret_cast<const uint8_t*>(data), size)) {
+          luaX_push(L, &buffer[0]);
+        } else {
+          push_error(L);
+        }
       } else {
+        errno = EINVAL;
         push_error(L);
       }
     }
