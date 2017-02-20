@@ -15,16 +15,14 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-local json = require "dromozoa.commons.json"
 local zmq = require "dromozoa.zmq"
 
-assert(zmq.poll({}, 100))
+assert(zmq.poll({}, 100) == 0)
 
-
-local poll_items = {
+local result, items = assert(zmq.poll({
   { fd = 0, events = zmq.ZMQ_POLLIN };
   { fd = 1, events = zmq.ZMQ_POLLOUT };
-}
-print(json.encode(poll_items))
-assert(zmq.poll(poll_items))
-print(json.encode(poll_items))
+}))
+assert(result == 1)
+assert(items[1].revents == 0)
+assert(items[2].revents == zmq.ZMQ_POLLOUT)

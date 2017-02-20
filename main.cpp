@@ -26,36 +26,22 @@ namespace dromozoa {
       long timeout = luaX_opt_integer<long>(L, 2, -1);
 
       std::vector<zmq_pollitem_t> items;
-
       for (int i = 1; ; ++i) {
         zmq_pollitem_t item = { 0, -1, 0, 0 };
-
-        luaX_get_field(L, 1, i);
-        if (lua_isnil(L, -1)) {
+        if (luaX_get_field(L, 1, i) == LUA_TNIL) {
           lua_pop(L, 1);
           break;
         }
-
         luaX_get_field(L, -1, "socket");
         if (void* socket = to_socket(L, -1)) {
           item.socket = socket;
           lua_pop(L, 1);
         } else {
           lua_pop(L, 1);
-          // luaX_get_field(L, -1, "fd");
-          // if (luaX_is_integer(L, -1)) {
-          //   item.fd = lua_tointeger(L, -1);
-          // }
-          // lua_pop(L, 1);
-          item.fd = luaX_check_integer_field<int>(L, luaX_abs_index(L, -1), "fd");
+          item.fd = luaX_check_integer_field<int>(L, -1, "fd");
         }
-        luaX_get_field(L, -1, "events");
-        if (luaX_is_integer(L, -1)) {
-          item.events = lua_tointeger(L, -1);
-        }
+        item.events = luaX_check_integer_field<int>(L, -1, "events");
         lua_pop(L, 1);
-        lua_pop(L, 1);
-
         items.push_back(item);
       }
 
@@ -64,8 +50,7 @@ namespace dromozoa {
         push_error(L);
       } else {
         for (int i = 1; ; ++i) {
-          luaX_get_field(L, 1, i);
-          if (lua_isnil(L, -1)) {
+          if (luaX_get_field(L, 1, i) == LUA_TNIL) {
             lua_pop(L, 1);
             break;
           }
@@ -73,6 +58,7 @@ namespace dromozoa {
           lua_pop(L, 1);
         }
         luaX_push(L, result);
+        lua_pushvalue(L, 1);
       }
     }
   }
