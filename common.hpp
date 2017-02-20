@@ -64,6 +64,7 @@ namespace dromozoa {
     int init_data(const void* data, size_t size);
     int close();
     zmq_msg_t* get();
+    void swap(message_handle& that);
   private:
     int state_;
     zmq_msg_t message_;

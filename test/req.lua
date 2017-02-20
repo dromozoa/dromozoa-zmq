@@ -22,11 +22,11 @@ local socket = assert(ctx:socket(zmq.ZMQ_REQ))
 -- assert(socket:bind("tcp://*:5555"))
 assert(socket:connect("tcp://localhost:5555"))
 
-local msg = assert(zmq.message():init_data("hello"))
+local msg = assert(zmq.message("hello"))
 assert(msg:send(socket))
 assert(msg:close())
 
-local msg = zmq.message():init(10)
+local msg = zmq.message()
 assert(msg:recv(socket) == 5)
 assert(tostring(msg) == "world")
 

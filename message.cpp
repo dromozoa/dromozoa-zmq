@@ -29,25 +29,19 @@ namespace dromozoa {
     }
 
     void impl_call(lua_State* L) {
-      luaX_new<message_handle>(L);
-      luaX_set_metatable(L, "dromozoa.zmq.message");
-    }
-
-    void impl_init(lua_State* L) {
-      if (check_message_handle(L, 1)->init() == -1) {
-        push_error(L);
-      } else {
-        luaX_push_success(L);
-      }
-    }
-
-    void impl_init_data(lua_State* L) {
+      message_handle self;
+      int result = -1;
       size_t size = 0;
-      const char* data = luaL_checklstring(L, 2, &size);
-      if (check_message_handle(L, 1)->init_data(data, size) == -1) {
+      if (const char* data = lua_tolstring(L, 2, &size)) {
+        result = self.init_data(data, size);
+      } else {
+        result = self.init();
+      }
+      if (result == -1) {
         push_error(L);
       } else {
-        luaX_push_success(L);
+        luaX_new<message_handle>(L)->swap(self);
+        luaX_set_metatable(L, "dromozoa.zmq.message");
       }
     }
 
@@ -99,8 +93,6 @@ namespace dromozoa {
       lua_pop(L, 1);
 
       luaX_set_metafield(L, -1, "__call", impl_call);
-      luaX_set_field(L, -1, "init", impl_init);
-      luaX_set_field(L, -1, "init_data", impl_init_data);
       luaX_set_field(L, -1, "close", impl_close);
       luaX_set_field(L, -1, "recv", impl_recv);
       luaX_set_field(L, -1, "send", impl_send);

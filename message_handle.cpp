@@ -97,4 +97,15 @@ namespace dromozoa {
       return 0;
     }
   }
+
+  void message_handle::swap(message_handle& that) {
+    int state = state_;
+    state_ = that.state_;
+    that.state_ = state;
+
+    zmq_msg_t message;
+    memcpy(&message, &that.message_, sizeof(message));
+    memcpy(&message_, &that.message_, sizeof(message));
+    memcpy(&that.message_, &message, sizeof(message));
+  }
 }

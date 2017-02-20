@@ -22,9 +22,9 @@ local socket = assert(ctx:socket(zmq.ZMQ_REP))
 assert(socket:bind("tcp://*:5555"))
 -- assert(socket:connect("tcp://localhost:5555"))
 
-local buffer = socket:recv(10)
-print(buffer)
-socket:send("world")
+local buffer = assert(socket:recv(10))
+assert(buffer == "hello")
+assert(socket:send("world"))
 
 assert(socket:close())
 
