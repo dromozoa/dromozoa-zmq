@@ -21,6 +21,11 @@
 
 namespace dromozoa {
   namespace {
+    void impl_has(lua_State* L) {
+      const char* capability = luaL_checkstring(L, 1);
+      luaX_push(L, zmq_has(capability));
+    }
+
     void impl_poll(lua_State* L) {
       luaL_checkany(L, 1);
       long timeout = luaX_opt_integer<long>(L, 2, -1);
@@ -64,6 +69,7 @@ namespace dromozoa {
   }
 
   void initialize_main(lua_State* L) {
+    luaX_set_field(L, -1, "has", impl_has);
     luaX_set_field(L, -1, "poll", impl_poll);
   }
 }
