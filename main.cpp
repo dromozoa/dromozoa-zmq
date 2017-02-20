@@ -90,6 +90,7 @@ namespace dromozoa {
           push_error(L);
         } else {
           lua_pushlstring(L, &z85_public_key[0], 40);
+          lua_pushvalue(L, 1);
         }
       } else {
         errno = EINVAL;
