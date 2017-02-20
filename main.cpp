@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <errno.h>
 #include <stdint.h>
 
 #include <vector>
@@ -69,6 +70,33 @@ namespace dromozoa {
       }
     }
 
+    void impl_curve_keypair(lua_State* L) {
+      std::vector<char> z85_public_key(41);
+      std::vector<char> z85_secret_key(41);
+      if (zmq_curve_keypair(&z85_public_key[0], &z85_secret_key[0]) == -1) {
+        push_error(L);
+      } else {
+        lua_pushlstring(L, &z85_public_key[0], 40);
+        lua_pushlstring(L, &z85_secret_key[0], 40);
+      }
+    }
+
+    void impl_curve_public(lua_State* L) {
+      size_t size = 0;
+      const char* z85_secret_key = luaL_checklstring(L, 1, &size);
+      if (size == 40) {
+        std::vector<char> z85_public_key(41);
+        if (zmq_curve_public(&z85_public_key[0], z85_secret_key) == -1) {
+          push_error(L);
+        } else {
+          lua_pushlstring(L, &z85_public_key[0], 40);
+        }
+      } else {
+        errno = EINVAL;
+        push_error(L);
+      }
+    }
+
     void impl_z85_decode(lua_State* L) {
       size_t size = 0;
       const char* data = luaL_checklstring(L, 1, &size);
@@ -95,6 +123,8 @@ namespace dromozoa {
   void initialize_main(lua_State* L) {
     luaX_set_field(L, -1, "has", impl_has);
     luaX_set_field(L, -1, "poll", impl_poll);
+    luaX_set_field(L, -1, "curve_keypair", impl_curve_keypair);
+    luaX_set_field(L, -1, "curve_public", impl_curve_public);
     luaX_set_field(L, -1, "z85_decode", impl_z85_decode);
     luaX_set_field(L, -1, "z85_encode", impl_z85_encode);
   }

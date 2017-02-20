@@ -17,14 +17,18 @@
 
 local zmq = require "dromozoa.zmq"
 
-local key = string.char(
+local bin_public_key = string.char(
   0xBB, 0x88, 0x47, 0x1D, 0x65, 0xE2, 0x65, 0x9B,
   0x30, 0xC5, 0x5A, 0x53, 0x21, 0xCE, 0xBB, 0x5A,
   0xAB, 0x2B, 0x70, 0xA3, 0x98, 0x64, 0x5C, 0x26,
   0xDC, 0xA2, 0xB2, 0xFC, 0xB4, 0x3F, 0xC5, 0x18)
-local z85 = "Yne@$w-vo<fVvi]a<NY6T1ed:M$fCG*[IaLV{hID"
+local z85_public_key = "Yne@$w-vo<fVvi]a<NY6T1ed:M$fCG*[IaLV{hID"
+local z85_secret_key = "D:)Q[IlAW!ahhC2ac:9*A}h:p?([4%wOTJ%JR%cs"
 
-assert(zmq.z85_encode(key) == z85)
-assert(zmq.z85_decode(z85) == key)
+assert(zmq.curve_public(z85_secret_key) == z85_public_key)
+assert(zmq.z85_encode(bin_public_key) == z85_public_key)
+assert(zmq.z85_decode(z85_public_key) == bin_public_key)
 
-print(zmq.z85_decode("12345"))
+local p, s = zmq.curve_keypair()
+print(p)
+print(s)
