@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <stdint.h>
+
 #include <vector>
 
 #include "common.hpp"
@@ -66,10 +68,34 @@ namespace dromozoa {
         lua_pushvalue(L, 1);
       }
     }
+
+    void impl_z85_decode(lua_State* L) {
+      size_t size = 0;
+      const char* data = luaL_checklstring(L, 1, &size);
+      std::vector<uint8_t> buffer(size * 4 / 5);
+      if (const uint8_t* result = zmq_z85_decode(&buffer[0], data)) {
+        lua_pushlstring(L, reinterpret_cast<const char*>(result), buffer.size());
+      } else {
+        push_error(L);
+      }
+    }
+
+    void impl_z85_encode(lua_State* L) {
+      size_t size = 0;
+      const char* data = luaL_checklstring(L, 1, &size);
+      std::vector<char> buffer(size * 5 / 4 + 1);
+      if (const char* result = zmq_z85_encode(&buffer[0], reinterpret_cast<const uint8_t*>(data), size)) {
+        luaX_push(L, result);
+      } else {
+        push_error(L);
+      }
+    }
   }
 
   void initialize_main(lua_State* L) {
     luaX_set_field(L, -1, "has", impl_has);
     luaX_set_field(L, -1, "poll", impl_poll);
+    luaX_set_field(L, -1, "z85_decode", impl_z85_decode);
+    luaX_set_field(L, -1, "z85_encode", impl_z85_encode);
   }
 }
