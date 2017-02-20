@@ -25,6 +25,12 @@
 
 namespace dromozoa {
   namespace {
+    enum {
+      state_constructed,
+      state_initialized,
+      state_closed,
+    };
+
     void free_calback(void* data, void*) {
       free(data);
     }
@@ -34,7 +40,9 @@ namespace dromozoa {
 
   message_handle::~message_handle() {
     if (state_ == state_initialized) {
-      close();
+      if (close() == -1) {
+        DROMOZOA_UNEXPECTED(zmq_strerror(zmq_errno()));
+      }
     }
   }
 
@@ -42,19 +50,6 @@ namespace dromozoa {
     int result = -1;
     if (state_ == state_constructed) {
       result = zmq_msg_init(&message_);
-      if (result != -1) {
-        state_ = state_initialized;
-      }
-    } else {
-      errno = EINVAL;
-    }
-    return result;
-  }
-
-  int message_handle::init_size(size_t size) {
-    int result = -1;
-    if (state_ == state_constructed) {
-      result = zmq_msg_init_size(&message_, size);
       if (result != -1) {
         state_ = state_initialized;
       }
@@ -101,5 +96,16 @@ namespace dromozoa {
     } else {
       return 0;
     }
+  }
+
+  void message_handle::swap(message_handle& that) {
+    int state = state_;
+    state_ = that.state_;
+    that.state_ = state;
+
+    zmq_msg_t message;
+    memcpy(&message, &message_, sizeof(message));
+    memcpy(&message_, &that.message_, sizeof(message));
+    memcpy(&that.message_, &message, sizeof(message));
   }
 }

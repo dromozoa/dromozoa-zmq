@@ -58,16 +58,15 @@ namespace dromozoa {
 
   class message_handle {
   public:
-    enum state_type { state_constructed, state_initialized, state_closed };
     message_handle();
     ~message_handle();
     int init();
-    int init_size(size_t size);
     int init_data(const void* data, size_t size);
     int close();
     zmq_msg_t* get();
+    void swap(message_handle& that);
   private:
-    state_type state_;
+    int state_;
     zmq_msg_t message_;
     message_handle(const message_handle&);
     message_handle& operator=(const message_handle&);

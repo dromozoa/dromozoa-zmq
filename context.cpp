@@ -33,23 +33,24 @@ namespace dromozoa {
     }
 
     void impl_term(lua_State* L) {
-      if (check_context_handle(L, 1)->term() == 0) {
-        luaX_push_success(L);
-      } else {
+      if (check_context_handle(L, 1)->term() == -1) {
         push_error(L);
+      } else {
+        luaX_push_success(L);
       }
     }
 
     void impl_shutdown(lua_State* L) {
-      if (zmq_ctx_shutdown(check_context(L, 1)) == 0) {
-        luaX_push_success(L);
-      } else {
+      if (zmq_ctx_shutdown(check_context(L, 1)) == -1) {
         push_error(L);
+      } else {
+        luaX_push_success(L);
       }
     }
 
     void impl_socket(lua_State* L) {
-      if (void* handle = zmq_socket(check_context(L, 1), luaX_check_integer<int>(L, 2))) {
+      int type = luaX_check_integer<int>(L, 2);
+      if (void* handle = zmq_socket(check_context(L, 1), type)) {
         new_socket(L, handle);
       } else {
         push_error(L);

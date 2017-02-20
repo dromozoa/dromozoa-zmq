@@ -59,7 +59,7 @@ namespace dromozoa {
       if (result == -1) {
         push_error(L);
       } else {
-        lua_pushlstring(L, &buffer[0], size);
+        lua_pushlstring(L, &buffer[0], result);
       }
     }
 
