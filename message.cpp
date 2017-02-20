@@ -33,7 +33,12 @@ namespace dromozoa {
       int result = -1;
       size_t size = 0;
       if (const char* data = lua_tolstring(L, 2, &size)) {
-        result = self.init_data(data, size);
+        size_t i = luaX_opt_range_i(L, 3, size);
+        size_t j = luaX_opt_range_j(L, 4, size);
+        if (j < i) {
+          j = i;
+        }
+        result = self.init_data(data + i, j - i);
       } else {
         result = self.init();
       }
