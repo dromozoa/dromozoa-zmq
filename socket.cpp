@@ -89,6 +89,14 @@ namespace dromozoa {
     return check_socket_handle(L, arg)->get();
   }
 
+  void* to_socket(lua_State* L, int index) {
+    if (socket_handle* self = luaX_to_udata<socket_handle>(L, index, "dromozoa.zmq.socket")) {
+      return self->get();
+    } else {
+      return 0;
+    }
+  }
+
   void new_socket(lua_State* L, void* handle) {
     luaX_new<socket_handle>(L, handle);
     luaX_set_metatable(L, "dromozoa.zmq.socket");

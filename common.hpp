@@ -54,6 +54,7 @@ namespace dromozoa {
 
   socket_handle* check_socket_handle(lua_State* L, int arg);
   void* check_socket(lua_State* L, int arg);
+  void* to_socket(lua_State* L, int arg);
   void new_socket(lua_State* L, void* handle);
 
   class message_handle {
