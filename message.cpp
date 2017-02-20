@@ -98,16 +98,16 @@ namespace dromozoa {
     }
 
     void impl_more(lua_State* L) {
-      luaX_push<bool>(L, zmq_msg_more(check_message(L, 1)));
+      luaX_push(L, zmq_msg_more(check_message(L, 1)));
     }
 
     void impl_set(lua_State* L) {
       int property = luaX_check_integer<int>(L, 2);
       int value = luaX_check_integer<int>(L, 3);
       if (zmq_msg_set(check_message(L, 1), property, value) == -1) {
-        luaX_push_success(L);
-      } else {
         push_error(L);
+      } else {
+        luaX_push_success(L);
       }
     }
   }

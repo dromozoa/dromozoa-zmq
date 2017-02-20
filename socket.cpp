@@ -79,6 +79,10 @@ namespace dromozoa {
         luaX_push(L, result);
       }
     }
+
+    // void impl_getsockopt(lua_State* L) {
+    //   int option = luaX_check_integer<int>(L, 2);
+    // }
   }
 
   socket_handle* check_socket_handle(lua_State* L, int arg) {

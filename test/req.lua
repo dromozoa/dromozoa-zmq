@@ -27,11 +27,12 @@ assert(msg:send(socket))
 assert(msg:close())
 
 local msg = zmq.message()
+assert(msg:set(-1, -1) == nil)
 assert(msg:recv(socket) == 5)
 assert(tostring(msg) == "world")
 assert(msg:get(zmq.ZMQ_MORE) == 0)
 assert(msg:gets("Socket-Type") == "REP")
-assert(msg:more() == false)
+assert(msg:more() == 0)
 
 assert(socket:close())
 

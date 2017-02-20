@@ -18,6 +18,12 @@
 local zmq = require "dromozoa.zmq"
 
 local ctx = assert(zmq.context())
+
+assert(ctx:get(zmq.ZMQ_IO_THREADS) == 1)
+print(ctx:get(zmq.ZMQ_MAX_SOCKETS))
+assert(ctx:set(zmq.ZMQ_MAX_SOCKETS, 256))
+assert(ctx:get(zmq.ZMQ_MAX_SOCKETS) == 256)
+
 local socket = assert(ctx:socket(zmq.ZMQ_REP))
 assert(socket:bind("tcp://*:5555"))
 -- assert(socket:connect("tcp://localhost:5555"))
