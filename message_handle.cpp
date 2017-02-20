@@ -104,7 +104,7 @@ namespace dromozoa {
     that.state_ = state;
 
     zmq_msg_t message;
-    memcpy(&message, &that.message_, sizeof(message));
+    memcpy(&message, &message_, sizeof(message));
     memcpy(&message_, &that.message_, sizeof(message));
     memcpy(&that.message_, &message, sizeof(message));
   }
