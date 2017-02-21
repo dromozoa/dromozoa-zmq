@@ -16,13 +16,13 @@
 // along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "common.hpp"
+#include "symbols.hpp"
 
 namespace dromozoa {
   void initialize_context(lua_State* L);
   void initialize_main(lua_State* L);
   void initialize_message(lua_State* L);
   void initialize_socket(lua_State* L);
-  void initialize_symbols(lua_State* L);
 
   void initialize(lua_State* L) {
     initialize_context(L);

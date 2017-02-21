@@ -1,4 +1,4 @@
-# getsockopt.md
+# zmq_getsockopt
 
 Name|Type|Unit|Size|Default|Description
 ----|----|----|----|----|----

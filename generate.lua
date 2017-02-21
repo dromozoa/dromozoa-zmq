@@ -17,12 +17,14 @@
 
 local basename = require "dromozoa.commons.basename"
 local linked_hash_table = require "dromozoa.commons.linked_hash_table"
+local keys = require "dromozoa.commons.keys"
 local string_matcher = require "dromozoa.commons.string_matcher"
 
 local source_dir = ...
 
 local function parse_doc(filename)
   local result = linked_hash_table()
+  local enums = {}
   local name
   local item
   local prev
@@ -43,12 +45,43 @@ local function parse_doc(filename)
         assert(name)
         assert(item.option_value_type)
         assert(item.option_value_unit or item.option_value_size)
+        local enum = item.option_value_type
+        if enum == "int on POSIX systems, SOCKET on Windows" then
+          enum = "int"
+        elseif enum == "NULL-terminated character string" then
+          enum = "character string"
+        end
+        enum = enum:gsub("%W", "_")
+        enums[enum] = true
+        item.option_value_enum = enum
         result[name] = item
       end
     end
     prev = line
   end
-  return result
+  return result, keys(enums):sort()
+end
+
+local function generate_md(filename, title, data)
+  local out = assert(io.open(filename, "w"))
+  out:write(([[
+# %s
+
+Name|Type|Unit|Size|Default|Description
+----|----|----|----|----|----
+]]):format(title))
+  for name, item in data:each() do
+    local unit = item.option_value_unit
+    if unit == nil then
+      unit = ""
+    end
+    local size = item.option_value_size
+    if size == nil then
+      size = ""
+    end
+    out:write(("%s|%s|%s|%s|%s|%s\n"):format(name, item.option_value_type, unit, size, item.default_value, item.description))
+  end
+  out:close()
 end
 
 local header_file = source_dir .. "/include/zmq.h"
@@ -61,6 +94,7 @@ out:write(([[
 // generated from %s
 
 #include "common.hpp"
+#include "symbols.hpp"
 
 namespace dromozoa {
   void initialize_symbols(lua_State* L) {
@@ -82,52 +116,94 @@ end
 
 out:write([[
   }
+
+  getsockopt_option_enum getsockopt_option(int name) {
+    switch (name) {
+]])
+
+local getsockopts, getsockopt_enums = parse_doc(getsockopt_file)
+generate_md("doc/getsockopt.md", "zmq_getsockopt", getsockopts)
+
+for name, item in getsockopts:each() do
+  out:write(([[
+#ifdef %s
+      case %s:
+        return getsockopt_option_%s;
+#endif
+]]):format(name, name, item.option_value_enum))
+end
+
+out:write([[
+      default:
+        return getsockopt_option_unknown;
+    }
+  }
+
+  setsockopt_option_enum setsockopt_option(int name) {
+    switch (name) {
+]])
+
+local setsockopts, setsockopt_enums = parse_doc(setsockopt_file)
+generate_md("doc/setsockopt.md", "zmq_setsockopt", setsockopts)
+
+for name, item in setsockopts:each() do
+  out:write(([[
+#ifdef %s
+      case %s:
+        return setsockopt_option_%s;
+#endif
+]]):format(name, name, item.option_value_enum))
+end
+
+out:write([[
+      default:
+        return setsockopt_option_unknown;
+    }
+  }
 }
 ]])
 
 out:close()
 
-local getsockopts = parse_doc(getsockopt_file)
-local setsockopts = parse_doc(setsockopt_file)
+local out = assert(io.open("symbols.hpp", "w"))
 
-local out = assert(io.open("doc/getsockopt.md", "w"))
-out:write([[
-# getsockopt.md
+out:write(([[
+// generated from %s
 
-Name|Type|Unit|Size|Default|Description
-----|----|----|----|----|----
-]])
-for name, item in getsockopts:each() do
-  local unit = item.option_value_unit
-  if unit == nil then
-    unit = ""
-  end
-  local size = item.option_value_size
-  if size == nil then
-    size = ""
-  end
-  out:write(("%s|%s|%s|%s|%s|%s\n"):format(name, item.option_value_type, unit, size, item.default_value, item.description))
+#ifndef DROMOZOA_SYMBOLS_HPP
+#define DROMOZOA_SYMBOLS_HPP
+
+#include "common.hpp"
+
+namespace dromozoa {
+  enum getsockopt_option_enum {
+    getsockopt_option_unknown,
+]]):format(basename(source_dir)))
+
+for enum in getsockopt_enums:each() do
+  out:write("    getsockopt_option_", enum, ",\n")
 end
-out:close()
 
-local out = assert(io.open("doc/setsockopt.md", "w"))
 out:write([[
-# setsockopt.md
+  };
 
-Name|Type|Unit|Size|Default|Description
-----|----|----|----|----|----
+  enum setsockopt_option_enum {
+    setsockopt_option_unknown,
 ]])
-for name, item in setsockopts:each() do
-  local unit = item.option_value_unit
-  if unit == nil then
-    unit = ""
-  end
-  local size = item.option_value_size
-  if size == nil then
-    size = ""
-  end
-  out:write(("%s|%s|%s|%s|%s|%s\n"):format(name, item.option_value_type, unit, size, item.default_value, item.description))
+
+for enum in setsockopt_enums:each() do
+  out:write("    setsockopt_option_", enum, ",\n")
 end
+
+out:write([[
+  };
+
+  void initialize_symbols(lua_State* L);
+  getsockopt_option_enum getsockopt_option(int name);
+  setsockopt_option_enum setsockopt_option(int name);
+}
+
+#endif
+]])
+
 out:close()
-
-

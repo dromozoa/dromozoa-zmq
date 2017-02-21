@@ -1,6 +1,7 @@
 // generated from zeromq-4.2.1
 
 #include "common.hpp"
+#include "symbols.hpp"
 
 namespace dromozoa {
   void initialize_symbols(lua_State* L) {
@@ -463,5 +464,507 @@ namespace dromozoa {
 #ifdef ZMQ_MSG_T_SIZE
     luaX_set_field(L, -1, "ZMQ_MSG_T_SIZE", ZMQ_MSG_T_SIZE);
 #endif
+  }
+
+  getsockopt_option_enum getsockopt_option(int name) {
+    switch (name) {
+#ifdef ZMQ_AFFINITY
+      case ZMQ_AFFINITY:
+        return getsockopt_option_uint64_t;
+#endif
+#ifdef ZMQ_BACKLOG
+      case ZMQ_BACKLOG:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_CONNECT_TIMEOUT
+      case ZMQ_CONNECT_TIMEOUT:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_CURVE_PUBLICKEY
+      case ZMQ_CURVE_PUBLICKEY:
+        return getsockopt_option_binary_data_or_Z85_text_string;
+#endif
+#ifdef ZMQ_CURVE_SECRETKEY
+      case ZMQ_CURVE_SECRETKEY:
+        return getsockopt_option_binary_data_or_Z85_text_string;
+#endif
+#ifdef ZMQ_CURVE_SERVERKEY
+      case ZMQ_CURVE_SERVERKEY:
+        return getsockopt_option_binary_data_or_Z85_text_string;
+#endif
+#ifdef ZMQ_EVENTS
+      case ZMQ_EVENTS:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_FD
+      case ZMQ_FD:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_GSSAPI_PLAINTEXT
+      case ZMQ_GSSAPI_PLAINTEXT:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_GSSAPI_PRINCIPAL
+      case ZMQ_GSSAPI_PRINCIPAL:
+        return getsockopt_option_character_string;
+#endif
+#ifdef ZMQ_GSSAPI_SERVER
+      case ZMQ_GSSAPI_SERVER:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_GSSAPI_SERVICE_PRINCIPAL
+      case ZMQ_GSSAPI_SERVICE_PRINCIPAL:
+        return getsockopt_option_character_string;
+#endif
+#ifdef ZMQ_HANDSHAKE_IVL
+      case ZMQ_HANDSHAKE_IVL:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_IDENTITY
+      case ZMQ_IDENTITY:
+        return getsockopt_option_binary_data;
+#endif
+#ifdef ZMQ_IMMEDIATE
+      case ZMQ_IMMEDIATE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_INVERT_MATCHING
+      case ZMQ_INVERT_MATCHING:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_IPV4ONLY
+      case ZMQ_IPV4ONLY:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_IPV6
+      case ZMQ_IPV6:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_LAST_ENDPOINT
+      case ZMQ_LAST_ENDPOINT:
+        return getsockopt_option_character_string;
+#endif
+#ifdef ZMQ_LINGER
+      case ZMQ_LINGER:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_MAXMSGSIZE
+      case ZMQ_MAXMSGSIZE:
+        return getsockopt_option_int64_t;
+#endif
+#ifdef ZMQ_MECHANISM
+      case ZMQ_MECHANISM:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_MULTICAST_HOPS
+      case ZMQ_MULTICAST_HOPS:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_MULTICAST_MAXTPDU
+      case ZMQ_MULTICAST_MAXTPDU:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_PLAIN_PASSWORD
+      case ZMQ_PLAIN_PASSWORD:
+        return getsockopt_option_character_string;
+#endif
+#ifdef ZMQ_PLAIN_SERVER
+      case ZMQ_PLAIN_SERVER:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_PLAIN_USERNAME
+      case ZMQ_PLAIN_USERNAME:
+        return getsockopt_option_character_string;
+#endif
+#ifdef ZMQ_USE_FD
+      case ZMQ_USE_FD:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_RATE
+      case ZMQ_RATE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_RCVBUF
+      case ZMQ_RCVBUF:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_RCVHWM
+      case ZMQ_RCVHWM:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_RCVMORE
+      case ZMQ_RCVMORE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_RCVTIMEO
+      case ZMQ_RCVTIMEO:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_RECONNECT_IVL
+      case ZMQ_RECONNECT_IVL:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_RECONNECT_IVL_MAX
+      case ZMQ_RECONNECT_IVL_MAX:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_RECOVERY_IVL
+      case ZMQ_RECOVERY_IVL:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_SNDBUF
+      case ZMQ_SNDBUF:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_SNDHWM
+      case ZMQ_SNDHWM:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_SNDTIMEO
+      case ZMQ_SNDTIMEO:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_SOCKS_PROXY
+      case ZMQ_SOCKS_PROXY:
+        return getsockopt_option_character_string;
+#endif
+#ifdef ZMQ_TCP_KEEPALIVE
+      case ZMQ_TCP_KEEPALIVE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_TCP_KEEPALIVE_CNT
+      case ZMQ_TCP_KEEPALIVE_CNT:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_TCP_KEEPALIVE_IDLE
+      case ZMQ_TCP_KEEPALIVE_IDLE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_TCP_KEEPALIVE_INTVL
+      case ZMQ_TCP_KEEPALIVE_INTVL:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_TCP_MAXRT
+      case ZMQ_TCP_MAXRT:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_TOS
+      case ZMQ_TOS:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_TYPE
+      case ZMQ_TYPE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_ZAP_DOMAIN
+      case ZMQ_ZAP_DOMAIN:
+        return getsockopt_option_character_string;
+#endif
+#ifdef ZMQ_VMCI_BUFFER_SIZE
+      case ZMQ_VMCI_BUFFER_SIZE:
+        return getsockopt_option_uint64_t;
+#endif
+#ifdef ZMQ_VMCI_BUFFER_MIN_SIZE
+      case ZMQ_VMCI_BUFFER_MIN_SIZE:
+        return getsockopt_option_uint64_t;
+#endif
+#ifdef ZMQ_VMCI_BUFFER_MAX_SIZE
+      case ZMQ_VMCI_BUFFER_MAX_SIZE:
+        return getsockopt_option_uint64_t;
+#endif
+#ifdef ZMQ_VMCI_CONNECT_TIMEOUT
+      case ZMQ_VMCI_CONNECT_TIMEOUT:
+        return getsockopt_option_int;
+#endif
+      default:
+        return getsockopt_option_unknown;
+    }
+  }
+
+  setsockopt_option_enum setsockopt_option(int name) {
+    switch (name) {
+#ifdef ZMQ_AFFINITY
+      case ZMQ_AFFINITY:
+        return setsockopt_option_uint64_t;
+#endif
+#ifdef ZMQ_BACKLOG
+      case ZMQ_BACKLOG:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_CONNECT_RID
+      case ZMQ_CONNECT_RID:
+        return setsockopt_option_binary_data;
+#endif
+#ifdef ZMQ_CONFLATE
+      case ZMQ_CONFLATE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_CONNECT_TIMEOUT
+      case ZMQ_CONNECT_TIMEOUT:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_CURVE_PUBLICKEY
+      case ZMQ_CURVE_PUBLICKEY:
+        return setsockopt_option_binary_data_or_Z85_text_string;
+#endif
+#ifdef ZMQ_CURVE_SECRETKEY
+      case ZMQ_CURVE_SECRETKEY:
+        return setsockopt_option_binary_data_or_Z85_text_string;
+#endif
+#ifdef ZMQ_CURVE_SERVER
+      case ZMQ_CURVE_SERVER:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_CURVE_SERVERKEY
+      case ZMQ_CURVE_SERVERKEY:
+        return setsockopt_option_binary_data_or_Z85_text_string;
+#endif
+#ifdef ZMQ_GSSAPI_PLAINTEXT
+      case ZMQ_GSSAPI_PLAINTEXT:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_GSSAPI_PRINCIPAL
+      case ZMQ_GSSAPI_PRINCIPAL:
+        return setsockopt_option_character_string;
+#endif
+#ifdef ZMQ_GSSAPI_SERVER
+      case ZMQ_GSSAPI_SERVER:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_GSSAPI_SERVICE_PRINCIPAL
+      case ZMQ_GSSAPI_SERVICE_PRINCIPAL:
+        return setsockopt_option_character_string;
+#endif
+#ifdef ZMQ_HANDSHAKE_IVL
+      case ZMQ_HANDSHAKE_IVL:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_HEARTBEAT_IVL
+      case ZMQ_HEARTBEAT_IVL:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_HEARTBEAT_TIMEOUT
+      case ZMQ_HEARTBEAT_TIMEOUT:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_HEARTBEAT_TTL
+      case ZMQ_HEARTBEAT_TTL:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_IDENTITY
+      case ZMQ_IDENTITY:
+        return setsockopt_option_binary_data;
+#endif
+#ifdef ZMQ_IMMEDIATE
+      case ZMQ_IMMEDIATE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_INVERT_MATCHING
+      case ZMQ_INVERT_MATCHING:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_IPV6
+      case ZMQ_IPV6:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_LINGER
+      case ZMQ_LINGER:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_MAXMSGSIZE
+      case ZMQ_MAXMSGSIZE:
+        return setsockopt_option_int64_t;
+#endif
+#ifdef ZMQ_MULTICAST_HOPS
+      case ZMQ_MULTICAST_HOPS:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_MULTICAST_MAXTPDU
+      case ZMQ_MULTICAST_MAXTPDU:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_PLAIN_PASSWORD
+      case ZMQ_PLAIN_PASSWORD:
+        return setsockopt_option_character_string;
+#endif
+#ifdef ZMQ_PLAIN_SERVER
+      case ZMQ_PLAIN_SERVER:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_PLAIN_USERNAME
+      case ZMQ_PLAIN_USERNAME:
+        return setsockopt_option_character_string;
+#endif
+#ifdef ZMQ_USE_FD
+      case ZMQ_USE_FD:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_PROBE_ROUTER
+      case ZMQ_PROBE_ROUTER:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_RATE
+      case ZMQ_RATE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_RCVBUF
+      case ZMQ_RCVBUF:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_RCVHWM
+      case ZMQ_RCVHWM:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_RCVTIMEO
+      case ZMQ_RCVTIMEO:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_RECONNECT_IVL
+      case ZMQ_RECONNECT_IVL:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_RECONNECT_IVL_MAX
+      case ZMQ_RECONNECT_IVL_MAX:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_RECOVERY_IVL
+      case ZMQ_RECOVERY_IVL:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_REQ_CORRELATE
+      case ZMQ_REQ_CORRELATE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_REQ_RELAXED
+      case ZMQ_REQ_RELAXED:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_ROUTER_HANDOVER
+      case ZMQ_ROUTER_HANDOVER:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_ROUTER_MANDATORY
+      case ZMQ_ROUTER_MANDATORY:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_ROUTER_RAW
+      case ZMQ_ROUTER_RAW:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_SNDBUF
+      case ZMQ_SNDBUF:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_SNDHWM
+      case ZMQ_SNDHWM:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_SNDTIMEO
+      case ZMQ_SNDTIMEO:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_SOCKS_PROXY
+      case ZMQ_SOCKS_PROXY:
+        return setsockopt_option_character_string;
+#endif
+#ifdef ZMQ_STREAM_NOTIFY
+      case ZMQ_STREAM_NOTIFY:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_SUBSCRIBE
+      case ZMQ_SUBSCRIBE:
+        return setsockopt_option_binary_data;
+#endif
+#ifdef ZMQ_TCP_KEEPALIVE
+      case ZMQ_TCP_KEEPALIVE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_TCP_KEEPALIVE_CNT
+      case ZMQ_TCP_KEEPALIVE_CNT:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_TCP_KEEPALIVE_IDLE
+      case ZMQ_TCP_KEEPALIVE_IDLE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_TCP_KEEPALIVE_INTVL
+      case ZMQ_TCP_KEEPALIVE_INTVL:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_TCP_MAXRT
+      case ZMQ_TCP_MAXRT:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_TOS
+      case ZMQ_TOS:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_UNSUBSCRIBE
+      case ZMQ_UNSUBSCRIBE:
+        return setsockopt_option_binary_data;
+#endif
+#ifdef ZMQ_XPUB_VERBOSE
+      case ZMQ_XPUB_VERBOSE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_XPUB_VERBOSER
+      case ZMQ_XPUB_VERBOSER:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_XPUB_MANUAL
+      case ZMQ_XPUB_MANUAL:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_XPUB_NODROP
+      case ZMQ_XPUB_NODROP:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_XPUB_WELCOME_MSG
+      case ZMQ_XPUB_WELCOME_MSG:
+        return setsockopt_option_binary_data;
+#endif
+#ifdef ZMQ_ZAP_DOMAIN
+      case ZMQ_ZAP_DOMAIN:
+        return setsockopt_option_character_string;
+#endif
+#ifdef ZMQ_TCP_ACCEPT_FILTER
+      case ZMQ_TCP_ACCEPT_FILTER:
+        return setsockopt_option_binary_data;
+#endif
+#ifdef ZMQ_IPC_FILTER_GID
+      case ZMQ_IPC_FILTER_GID:
+        return setsockopt_option_gid_t;
+#endif
+#ifdef ZMQ_IPC_FILTER_PID
+      case ZMQ_IPC_FILTER_PID:
+        return setsockopt_option_pid_t;
+#endif
+#ifdef ZMQ_IPC_FILTER_UID
+      case ZMQ_IPC_FILTER_UID:
+        return setsockopt_option_uid_t;
+#endif
+#ifdef ZMQ_IPV4ONLY
+      case ZMQ_IPV4ONLY:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_VMCI_BUFFER_SIZE
+      case ZMQ_VMCI_BUFFER_SIZE:
+        return setsockopt_option_uint64_t;
+#endif
+#ifdef ZMQ_VMCI_BUFFER_MIN_SIZE
+      case ZMQ_VMCI_BUFFER_MIN_SIZE:
+        return setsockopt_option_uint64_t;
+#endif
+#ifdef ZMQ_VMCI_BUFFER_MAX_SIZE
+      case ZMQ_VMCI_BUFFER_MAX_SIZE:
+        return setsockopt_option_uint64_t;
+#endif
+#ifdef ZMQ_VMCI_CONNECT_TIMEOUT
+      case ZMQ_VMCI_CONNECT_TIMEOUT:
+        return setsockopt_option_int;
+#endif
+      default:
+        return setsockopt_option_unknown;
+    }
   }
 }
