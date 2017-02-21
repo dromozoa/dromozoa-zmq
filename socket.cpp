@@ -102,6 +102,9 @@ namespace dromozoa {
     luaX_set_metatable(L, "dromozoa.zmq.socket");
   }
 
+  void initialize_socket_getsockopt(lua_State* L);
+  void initialize_socket_setsockopt(lua_State* L);
+
   void initialize_socket(lua_State* L) {
     lua_newtable(L);
     {
@@ -116,6 +119,9 @@ namespace dromozoa {
       luaX_set_field(L, -1, "connect", impl_connect);
       luaX_set_field(L, -1, "recv", impl_recv);
       luaX_set_field(L, -1, "send", impl_send);
+
+      initialize_socket_getsockopt(L);
+      initialize_socket_setsockopt(L);
     }
     luaX_set_field(L, -2, "socket");
   }

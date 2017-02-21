@@ -29,7 +29,9 @@ OBJS = \
 	message_handle.o \
 	module.o \
 	socket.o \
+	socket_getsockopt.o \
 	socket_handle.o \
+	socket_setsockopt.o \
 	symbols.o
 TARGET = zmq.so
 
