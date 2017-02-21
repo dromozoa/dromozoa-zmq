@@ -1,4 +1,4 @@
-# setsockopt.md
+# zmq_setsockopt
 
 Name|Type|Unit|Size|Default|Description
 ----|----|----|----|----|----

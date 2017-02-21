@@ -51,6 +51,28 @@ local function parse_doc(filename)
   return result
 end
 
+local function generate_md(filename, title, data)
+  local out = assert(io.open(filename, "w"))
+  out:write(([[
+# %s
+
+Name|Type|Unit|Size|Default|Description
+----|----|----|----|----|----
+]]):format(title))
+  for name, item in data:each() do
+    local unit = item.option_value_unit
+    if unit == nil then
+      unit = ""
+    end
+    local size = item.option_value_size
+    if size == nil then
+      size = ""
+    end
+    out:write(("%s|%s|%s|%s|%s|%s\n"):format(name, item.option_value_type, unit, size, item.default_value, item.description))
+  end
+  out:close()
+end
+
 local header_file = source_dir .. "/include/zmq.h"
 local getsockopt_file = source_dir .. "/doc/zmq_getsockopt.txt"
 local setsockopt_file = source_dir .. "/doc/zmq_setsockopt.txt"
@@ -90,44 +112,5 @@ out:close()
 local getsockopts = parse_doc(getsockopt_file)
 local setsockopts = parse_doc(setsockopt_file)
 
-local out = assert(io.open("doc/getsockopt.md", "w"))
-out:write([[
-# getsockopt.md
-
-Name|Type|Unit|Size|Default|Description
-----|----|----|----|----|----
-]])
-for name, item in getsockopts:each() do
-  local unit = item.option_value_unit
-  if unit == nil then
-    unit = ""
-  end
-  local size = item.option_value_size
-  if size == nil then
-    size = ""
-  end
-  out:write(("%s|%s|%s|%s|%s|%s\n"):format(name, item.option_value_type, unit, size, item.default_value, item.description))
-end
-out:close()
-
-local out = assert(io.open("doc/setsockopt.md", "w"))
-out:write([[
-# setsockopt.md
-
-Name|Type|Unit|Size|Default|Description
-----|----|----|----|----|----
-]])
-for name, item in setsockopts:each() do
-  local unit = item.option_value_unit
-  if unit == nil then
-    unit = ""
-  end
-  local size = item.option_value_size
-  if size == nil then
-    size = ""
-  end
-  out:write(("%s|%s|%s|%s|%s|%s\n"):format(name, item.option_value_type, unit, size, item.default_value, item.description))
-end
-out:close()
-
-
+generate_md("doc/getsockopt.md", "zmq_getsockopt", getsockopts)
+generate_md("doc/setsockopt.md", "zmq_setsockopt", setsockopts)
