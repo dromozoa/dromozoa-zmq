@@ -16,10 +16,44 @@
 -- along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
 local basename = require "dromozoa.commons.basename"
+local linked_hash_table = require "dromozoa.commons.linked_hash_table"
+local string_matcher = require "dromozoa.commons.string_matcher"
 
 local source_dir = ...
 
+local function parse_doc(filename)
+  local result = linked_hash_table()
+  local name
+  local item
+  local prev
+  for line in io.lines(filename) do
+    if line:match("^~+$") then
+      item = {}
+      name, item.description = assert(prev:match("^(ZMQ_[%w_]+):%s+(.*)"))
+    else
+      local matcher = string_matcher(line)
+      if matcher:match("Option value type:: (.*)") then
+        item.option_value_type = matcher[1]
+      elseif matcher:match("Option value unit:: (.*)") then
+        item.option_value_unit = matcher[1]
+      elseif matcher:match("Option value size:: (.*)") then
+        item.option_value_size = matcher[1]
+      elseif matcher:match("Default value:: (.*)") then
+        item.default_value = matcher[1]
+        assert(name)
+        assert(item.option_value_type)
+        assert(item.option_value_unit or item.option_value_size)
+        result[name] = item
+      end
+    end
+    prev = line
+  end
+  return result
+end
+
 local header_file = source_dir .. "/include/zmq.h"
+local getsockopt_file = source_dir .. "/doc/zmq_getsockopt.txt"
+local setsockopt_file = source_dir .. "/doc/zmq_setsockopt.txt"
 
 local out = assert(io.open("symbols.cpp", "w"))
 
@@ -52,3 +86,48 @@ out:write([[
 ]])
 
 out:close()
+
+local getsockopts = parse_doc(getsockopt_file)
+local setsockopts = parse_doc(setsockopt_file)
+
+local out = assert(io.open("doc/getsockopt.md", "w"))
+out:write([[
+# getsockopt.md
+
+Name|Type|Unit|Size|Default|Description
+----|----|----|----|----|----
+]])
+for name, item in getsockopts:each() do
+  local unit = item.option_value_unit
+  if unit == nil then
+    unit = ""
+  end
+  local size = item.option_value_size
+  if size == nil then
+    size = ""
+  end
+  out:write(("%s|%s|%s|%s|%s|%s\n"):format(name, item.option_value_type, unit, size, item.default_value, item.description))
+end
+out:close()
+
+local out = assert(io.open("doc/setsockopt.md", "w"))
+out:write([[
+# setsockopt.md
+
+Name|Type|Unit|Size|Default|Description
+----|----|----|----|----|----
+]])
+for name, item in setsockopts:each() do
+  local unit = item.option_value_unit
+  if unit == nil then
+    unit = ""
+  end
+  local size = item.option_value_size
+  if size == nil then
+    size = ""
+  end
+  out:write(("%s|%s|%s|%s|%s|%s\n"):format(name, item.option_value_type, unit, size, item.default_value, item.description))
+end
+out:close()
+
+
