@@ -114,3 +114,22 @@ local setsockopts = parse_doc(setsockopt_file)
 
 generate_md("doc/getsockopt.md", "zmq_getsockopt", getsockopts)
 generate_md("doc/setsockopt.md", "zmq_setsockopt", setsockopts)
+
+local out = assert(io.open("symbols.hpp", "w"))
+
+out:write(([[
+// generated from %s
+
+#ifndef DROMOZOA_SYMBOLS_HPP
+#define DROMOZOA_SYMBOLS_HPP
+
+#include "common.hpp"
+
+namespace dromozoa {
+  void initialize_symbols(lua_State* L);
+}
+
+#endif
+]]):format(basename(source_dir)))
+
+out:close()
