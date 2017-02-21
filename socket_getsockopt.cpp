@@ -16,11 +16,36 @@
 // along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <errno.h>
+
 #include "common.hpp"
+#include "symbols.hpp"
 
 namespace dromozoa {
   namespace {
+    template <class T>
+    inline int getsockopt_integer(lua_State* L, int name) {
+      T value = 0;
+      size_t size = sizeof(value);
+      int result = zmq_getsockopt(check_socket(L, 1), name, &value, &size);
+      if (result != -1) {
+        luaX_push(L, value);
+      }
+      return result;
+    }
+
     void impl_getsockopt(lua_State* L) {
+      int name = luaX_check_integer<int>(L, 2);
+      int result = -1;
+      switch (getsockopt_option(name)) {
+        case getsockopt_option_int:
+          result = getsockopt_integer<int>(L, name);
+          break;
+        default:
+          errno = EINVAL;
+      }
+      if (result == -1) {
+        push_error(L);
+      }
     }
   }
 

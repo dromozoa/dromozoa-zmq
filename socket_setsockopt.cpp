@@ -16,7 +16,9 @@
 // along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <errno.h>
+
 #include "common.hpp"
+#include "symbols.hpp"
 
 namespace dromozoa {
   namespace {
@@ -29,31 +31,9 @@ namespace dromozoa {
     void impl_setsockopt(lua_State* L) {
       int name = luaX_check_integer<int>(L, 2);
       int result = -1;
-      switch (name) {
-        case ZMQ_BACKLOG:
-        case ZMQ_CONFLATE:
-        case ZMQ_CONNECT_TIMEOUT:
-        case ZMQ_CURVE_SERVER:
-        case ZMQ_GSSAPI_PLAINTEXT:
-        case ZMQ_GSSAPI_SERVER:
-        case ZMQ_HANDSHAKE_IVL:
-        case ZMQ_HEARTBEAT_IVL:
-        case ZMQ_HEARTBEAT_TIMEOUT:
-        case ZMQ_HEARTBEAT_TTL:
-        case ZMQ_IMMEDIATE:
-        case ZMQ_INVERT_MATCHING:
-        case ZMQ_IPV6:
-        case ZMQ_LINGER:
-        case ZMQ_MULTICAST_HOPS:
-        case ZMQ_MULTICAST_MAXTPDU:
-        case ZMQ_PLAIN_SERVER:
-        case ZMQ_USE_FD:
-        case ZMQ_PROBE_ROUTER:
-        case ZMQ_RATE:
+      switch (setsockopt_option(name)) {
+        case setsockopt_option_int:
           result = setsockopt_integer<int>(L, name);
-          break;
-        case ZMQ_MAXMSGSIZE:
-          result = setsockopt_integer<int64_t>(L, name);
           break;
         default:
           errno = EINVAL;

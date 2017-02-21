@@ -26,6 +26,11 @@ assert(ctx:get(zmq.ZMQ_MAX_SOCKETS) == 256)
 
 local socket = assert(ctx:socket(zmq.ZMQ_REP))
 assert(socket:bind("tcp://*:5555"))
+
+assert(socket:getsockopt(zmq.ZMQ_BACKLOG) == 100)
+assert(socket:setsockopt(zmq.ZMQ_BACKLOG, 200))
+assert(socket:getsockopt(zmq.ZMQ_BACKLOG) == 200)
+
 -- assert(socket:connect("tcp://localhost:5555"))
 
 local buffer = assert(socket:recv(10))
