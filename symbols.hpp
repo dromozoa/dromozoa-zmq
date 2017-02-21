@@ -8,7 +8,6 @@
 namespace dromozoa {
   enum getsockopt_option_enum {
     getsockopt_option_unknown,
-    getsockopt_option_NULL_terminated_character_string,
     getsockopt_option_binary_data,
     getsockopt_option_binary_data_or_Z85_text_string,
     getsockopt_option_character_string,

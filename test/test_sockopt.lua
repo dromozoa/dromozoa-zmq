@@ -18,28 +18,23 @@
 local zmq = require "dromozoa.zmq"
 
 local ctx = assert(zmq.context())
-
-assert(ctx:get(zmq.ZMQ_IO_THREADS) == 1)
-print(ctx:get(zmq.ZMQ_MAX_SOCKETS))
-assert(ctx:set(zmq.ZMQ_MAX_SOCKETS, 256))
-assert(ctx:get(zmq.ZMQ_MAX_SOCKETS) == 256)
-
 local socket = assert(ctx:socket(zmq.ZMQ_REP))
-assert(socket:bind("tcp://*:5555"))
+assert(socket:bind("tcp://*:5556"))
 
-assert(socket:getsockopt(zmq.ZMQ_BACKLOG) == 100)
-assert(socket:setsockopt(zmq.ZMQ_BACKLOG, 200))
-assert(socket:getsockopt(zmq.ZMQ_BACKLOG) == 200)
+assert(socket:getsockopt(zmq.ZMQ_PLAIN_USERNAME, 16) == "")
+assert(socket:getsockopt(zmq.ZMQ_PLAIN_PASSWORD, 16) == "")
+assert(socket:getsockopt(zmq.ZMQ_MECHANISM) == zmq.ZMQ_NULL)
 
-assert(socket:getsockopt(zmq.ZMQ_AFFINITY))
-assert(socket:getsockopt(zmq.ZMQ_MAXMSGSIZE))
+assert(socket:setsockopt(zmq.ZMQ_PLAIN_USERNAME, "username"))
+assert(socket:setsockopt(zmq.ZMQ_PLAIN_PASSWORD, "password"))
 
--- assert(socket:connect("tcp://localhost:5555"))
+assert(socket:getsockopt(zmq.ZMQ_PLAIN_USERNAME, 16) == "username")
+assert(socket:getsockopt(zmq.ZMQ_PLAIN_PASSWORD, 16) == "password")
+assert(socket:getsockopt(zmq.ZMQ_MECHANISM) == zmq.ZMQ_PLAIN)
 
-local buffer = assert(socket:recv(10))
-assert(buffer == "hello")
-assert(socket:send("world"))
+local z85_secret_key, z85_public_key = assert(zmq.curve_keypair())
+assert(socket:setsockopt(zmq.ZMQ_CURVE_PUBLICKEY, z85_public_key))
+assert(socket:getsockopt(zmq.ZMQ_CURVE_PUBLICKEY, 41) == z85_public_key)
 
 assert(socket:close())
-
 assert(ctx:term())

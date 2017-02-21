@@ -48,6 +48,8 @@ local function parse_doc(filename)
         local enum = item.option_value_type
         if enum == "int on POSIX systems, SOCKET on Windows" then
           enum = "int"
+        elseif enum == "NULL-terminated character string" then
+          enum = "character string"
         end
         enum = enum:gsub("%W", "_")
         enums[enum] = true

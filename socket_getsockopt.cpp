@@ -16,6 +16,9 @@
 // along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <errno.h>
+#include <stdint.h>
+
+#include <vector>
 
 #include "common.hpp"
 #include "symbols.hpp"
@@ -33,12 +36,52 @@ namespace dromozoa {
       return result;
     }
 
+    int getsockopt_string(lua_State* L, int name) {
+      size_t size = luaX_check_integer<size_t>(L, 3);
+      std::vector<char> value(size);
+      int result = zmq_getsockopt(check_socket(L, 1), name, &value[0], &size);
+      if (result != -1) {
+        lua_pushlstring(L, &value[0], size - 1);
+      }
+      return result;
+    }
+
+    int getsockopt_curve(lua_State* L, int name) {
+      size_t size = luaX_check_integer<size_t>(L, 3);
+      if (size == 32 || size == 41) {
+        std::vector<char> value(size);
+        int result = zmq_getsockopt(check_socket(L, 1), name, &value[0], &size);
+        if (result != -1) {
+          if (size == 41) {
+            size = 40;
+          }
+          lua_pushlstring(L, &value[0], size);
+        }
+        return result;
+      } else {
+        errno = EINVAL;
+        return -1;
+      }
+    }
+
     void impl_getsockopt(lua_State* L) {
       int name = luaX_check_integer<int>(L, 2);
       int result = -1;
       switch (getsockopt_option(name)) {
         case getsockopt_option_int:
           result = getsockopt_integer<int>(L, name);
+          break;
+        case getsockopt_option_int64_t:
+          result = getsockopt_integer<int64_t>(L, name);
+          break;
+        case getsockopt_option_uint64_t:
+          result = getsockopt_integer<uint64_t>(L, name);
+          break;
+        case getsockopt_option_character_string:
+          result = getsockopt_string(L, name);
+          break;
+        case setsockopt_option_binary_data_or_Z85_text_string:
+          result = getsockopt_curve(L, name);
           break;
         default:
           errno = EINVAL;

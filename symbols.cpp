@@ -506,7 +506,7 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_GSSAPI_PRINCIPAL
       case ZMQ_GSSAPI_PRINCIPAL:
-        return getsockopt_option_NULL_terminated_character_string;
+        return getsockopt_option_character_string;
 #endif
 #ifdef ZMQ_GSSAPI_SERVER
       case ZMQ_GSSAPI_SERVER:
@@ -514,7 +514,7 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_GSSAPI_SERVICE_PRINCIPAL
       case ZMQ_GSSAPI_SERVICE_PRINCIPAL:
-        return getsockopt_option_NULL_terminated_character_string;
+        return getsockopt_option_character_string;
 #endif
 #ifdef ZMQ_HANDSHAKE_IVL
       case ZMQ_HANDSHAKE_IVL:
@@ -542,7 +542,7 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_LAST_ENDPOINT
       case ZMQ_LAST_ENDPOINT:
-        return getsockopt_option_NULL_terminated_character_string;
+        return getsockopt_option_character_string;
 #endif
 #ifdef ZMQ_LINGER
       case ZMQ_LINGER:
@@ -566,7 +566,7 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_PLAIN_PASSWORD
       case ZMQ_PLAIN_PASSWORD:
-        return getsockopt_option_NULL_terminated_character_string;
+        return getsockopt_option_character_string;
 #endif
 #ifdef ZMQ_PLAIN_SERVER
       case ZMQ_PLAIN_SERVER:
@@ -574,7 +574,7 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_PLAIN_USERNAME
       case ZMQ_PLAIN_USERNAME:
-        return getsockopt_option_NULL_terminated_character_string;
+        return getsockopt_option_character_string;
 #endif
 #ifdef ZMQ_USE_FD
       case ZMQ_USE_FD:
@@ -626,7 +626,7 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_SOCKS_PROXY
       case ZMQ_SOCKS_PROXY:
-        return getsockopt_option_NULL_terminated_character_string;
+        return getsockopt_option_character_string;
 #endif
 #ifdef ZMQ_TCP_KEEPALIVE
       case ZMQ_TCP_KEEPALIVE:
