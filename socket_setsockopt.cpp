@@ -31,22 +31,26 @@ namespace dromozoa {
 
     int setsockopt_string(lua_State* L, int name) {
       size_t size = 0;
-      const char* value = luaL_checklstring(L, 3, &size);
-      return zmq_setsockopt(check_socket(L, 1), name, value, size);
+      if (lua_isnoneornil(L, 3)) {
+        return zmq_setsockopt(check_socket(L, 1), name, 0, 0);
+      } else {
+        const char* value = luaL_checklstring(L, 3, &size);
+        return zmq_setsockopt(check_socket(L, 1), name, value, size);
+      }
     }
 
     int setsockopt_curve(lua_State* L, int name) {
       size_t size = 0;
       const char* value = luaL_checklstring(L, 3, &size);
-      switch (size) {
-        case 40:
-          size = 41;
-        case 32:
-          return zmq_setsockopt(check_socket(L, 1), name, value, size);
-        default:
-          errno = EINVAL;
-          return -1;
+      int result = -1;
+      if (size == 32) {
+        result = zmq_setsockopt(check_socket(L, 1), name, value, 32);
+      } else if (size == 40) {
+        result = zmq_setsockopt(check_socket(L, 1), name, value, 41);
+      } else {
+        errno = EINVAL;
       }
+      return result;
     }
 
     void impl_setsockopt(lua_State* L) {

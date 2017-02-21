@@ -37,31 +37,34 @@ namespace dromozoa {
     }
 
     int getsockopt_string(lua_State* L, int name) {
-      size_t size = luaX_check_integer<size_t>(L, 3);
+      size_t size = luaX_opt_integer<size_t>(L, 3, 256);
       std::vector<char> value(size);
       int result = zmq_getsockopt(check_socket(L, 1), name, &value[0], &size);
       if (result != -1) {
-        lua_pushlstring(L, &value[0], size - 1);
+        luaX_push(L, &value[0]);
       }
       return result;
     }
 
     int getsockopt_curve(lua_State* L, int name) {
-      size_t size = luaX_check_integer<size_t>(L, 3);
-      if (size == 32 || size == 41) {
-        std::vector<char> value(size);
-        int result = zmq_getsockopt(check_socket(L, 1), name, &value[0], &size);
+      size_t size = luaX_opt_integer<size_t>(L, 3, 41);
+      int result = -1;
+      if (size == 32) {
+        char value[32] = { 0 };
+        result = zmq_getsockopt(check_socket(L, 1), name, value, &size);
         if (result != -1) {
-          if (size == 41) {
-            size = 40;
-          }
-          lua_pushlstring(L, &value[0], size);
+          lua_pushlstring(L, value, 32);
         }
-        return result;
+      } else if (size == 41) {
+        char value[41] = { 0 };
+        result = zmq_getsockopt(check_socket(L, 1), name, value, &size);
+        if (result != -1) {
+          lua_pushlstring(L, value, 40);
+        }
       } else {
         errno = EINVAL;
-        return -1;
       }
+      return result;
     }
 
     void impl_getsockopt(lua_State* L) {
