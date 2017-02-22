@@ -30,9 +30,9 @@ luaexec_LTLIBRARIES = zmq.la
 
 noinst_HEADERS = common.hpp
 
-unix_la_CPPFLAGS = -I$(top_srcdir)/bind -I$(top_srcdir)/include
-unix_la_LDFLAGS = -module -avoid-version -shared
-unix_la_SOURCES = \
+zmq_la_CPPFLAGS = -I$(top_srcdir)/bind -I$(top_srcdir)/include
+zmq_la_LDFLAGS = -module -avoid-version -shared
+zmq_la_SOURCES = \
 	context.cpp \
 	context_handle.cpp \
 	error.cpp \
