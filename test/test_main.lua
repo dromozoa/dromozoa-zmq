@@ -18,7 +18,11 @@
 local ipairs = require "dromozoa.commons.ipairs"
 local zmq = require "dromozoa.zmq"
 
-local capabilities = { "ipc", "pgm", "tipc", "norm", "curve", "gssapi", "draft" }
-for _, capability in ipairs(capabilities) do
-  print(capability, zmq.has(capability))
+if zmq.has then
+  local capabilities = { "ipc", "pgm", "tipc", "norm", "curve", "gssapi", "draft" }
+  for _, capability in ipairs(capabilities) do
+    print(capability, zmq.has(capability))
+  end
 end
+
+print(zmq.version())

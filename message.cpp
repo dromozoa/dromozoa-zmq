@@ -88,6 +88,7 @@ namespace dromozoa {
       }
     }
 
+#ifdef HAVE_ZMQ_MSG_GETS
     void impl_gets(lua_State* L) {
       const char* property = luaL_checkstring(L, 2);
       if (const char* result = zmq_msg_gets(check_message(L, 1), property)) {
@@ -96,6 +97,7 @@ namespace dromozoa {
         push_error(L);
       }
     }
+#endif
 
     void impl_more(lua_State* L) {
       luaX_push(L, zmq_msg_more(check_message(L, 1)));
@@ -135,7 +137,9 @@ namespace dromozoa {
       luaX_set_field(L, -1, "recv", impl_recv);
       luaX_set_field(L, -1, "send", impl_send);
       luaX_set_field(L, -1, "get", impl_get);
+#ifdef HAVE_ZMQ_MSG_GETS
       luaX_set_field(L, -1, "gets", impl_gets);
+#endif
       luaX_set_field(L, -1, "more", impl_more);
       luaX_set_field(L, -1, "set", impl_set);
     }

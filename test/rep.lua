@@ -25,7 +25,7 @@ assert(ctx:set(zmq.ZMQ_MAX_SOCKETS, 256))
 assert(ctx:get(zmq.ZMQ_MAX_SOCKETS) == 256)
 
 local socket = assert(ctx:socket(zmq.ZMQ_REP))
-assert(socket:bind("tcp://*:5555"))
+assert(socket:bind("tcp://127.0.0.1:5555"))
 
 assert(socket:getsockopt(zmq.ZMQ_BACKLOG) == 100)
 assert(socket:setsockopt(zmq.ZMQ_BACKLOG, 200))
@@ -34,11 +34,13 @@ assert(socket:getsockopt(zmq.ZMQ_BACKLOG) == 200)
 assert(socket:getsockopt(zmq.ZMQ_AFFINITY))
 assert(socket:getsockopt(zmq.ZMQ_MAXMSGSIZE))
 
--- assert(socket:connect("tcp://localhost:5555"))
-
 local buffer = assert(socket:recv(10))
 assert(buffer == "hello")
 assert(socket:send("world"))
+
+local endpoint = assert(socket:getsockopt(zmq.ZMQ_LAST_ENDPOINT))
+print(endpoint)
+assert(socket:unbind(endpoint))
 
 assert(socket:close())
 
