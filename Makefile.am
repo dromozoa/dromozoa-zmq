@@ -36,7 +36,6 @@ zmq_la_LDFLAGS = -module -avoid-version -shared
 zmq_la_SOURCES = \
 	context.cpp \
 	context_handle.cpp \
-	curve.cpp \
 	error.cpp \
 	main.cpp \
 	message.cpp \

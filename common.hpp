@@ -76,8 +76,6 @@ namespace dromozoa {
   message_handle* check_message_handle(lua_State* L, int arg);
   zmq_msg_t* check_message(lua_State* L, int arg);
 
-  size_t curve_key_size_z85();
-
   void push_error(lua_State* L);
 }
 
