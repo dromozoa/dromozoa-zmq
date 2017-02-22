@@ -80,6 +80,18 @@ namespace dromozoa {
       }
     }
 
+    void impl_proxy(lua_State* L) {
+      void* frontend = check_socket(L, 1);
+      void* backend = check_socket(L, 2);
+      void* capture = to_socket(L, 3);
+      void* control = to_socket(L, 4);
+      if (zmq_proxy_steerable(frontend, backend, capture, control) == -1) {
+        push_error(L);
+      } else {
+        luaX_push_success(L);
+      }
+    }
+
     void impl_curve_keypair(lua_State* L) {
       std::vector<char> z85_public_key(41);
       std::vector<char> z85_secret_key(41);
@@ -145,6 +157,7 @@ namespace dromozoa {
     luaX_set_field(L, -1, "has", impl_has);
     luaX_set_field(L, -1, "version", impl_version);
     luaX_set_field(L, -1, "poll", impl_poll);
+    luaX_set_field(L, -1, "proxy", impl_proxy);
     luaX_set_field(L, -1, "curve_keypair", impl_curve_keypair);
     luaX_set_field(L, -1, "curve_public", impl_curve_public);
     luaX_set_field(L, -1, "z85_decode", impl_z85_decode);
