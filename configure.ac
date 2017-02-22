@@ -27,6 +27,10 @@ AC_CONFIG_FILES([Makefile])
 AC_PROG_CXX
 
 AX_ZMQ([4.0.0], [], [AC_MSG_ERROR([could not find zmq])])
+CPPFLAGS="$CPPFLAGS $ZMQ_CPPFLAGS"
+LDFLAGS="$LDFLAGS $ZMQ_LDFLAGS"
+LIBS="$LIBS $ZMQ_LIBS"
+
 AX_PROG_LUA([5.1], [], [], [AC_MSG_ERROR([could not find lua])])
 AX_LUA_HEADERS([], [AC_MSG_ERROR([could not find lua])])
 AX_LUA_LIBS([], [AC_MSG_ERROR([could not find lua])])
