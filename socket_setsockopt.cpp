@@ -46,7 +46,7 @@ namespace dromozoa {
       if (size == 32) {
         result = zmq_setsockopt(check_socket(L, 1), name, value, 32);
       } else if (size == 40) {
-        result = zmq_setsockopt(check_socket(L, 1), name, value, 41);
+        result = zmq_setsockopt(check_socket(L, 1), name, value, curve_key_size_z85());
       } else {
         errno = EINVAL;
       }
