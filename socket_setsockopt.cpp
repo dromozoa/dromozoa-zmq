@@ -23,6 +23,20 @@
 
 namespace dromozoa {
   namespace {
+    size_t initialize_curve_key_size_z85() {
+      int major = 0;
+      int minor = 0;
+      int patch = 0;
+      zmq_version(&major, &minor, &patch);
+      if (major < 4 || (major == 4 && minor < 1)) {
+        return 40;
+      } else {
+        return 41;
+      }
+    }
+
+    static const size_t curve_key_size_z85 = initialize_curve_key_size_z85();
+
     template <class T>
     inline int setsockopt_integer(lua_State* L, int name) {
       int value = luaX_check_integer<int>(L, 3);
@@ -46,7 +60,7 @@ namespace dromozoa {
       if (size == 32) {
         result = zmq_setsockopt(check_socket(L, 1), name, value, 32);
       } else if (size == 40) {
-        result = zmq_setsockopt(check_socket(L, 1), name, value, 41);
+        result = zmq_setsockopt(check_socket(L, 1), name, value, curve_key_size_z85);
       } else {
         errno = EINVAL;
       }

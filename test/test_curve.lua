@@ -25,13 +25,18 @@ local bin_public_key = string.char(
 local z85_public_key = "Yne@$w-vo<fVvi]a<NY6T1ed:M$fCG*[IaLV{hID"
 local z85_secret_key = "D:)Q[IlAW!ahhC2ac:9*A}h:p?([4%wOTJ%JR%cs"
 
-assert(zmq.curve_public(z85_secret_key) == z85_public_key)
+if zmq.curve_public then
+  assert(zmq.curve_public(z85_secret_key) == z85_public_key)
+end
 assert(zmq.z85_encode(bin_public_key) == z85_public_key)
 assert(zmq.z85_decode(z85_public_key) == bin_public_key)
 
 local p1, s1 = zmq.curve_keypair()
 print(p1)
 print(s1)
-local p2, s2 = zmq.curve_public(s1)
-assert(p1 == p2)
-assert(s1 == s2)
+
+if zmq.curve_public then
+  local p2, s2 = zmq.curve_public(s1)
+  assert(p1 == p2)
+  assert(s1 == s2)
+end
