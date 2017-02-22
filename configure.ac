@@ -15,37 +15,24 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-CPPFLAGS += -Ibind -I$(LUA_INCDIR)
-CXXFLAGS += -Wall -W $(CFLAGS)
-LDFLAGS += -L$(LUA_LIBDIR) $(LIBFLAG)
-LDLIBS += -lzmq -ldl
+m4_include([version.m4])
+AC_INIT([dromozoa-zmq], DROMOZOA_ZMQ_VERSION, [moyu@dromozoa.com], [], [https://github.com/dromozoa/dromozoa-zmq/])
+AM_INIT_AUTOMAKE
+LT_INIT
 
-OBJS = \
-	context.o \
-	context_handle.o \
-	error.o \
-	main.o \
-	message.o \
-	message_handle.o \
-	module.o \
-	socket.o \
-	socket_getsockopt.o \
-	socket_handle.o \
-	socket_setsockopt.o \
-	symbols.o
-TARGET = zmq.so
+AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_HEADER([config.h])
+AC_CONFIG_FILES([Makefile])
 
-all: $(TARGET)
+AC_PROG_CXX
 
-clean:
-	rm -f *.o $(TARGET)
+AX_ZMQ([4.0.0], [], [AC_MSG_ERROR([could not find zmq])])
+CPPFLAGS="$CPPFLAGS $ZMQ_CPPFLAGS"
+LDFLAGS="$LDFLAGS $ZMQ_LDFLAGS"
+LIBS="$LIBS $ZMQ_LIBS"
 
-zmq.so: $(OBJS)
-	$(CXX) $(LDFLAGS) $^ $(LDLIBS) -o $@
+AX_PROG_LUA([5.1], [], [], [AC_MSG_ERROR([could not find lua])])
+AX_LUA_HEADERS([], [AC_MSG_ERROR([could not find lua])])
+AX_LUA_LIBS([], [AC_MSG_ERROR([could not find lua])])
 
-.cpp.o:
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
-
-install:
-	mkdir -p $(LIBDIR)/dromozoa
-	cp $(TARGET) $(LIBDIR)/dromozoa
+AC_OUTPUT
