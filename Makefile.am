@@ -21,6 +21,7 @@ EXTRA_DIST = \
 	.gitignore \
 	README.md \
 	bind \
+	doc \
 	dromozoa-zmq-*.rockspec \
 	m4/update \
 	test \
