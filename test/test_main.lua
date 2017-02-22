@@ -22,3 +22,5 @@ local capabilities = { "ipc", "pgm", "tipc", "norm", "curve", "gssapi", "draft" 
 for _, capability in ipairs(capabilities) do
   print(capability, zmq.has(capability))
 end
+
+print(zmq.version())

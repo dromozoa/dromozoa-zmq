@@ -19,7 +19,6 @@ local zmq = require "dromozoa.zmq"
 
 local ctx = assert(zmq.context())
 local socket = assert(ctx:socket(zmq.ZMQ_REQ))
--- assert(socket:bind("tcp://*:5555"))
 assert(socket:connect("tcp://localhost:5555"))
 
 local msg = assert(zmq.message("hello"))
@@ -34,6 +33,7 @@ assert(msg:get(zmq.ZMQ_MORE) == 0)
 assert(msg:gets("Socket-Type") == "REP")
 assert(msg:more() == 0)
 
+assert(socket:disconnect("tcp://localhost:5555"))
 assert(socket:close())
 
 assert(ctx:term())

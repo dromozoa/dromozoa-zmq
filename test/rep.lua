@@ -34,11 +34,13 @@ assert(socket:getsockopt(zmq.ZMQ_BACKLOG) == 200)
 assert(socket:getsockopt(zmq.ZMQ_AFFINITY))
 assert(socket:getsockopt(zmq.ZMQ_MAXMSGSIZE))
 
--- assert(socket:connect("tcp://localhost:5555"))
-
 local buffer = assert(socket:recv(10))
 assert(buffer == "hello")
 assert(socket:send("world"))
+
+local endpoint = assert(socket:getsockopt(zmq.ZMQ_LAST_ENDPOINT))
+print(endpoint)
+assert(socket:unbind(endpoint))
 
 assert(socket:close())
 

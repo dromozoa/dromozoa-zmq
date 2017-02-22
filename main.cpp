@@ -29,6 +29,16 @@ namespace dromozoa {
       luaX_push(L, zmq_has(capability));
     }
 
+    void impl_version(lua_State* L) {
+      int major = 0;
+      int minor = 0;
+      int patch = 0;
+      zmq_version(&major, &minor, &patch);
+      luaX_push(L, major);
+      luaX_push(L, minor);
+      luaX_push(L, patch);
+    }
+
     void impl_poll(lua_State* L) {
       luaL_checkany(L, 1);
       long timeout = luaX_opt_integer<long>(L, 2, -1);
@@ -67,6 +77,18 @@ namespace dromozoa {
         }
         luaX_push(L, result);
         lua_pushvalue(L, 1);
+      }
+    }
+
+    void impl_proxy(lua_State* L) {
+      void* frontend = check_socket(L, 1);
+      void* backend = check_socket(L, 2);
+      void* capture = to_socket(L, 3);
+      void* control = to_socket(L, 4);
+      if (zmq_proxy_steerable(frontend, backend, capture, control) == -1) {
+        push_error(L);
+      } else {
+        luaX_push_success(L);
       }
     }
 
@@ -133,7 +155,9 @@ namespace dromozoa {
 
   void initialize_main(lua_State* L) {
     luaX_set_field(L, -1, "has", impl_has);
+    luaX_set_field(L, -1, "version", impl_version);
     luaX_set_field(L, -1, "poll", impl_poll);
+    luaX_set_field(L, -1, "proxy", impl_proxy);
     luaX_set_field(L, -1, "curve_keypair", impl_curve_keypair);
     luaX_set_field(L, -1, "curve_public", impl_curve_public);
     luaX_set_field(L, -1, "z85_decode", impl_z85_decode);
