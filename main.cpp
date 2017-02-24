@@ -52,7 +52,7 @@ namespace dromozoa {
 #endif
 
     void impl_poll(lua_State* L) {
-      luaL_checkany(L, 1);
+      luaL_checktype(L, 1, LUA_TTABLE);
       long timeout = luaX_opt_integer<long>(L, 2, -1);
 
       std::vector<zmq_pollitem_t> items;
