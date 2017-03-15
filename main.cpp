@@ -51,47 +51,6 @@ namespace dromozoa {
     }
 #endif
 
-    void impl_poll(lua_State* L) {
-      luaL_checktype(L, 1, LUA_TTABLE);
-      long timeout = luaX_opt_integer<long>(L, 2, -1);
-
-      std::vector<zmq_pollitem_t> items;
-      for (int i = 1; ; ++i) {
-        zmq_pollitem_t item = { 0, -1, 0, 0 };
-        if (luaX_get_field(L, 1, i) == LUA_TNIL) {
-          lua_pop(L, 1);
-          break;
-        }
-        luaX_get_field(L, -1, "socket");
-        if (void* socket = to_socket(L, -1)) {
-          item.socket = socket;
-          lua_pop(L, 1);
-        } else {
-          lua_pop(L, 1);
-          item.fd = luaX_check_integer_field<int>(L, -1, "fd");
-        }
-        item.events = luaX_check_integer_field<int>(L, -1, "events");
-        lua_pop(L, 1);
-        items.push_back(item);
-      }
-
-      int result = zmq_poll(&items[0], items.size(), timeout);
-      if (result == -1) {
-        push_error(L);
-      } else {
-        for (int i = 1; ; ++i) {
-          if (luaX_get_field(L, 1, i) == LUA_TNIL) {
-            lua_pop(L, 1);
-            break;
-          }
-          luaX_set_field(L, -1, "revents", items[i - 1].revents);
-          lua_pop(L, 1);
-        }
-        luaX_push(L, result);
-        lua_pushvalue(L, 1);
-      }
-    }
-
     void impl_proxy(lua_State* L) {
       void* frontend = check_socket(L, 1);
       void* backend = check_socket(L, 2);
@@ -174,7 +133,6 @@ namespace dromozoa {
 #ifdef HAVE_ZMQ_HAS
     luaX_set_field(L, -1, "has", impl_has);
 #endif
-    luaX_set_field(L, -1, "poll", impl_poll);
     luaX_set_field(L, -1, "proxy", impl_proxy);
 #ifdef HAVE_ZMQ_CURVE_KEYPAIR
     luaX_set_field(L, -1, "curve_keypair", impl_curve_keypair);
