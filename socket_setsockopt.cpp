@@ -81,6 +81,7 @@ namespace dromozoa {
           result = setsockopt_integer<uint64_t>(L, name);
           break;
         case setsockopt_option_character_string:
+        case setsockopt_option_binary_data:
           result = setsockopt_string(L, name);
           break;
         case setsockopt_option_binary_data_or_Z85_text_string:
