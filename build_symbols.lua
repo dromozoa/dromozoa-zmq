@@ -1,4 +1,4 @@
--- Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -122,7 +122,7 @@ out:write([[
 ]])
 
 local getsockopts, getsockopt_enums = parse_doc(getsockopt_file)
-generate_md("doc/getsockopt.md", "zmq_getsockopt", getsockopts)
+generate_md("docs/getsockopt.md", "zmq_getsockopt", getsockopts)
 
 for name, item in getsockopts:each() do
   out:write(([[
@@ -144,7 +144,7 @@ out:write([[
 ]])
 
 local setsockopts, setsockopt_enums = parse_doc(setsockopt_file)
-generate_md("doc/setsockopt.md", "zmq_setsockopt", setsockopts)
+generate_md("docs/setsockopt.md", "zmq_setsockopt", setsockopts)
 
 for name, item in setsockopts:each() do
   out:write(([[
