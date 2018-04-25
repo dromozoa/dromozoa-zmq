@@ -1,4 +1,4 @@
--- Copyright (C) 2016 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-bind.
 --
@@ -17,22 +17,29 @@
 
 local bind = require "dromozoa.bind"
 
-assert(bind.chain_gc_count() == 0)
+local verbose = os.getenv "VERBOSE" == "1"
 
-do
-  local a = bind.chain_new_a(42)
-  assert(getmetatable(a))
-  assert(a:get() == 42)
+if verbose then
+  print(select("#", ...))
+  for k, v in pairs(arg) do
+    print(k, v)
+  end
 end
-collectgarbage()
-collectgarbage()
-assert(bind.chain_gc_count() == 1)
 
-do
-  local b = bind.chain_new_b(42)
-  assert(getmetatable(b))
-  assert(b:get() == 42)
+local bind_count = bind.handle(bind.count)
+local hook_count = 0
+
+if verbose then
+  print("bind", bind_count, bind_count:get(), hook_count)
 end
+
+bind = nil
 collectgarbage()
 collectgarbage()
-assert(bind.chain_gc_count() == 2)
+
+return function ()
+  hook_count = hook_count + 1
+  if verbose then
+    print("hook", bind_count, bind_count:get(), hook_count)
+  end
+end
