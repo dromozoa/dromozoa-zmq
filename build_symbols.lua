@@ -28,9 +28,9 @@ local function parse_doc(filename)
   local item
   local prev
   for line in io.lines(filename) do
-    if line:match("^~+$") then
+    if line:find "^~+$" then
       item = {}
-      name, item.description = assert(prev:match("^(ZMQ_[%w_]+):%s+(.*)"))
+      name, item.description = assert(prev:match "^(ZMQ_[%w_]+):%s+(.*)")
     else
       local matcher = string_matcher(line)
       if matcher:match("Option value type:: (.*)") then
@@ -99,24 +99,22 @@ namespace dromozoa {
 
 local buffer
 for line in io.lines(header_file) do
-  local name, value = line:match("^%s*#%s*define%s+(ZMQ_[%w_]+)%s+(.*)")
+  local name = line:match "^#define (ZMQ_[%w_]+) "
   if name then
-    if name ~= "ZMQ_EXPORT" then
-      out:write(([[
+    out:write(([[
 #ifdef %s
     luaX_set_field(L, -1, "%s", %s);
 #endif
 ]]):format(name, name, name))
-    end
   end
 end
 
-out:write([[
+out:write [[
   }
 
   getsockopt_option_enum getsockopt_option(int name) {
     switch (name) {
-]])
+]]
 
 local getsockopts, getsockopt_enums = parse_doc(getsockopt_file)
 generate_md("docs/getsockopt.md", "zmq_getsockopt", getsockopts)
