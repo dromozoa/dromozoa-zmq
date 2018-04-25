@@ -1,5 +1,3 @@
-// generated from zeromq-4.2.1
-
 #include "common.hpp"
 #include "symbols.hpp"
 

@@ -1,4 +1,4 @@
-// generated from zeromq-4.2.1
+// generated from %s
 
 #ifndef DROMOZOA_SYMBOLS_HPP
 #define DROMOZOA_SYMBOLS_HPP

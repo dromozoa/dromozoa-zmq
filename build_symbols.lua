@@ -15,7 +15,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-local basename = require "dromozoa.commons.basename"
 local linked_hash_table = require "dromozoa.commons.linked_hash_table"
 local keys = require "dromozoa.commons.keys"
 local string_matcher = require "dromozoa.commons.string_matcher"
@@ -90,15 +89,13 @@ local setsockopt_file = source_dir .. "/doc/zmq_setsockopt.txt"
 
 local out = assert(io.open("symbols.cpp", "w"))
 
-out:write(([[
-// generated from %s
-
+out:write [[
 #include "common.hpp"
 #include "symbols.hpp"
 
 namespace dromozoa {
   void initialize_symbols(lua_State* L) {
-]]):format(basename(source_dir)))
+]]
 
 local buffer
 for line in io.lines(header_file) do
@@ -167,7 +164,7 @@ out:close()
 
 local out = assert(io.open("symbols.hpp", "w"))
 
-out:write(([[
+out:write [[
 // generated from %s
 
 #ifndef DROMOZOA_SYMBOLS_HPP
@@ -178,7 +175,7 @@ out:write(([[
 namespace dromozoa {
   enum getsockopt_option_enum {
     getsockopt_option_unknown,
-]]):format(basename(source_dir)))
+]]
 
 for enum in getsockopt_enums:each() do
   out:write("    getsockopt_option_", enum, ",\n")
