@@ -15,33 +15,30 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-local linked_hash_table = require "dromozoa.commons.linked_hash_table"
-
 local source_dir = ...
 
 local function parse_doc(filename)
-  local result = linked_hash_table()
+  local result = {}
   local enums = {}
-  local name
   local item
   local prev
   local mode
   for line in io.lines(filename) do
     if line:find "^~+$" then
-      item = {}
-      name, item.description = assert(prev:match "^(ZMQ_[%w_]+):%s+(.*)")
+      local name, description = assert(prev:match "^(ZMQ_[%w_]+):%s+(.*)")
+      item = { name = name, description = description }
     elseif line == "[horizontal]" then
       mode = "H"
     elseif mode == "H" then
       if line == "" then
         mode = nil
-        if name == "ZMQ_THREAD_SAFE" then
+        if item.name == "ZMQ_THREAD_SAFE" then
           assert(item.option_value_type == "boolean")
           assert(not item.option_value_unit)
           item.option_value_type = "int"
           item.option_value_unit = "boolean"
         end
-        assert(name)
+        assert(item.name)
         assert(item.option_value_type)
         assert(item.option_value_unit or item.option_value_size)
         local enum = item.option_value_type
@@ -53,7 +50,7 @@ local function parse_doc(filename)
         enum = enum:gsub("%W", "_")
         enums[enum] = true
         item.option_value_enum = enum
-        result[name] = item
+        result[#result + 1] = item
       else
         local k, v = assert(line:match "(.-):: (.*)")
         if k == "Option value type" then
@@ -77,6 +74,7 @@ local function parse_doc(filename)
   return result, enums
 end
 
+--[====[
 local function generate_md(filename, title, data)
   local out = assert(io.open(filename, "w"))
   out:write(([[
@@ -98,6 +96,7 @@ Name|Type|Unit|Size|Default|Description
   end
   out:close()
 end
+]====]
 
 local header_file = source_dir .. "/include/zmq.h"
 local getsockopt_file = source_dir .. "/doc/zmq_getsockopt.txt"
@@ -133,9 +132,11 @@ out:write [[
 ]]
 
 local getsockopts, getsockopt_enums = parse_doc(getsockopt_file)
-generate_md("docs/getsockopt.md", "zmq_getsockopt", getsockopts)
+-- generate_md("docs/getsockopt.md", "zmq_getsockopt", getsockopts)
 
-for name, item in getsockopts:each() do
+for i = 1, #getsockopts do
+  local item = getsockopts[i]
+  local name = item.name
   out:write(([[
 #ifdef %s
       case %s:
@@ -155,9 +156,11 @@ out:write([[
 ]])
 
 local setsockopts, setsockopt_enums = parse_doc(setsockopt_file)
-generate_md("docs/setsockopt.md", "zmq_setsockopt", setsockopts)
+-- generate_md("docs/setsockopt.md", "zmq_setsockopt", setsockopts)
 
-for name, item in setsockopts:each() do
+for i = 1, #setsockopts do
+  local item = setsockopts[i]
+  local name = item.name
   out:write(([[
 #ifdef %s
       case %s:
