@@ -50,6 +50,13 @@
     <td>100</td>
   </tr>
   <tr>
+    <td>ZMQ_BINDTODEVICE</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
     <td>ZMQ_CONNECT_TIMEOUT</td>
     <td>int</td>
     <td>milliseconds</td>
@@ -120,18 +127,25 @@
     <td>null string</td>
   </tr>
   <tr>
+    <td>ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE</td>
+    <td>int</td>
+    <td>0, 1, 2</td>
+    <td></td>
+    <td>0 (ZMQ_GSSAPI_NT_HOSTBASED)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_PRINCIPAL_NAMETYPE</td>
+    <td>int</td>
+    <td>0, 1, 2</td>
+    <td></td>
+    <td>0 (ZMQ_GSSAPI_NT_HOSTBASED)</td>
+  </tr>
+  <tr>
     <td>ZMQ_HANDSHAKE_IVL</td>
     <td>int</td>
     <td>milliseconds</td>
     <td></td>
     <td>30000</td>
-  </tr>
-  <tr>
-    <td>ZMQ_IDENTITY</td>
-    <td>binary data</td>
-    <td>N/A</td>
-    <td></td>
-    <td>NULL</td>
   </tr>
   <tr>
     <td>ZMQ_IMMEDIATE</td>
@@ -288,6 +302,13 @@
     <td>10000</td>
   </tr>
   <tr>
+    <td>ZMQ_ROUTING_ID</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>NULL</td>
+  </tr>
+  <tr>
     <td>ZMQ_SNDBUF</td>
     <td>int</td>
     <td>bytes</td>
@@ -379,6 +400,13 @@
     <td>not set</td>
   </tr>
   <tr>
+    <td>ZMQ_ZAP_ENFORCE_DOMAIN</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
     <td>ZMQ_VMCI_BUFFER_SIZE</td>
     <td>uint64_t</td>
     <td>bytes</td>
@@ -433,7 +461,14 @@
     <td>100</td>
   </tr>
   <tr>
-    <td>ZMQ_CONNECT_RID</td>
+    <td>ZMQ_BINDTODEVICE</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CONNECT_ROUTING_ID</td>
     <td>binary data</td>
     <td>N/A</td>
     <td></td>
@@ -510,6 +545,20 @@
     <td>not set</td>
   </tr>
   <tr>
+    <td>ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE</td>
+    <td>int</td>
+    <td>0, 1, 2</td>
+    <td></td>
+    <td>0 (ZMQ_GSSAPI_NT_HOSTBASED)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_PRINCIPAL_NAMETYPE</td>
+    <td>int</td>
+    <td>0, 1, 2</td>
+    <td></td>
+    <td>0 (ZMQ_GSSAPI_NT_HOSTBASED)</td>
+  </tr>
+  <tr>
     <td>ZMQ_HANDSHAKE_IVL</td>
     <td>int</td>
     <td>milliseconds</td>
@@ -538,13 +587,6 @@
     <td>0</td>
   </tr>
   <tr>
-    <td>ZMQ_IDENTITY</td>
-    <td>binary data</td>
-    <td>N/A</td>
-    <td></td>
-    <td>NULL</td>
-  </tr>
-  <tr>
     <td>ZMQ_IMMEDIATE</td>
     <td>int</td>
     <td>boolean</td>
@@ -570,7 +612,7 @@
     <td>int</td>
     <td>milliseconds</td>
     <td></td>
-    <td>30000 (thirty seconds)</td>
+    <td>-1 (infinite)</td>
   </tr>
   <tr>
     <td>ZMQ_MAXMSGSIZE</td>
@@ -713,6 +755,13 @@
     <td>0</td>
   </tr>
   <tr>
+    <td>ZMQ_ROUTING_ID</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>NULL</td>
+  </tr>
+  <tr>
     <td>ZMQ_SNDBUF</td>
     <td>int</td>
     <td>bytes</td>
@@ -843,7 +892,14 @@
     <td>character string</td>
     <td>N/A</td>
     <td></td>
-    <td>not set</td>
+    <td>empty</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ZAP_ENFORCE_DOMAIN</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
   </tr>
   <tr>
     <td>ZMQ_TCP_ACCEPT_FILTER</td>
