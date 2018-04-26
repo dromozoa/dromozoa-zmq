@@ -47,6 +47,7 @@ ZMQ_TCP_KEEPALIVE_CNT|int|-1,>0||-1 (leave to OS default)|Override TCP_KEEPCNT s
 ZMQ_TCP_KEEPALIVE_IDLE|int|-1,>0||-1 (leave to OS default)|Override TCP_KEEPIDLE (or TCP_KEEPALIVE on some OS)
 ZMQ_TCP_KEEPALIVE_INTVL|int|-1,>0||-1 (leave to OS default)|Override TCP_KEEPINTVL socket option
 ZMQ_TCP_MAXRT|int|milliseconds||0 (leave to OS default)|Retrieve Max TCP Retransmit Timeout
+ZMQ_THREAD_SAFE|int|boolean|||Retrieve socket thread safety
 ZMQ_TOS|int|>0||0|Retrieve the Type-of-Service socket override status
 ZMQ_TYPE|int|N/A||N/A|Retrieve socket type
 ZMQ_ZAP_DOMAIN|character string|N/A||not set|Retrieve RFC 27 authentication domain

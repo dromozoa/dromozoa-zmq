@@ -646,6 +646,10 @@ namespace dromozoa {
       case ZMQ_TCP_MAXRT:
         return getsockopt_option_int;
 #endif
+#ifdef ZMQ_THREAD_SAFE
+      case ZMQ_THREAD_SAFE:
+        return getsockopt_option_int;
+#endif
 #ifdef ZMQ_TOS
       case ZMQ_TOS:
         return getsockopt_option_int;

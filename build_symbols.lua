@@ -27,20 +27,23 @@ local function parse_doc(filename)
   local name
   local item
   local prev
+  local mode
   for line in io.lines(filename) do
     if line:find "^~+$" then
       item = {}
       name, item.description = assert(prev:match "^(ZMQ_[%w_]+):%s+(.*)")
-    else
-      local matcher = string_matcher(line)
-      if matcher:match("Option value type:: (.*)") then
-        item.option_value_type = matcher[1]
-      elseif matcher:match("Option value unit:: (.*)") then
-        item.option_value_unit = matcher[1]
-      elseif matcher:match("Option value size:: (.*)") then
-        item.option_value_size = matcher[1]
-      elseif matcher:match("Default value:: (.*)") then
-        item.default_value = matcher[1]
+    elseif line == "[horizontal]" then
+      mode = "H"
+    elseif mode == "H" then
+      if line == "" then
+        mode = nil
+        if name == "ZMQ_THREAD_SAFE" then
+          assert(item.option_value_type == "boolean")
+          assert(not item.option_value_unit)
+          item.option_value_type = "int"
+          item.option_value_unit = "boolean"
+          item.default_value = ""
+        end
         assert(name)
         assert(item.option_value_type)
         assert(item.option_value_unit or item.option_value_size)
@@ -54,6 +57,21 @@ local function parse_doc(filename)
         enums[enum] = true
         item.option_value_enum = enum
         result[name] = item
+      else
+        local k, v = assert(line:match "(.-):: (.*)")
+        if k == "Option value type" then
+          item.option_value_type = v
+        elseif k == "Option value unit" then
+          item.option_value_unit = v
+        elseif k == "Option value size" then
+          item.option_value_size = v
+        elseif k == "Default value" then
+          item.default_value = v
+        elseif k == "Applicable socket types" then
+          item.applicable_socket_types = v
+        else
+          error "could not parse line"
+        end
       end
     end
     prev = line
