@@ -1,6 +1,6 @@
 #! /bin/sh -e
 
-# Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+# Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-zmq.
 #
@@ -17,12 +17,10 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-case x$1 in
-  x) lua=lua;;
-  *) lua=$1;;
-esac
-
 for i in test/test*.lua
 do
-  "$lua" "$i"
+  case X$# in
+    X0) lua "$i";;
+    *) "$@" "$i";;
+  esac
 done
