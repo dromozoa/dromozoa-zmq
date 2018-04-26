@@ -16,8 +16,6 @@
 -- along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
 local linked_hash_table = require "dromozoa.commons.linked_hash_table"
-local keys = require "dromozoa.commons.keys"
-local string_matcher = require "dromozoa.commons.string_matcher"
 
 local source_dir = ...
 
@@ -76,7 +74,8 @@ local function parse_doc(filename)
     end
     prev = line
   end
-  return result, keys(enums):sort()
+
+  return result, enums
 end
 
 local function generate_md(filename, title, data)
@@ -193,8 +192,13 @@ namespace dromozoa {
     getsockopt_option_unknown,
 ]]
 
-for enum in getsockopt_enums:each() do
-  out:write("    getsockopt_option_", enum, ",\n")
+local enums = {}
+for enum in pairs(getsockopt_enums) do
+  enums[#enums + 1] = enum
+end
+table.sort(enums)
+for i = 1, #enums do
+  out:write("    getsockopt_option_", enums[i], ",\n")
 end
 
 out:write([[
@@ -204,8 +208,13 @@ out:write([[
     setsockopt_option_unknown,
 ]])
 
-for enum in setsockopt_enums:each() do
-  out:write("    setsockopt_option_", enum, ",\n")
+local enums = {}
+for enum in pairs(setsockopt_enums) do
+  enums[#enums + 1] = enum
+end
+table.sort(enums)
+for i = 1, #enums do
+  out:write("    setsockopt_option_", enums[i], ",\n")
 end
 
 out:write([[
