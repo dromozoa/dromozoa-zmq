@@ -1,4 +1,4 @@
--- Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -24,14 +24,12 @@ local process_rep = assert(unix.process())
 assert(process_req:forkexec(PATH, { arg[-1], "test/req.lua" }))
 assert(process_rep:forkexec(PATH, { arg[-1], "test/rep.lua" }))
 
-local a, b, c = assert(unix.wait())
-print(a, b, c)
-assert(a == process_req[1] or a == process_rep[1])
-assert(b == "exit")
-assert(c == 0)
+local pid, reason, status = assert(unix.wait())
+assert(pid == process_req[1] or pid == process_rep[1])
+assert(reason == "exit")
+assert(status == 0)
 
-local a, b, c = assert(unix.wait())
-print(a, b, c)
-assert(a == process_req[1] or a == process_rep[1])
-assert(b == "exit")
-assert(c == 0)
+local pid, reason, status = assert(unix.wait())
+assert(pid == process_req[1] or pid == process_rep[1])
+assert(reason == "exit")
+assert(status == 0)
