@@ -1,4 +1,4 @@
--- Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -15,12 +15,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-local ipairs = require "dromozoa.commons.ipairs"
 local zmq = require "dromozoa.zmq"
 
 if zmq.has then
   local capabilities = { "ipc", "pgm", "tipc", "norm", "curve", "gssapi", "draft" }
-  for _, capability in ipairs(capabilities) do
+  for i = 1, #capabilities do
+    local capability = capabilities[i]
     print(capability, zmq.has(capability))
   end
 end

@@ -1,5 +1,3 @@
-// generated from zeromq-4.2.1
-
 #include "common.hpp"
 #include "symbols.hpp"
 
@@ -98,8 +96,8 @@ namespace dromozoa {
 #ifdef ZMQ_AFFINITY
     luaX_set_field(L, -1, "ZMQ_AFFINITY", ZMQ_AFFINITY);
 #endif
-#ifdef ZMQ_IDENTITY
-    luaX_set_field(L, -1, "ZMQ_IDENTITY", ZMQ_IDENTITY);
+#ifdef ZMQ_ROUTING_ID
+    luaX_set_field(L, -1, "ZMQ_ROUTING_ID", ZMQ_ROUTING_ID);
 #endif
 #ifdef ZMQ_SUBSCRIBE
     luaX_set_field(L, -1, "ZMQ_SUBSCRIBE", ZMQ_SUBSCRIBE);
@@ -236,8 +234,8 @@ namespace dromozoa {
 #ifdef ZMQ_TOS
     luaX_set_field(L, -1, "ZMQ_TOS", ZMQ_TOS);
 #endif
-#ifdef ZMQ_CONNECT_RID
-    luaX_set_field(L, -1, "ZMQ_CONNECT_RID", ZMQ_CONNECT_RID);
+#ifdef ZMQ_CONNECT_ROUTING_ID
+    luaX_set_field(L, -1, "ZMQ_CONNECT_ROUTING_ID", ZMQ_CONNECT_ROUTING_ID);
 #endif
 #ifdef ZMQ_GSSAPI_SERVER
     luaX_set_field(L, -1, "ZMQ_GSSAPI_SERVER", ZMQ_GSSAPI_SERVER);
@@ -340,6 +338,12 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_GROUP_MAX_LENGTH
     luaX_set_field(L, -1, "ZMQ_GROUP_MAX_LENGTH", ZMQ_GROUP_MAX_LENGTH);
+#endif
+#ifdef ZMQ_IDENTITY
+    luaX_set_field(L, -1, "ZMQ_IDENTITY", ZMQ_IDENTITY);
+#endif
+#ifdef ZMQ_CONNECT_RID
+    luaX_set_field(L, -1, "ZMQ_CONNECT_RID", ZMQ_CONNECT_RID);
 #endif
 #ifdef ZMQ_TCP_ACCEPT_FILTER
     luaX_set_field(L, -1, "ZMQ_TCP_ACCEPT_FILTER", ZMQ_TCP_ACCEPT_FILTER);
@@ -455,14 +459,122 @@ namespace dromozoa {
 #ifdef ZMQ_DGRAM
     luaX_set_field(L, -1, "ZMQ_DGRAM", ZMQ_DGRAM);
 #endif
-#ifdef ZMQ_EVENT_HANDSHAKE_FAILED
-    luaX_set_field(L, -1, "ZMQ_EVENT_HANDSHAKE_FAILED", ZMQ_EVENT_HANDSHAKE_FAILED);
+#ifdef ZMQ_GSSAPI_PRINCIPAL_NAMETYPE
+    luaX_set_field(L, -1, "ZMQ_GSSAPI_PRINCIPAL_NAMETYPE", ZMQ_GSSAPI_PRINCIPAL_NAMETYPE);
 #endif
-#ifdef ZMQ_EVENT_HANDSHAKE_SUCCEED
-    luaX_set_field(L, -1, "ZMQ_EVENT_HANDSHAKE_SUCCEED", ZMQ_EVENT_HANDSHAKE_SUCCEED);
+#ifdef ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE
+    luaX_set_field(L, -1, "ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE", ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE);
+#endif
+#ifdef ZMQ_BINDTODEVICE
+    luaX_set_field(L, -1, "ZMQ_BINDTODEVICE", ZMQ_BINDTODEVICE);
+#endif
+#ifdef ZMQ_ZAP_ENFORCE_DOMAIN
+    luaX_set_field(L, -1, "ZMQ_ZAP_ENFORCE_DOMAIN", ZMQ_ZAP_ENFORCE_DOMAIN);
+#endif
+#ifdef ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL
+    luaX_set_field(L, -1, "ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL", ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL);
+#endif
+#ifdef ZMQ_EVENT_HANDSHAKE_SUCCEEDED
+    luaX_set_field(L, -1, "ZMQ_EVENT_HANDSHAKE_SUCCEEDED", ZMQ_EVENT_HANDSHAKE_SUCCEEDED);
+#endif
+#ifdef ZMQ_EVENT_HANDSHAKE_FAILED_PROTOCOL
+    luaX_set_field(L, -1, "ZMQ_EVENT_HANDSHAKE_FAILED_PROTOCOL", ZMQ_EVENT_HANDSHAKE_FAILED_PROTOCOL);
+#endif
+#ifdef ZMQ_EVENT_HANDSHAKE_FAILED_AUTH
+    luaX_set_field(L, -1, "ZMQ_EVENT_HANDSHAKE_FAILED_AUTH", ZMQ_EVENT_HANDSHAKE_FAILED_AUTH);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_UNSPECIFIED
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_UNSPECIFIED", ZMQ_PROTOCOL_ERROR_ZMTP_UNSPECIFIED);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_UNEXPECTED_COMMAND
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_UNEXPECTED_COMMAND", ZMQ_PROTOCOL_ERROR_ZMTP_UNEXPECTED_COMMAND);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_INVALID_SEQUENCE
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_INVALID_SEQUENCE", ZMQ_PROTOCOL_ERROR_ZMTP_INVALID_SEQUENCE);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_KEY_EXCHANGE
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_KEY_EXCHANGE", ZMQ_PROTOCOL_ERROR_ZMTP_KEY_EXCHANGE);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_UNSPECIFIED
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_UNSPECIFIED", ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_UNSPECIFIED);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_MESSAGE
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_MESSAGE", ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_MESSAGE);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_HELLO
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_HELLO", ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_HELLO);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_INITIATE
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_INITIATE", ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_INITIATE);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_ERROR
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_ERROR", ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_ERROR);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_READY
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_READY", ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_READY);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_WELCOME
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_WELCOME", ZMQ_PROTOCOL_ERROR_ZMTP_MALFORMED_COMMAND_WELCOME);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_INVALID_METADATA
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_INVALID_METADATA", ZMQ_PROTOCOL_ERROR_ZMTP_INVALID_METADATA);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_CRYPTOGRAPHIC
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_CRYPTOGRAPHIC", ZMQ_PROTOCOL_ERROR_ZMTP_CRYPTOGRAPHIC);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZMTP_MECHANISM_MISMATCH
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZMTP_MECHANISM_MISMATCH", ZMQ_PROTOCOL_ERROR_ZMTP_MECHANISM_MISMATCH);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZAP_UNSPECIFIED
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZAP_UNSPECIFIED", ZMQ_PROTOCOL_ERROR_ZAP_UNSPECIFIED);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZAP_MALFORMED_REPLY
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZAP_MALFORMED_REPLY", ZMQ_PROTOCOL_ERROR_ZAP_MALFORMED_REPLY);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZAP_BAD_REQUEST_ID
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZAP_BAD_REQUEST_ID", ZMQ_PROTOCOL_ERROR_ZAP_BAD_REQUEST_ID);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZAP_BAD_VERSION
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZAP_BAD_VERSION", ZMQ_PROTOCOL_ERROR_ZAP_BAD_VERSION);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZAP_INVALID_STATUS_CODE
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZAP_INVALID_STATUS_CODE", ZMQ_PROTOCOL_ERROR_ZAP_INVALID_STATUS_CODE);
+#endif
+#ifdef ZMQ_PROTOCOL_ERROR_ZAP_INVALID_METADATA
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZAP_INVALID_METADATA", ZMQ_PROTOCOL_ERROR_ZAP_INVALID_METADATA);
 #endif
 #ifdef ZMQ_MSG_T_SIZE
     luaX_set_field(L, -1, "ZMQ_MSG_T_SIZE", ZMQ_MSG_T_SIZE);
+#endif
+#ifdef ZMQ_THREAD_AFFINITY_CPU_ADD
+    luaX_set_field(L, -1, "ZMQ_THREAD_AFFINITY_CPU_ADD", ZMQ_THREAD_AFFINITY_CPU_ADD);
+#endif
+#ifdef ZMQ_THREAD_AFFINITY_CPU_REMOVE
+    luaX_set_field(L, -1, "ZMQ_THREAD_AFFINITY_CPU_REMOVE", ZMQ_THREAD_AFFINITY_CPU_REMOVE);
+#endif
+#ifdef ZMQ_THREAD_NAME_PREFIX
+    luaX_set_field(L, -1, "ZMQ_THREAD_NAME_PREFIX", ZMQ_THREAD_NAME_PREFIX);
+#endif
+#ifdef ZMQ_MSG_PROPERTY_ROUTING_ID
+    luaX_set_field(L, -1, "ZMQ_MSG_PROPERTY_ROUTING_ID", ZMQ_MSG_PROPERTY_ROUTING_ID);
+#endif
+#ifdef ZMQ_MSG_PROPERTY_SOCKET_TYPE
+    luaX_set_field(L, -1, "ZMQ_MSG_PROPERTY_SOCKET_TYPE", ZMQ_MSG_PROPERTY_SOCKET_TYPE);
+#endif
+#ifdef ZMQ_MSG_PROPERTY_USER_ID
+    luaX_set_field(L, -1, "ZMQ_MSG_PROPERTY_USER_ID", ZMQ_MSG_PROPERTY_USER_ID);
+#endif
+#ifdef ZMQ_MSG_PROPERTY_PEER_ADDRESS
+    luaX_set_field(L, -1, "ZMQ_MSG_PROPERTY_PEER_ADDRESS", ZMQ_MSG_PROPERTY_PEER_ADDRESS);
+#endif
+#ifdef ZMQ_GSSAPI_NT_HOSTBASED
+    luaX_set_field(L, -1, "ZMQ_GSSAPI_NT_HOSTBASED", ZMQ_GSSAPI_NT_HOSTBASED);
+#endif
+#ifdef ZMQ_GSSAPI_NT_USER_NAME
+    luaX_set_field(L, -1, "ZMQ_GSSAPI_NT_USER_NAME", ZMQ_GSSAPI_NT_USER_NAME);
+#endif
+#ifdef ZMQ_GSSAPI_NT_KRB5_PRINCIPAL
+    luaX_set_field(L, -1, "ZMQ_GSSAPI_NT_KRB5_PRINCIPAL", ZMQ_GSSAPI_NT_KRB5_PRINCIPAL);
 #endif
   }
 
@@ -475,6 +587,10 @@ namespace dromozoa {
 #ifdef ZMQ_BACKLOG
       case ZMQ_BACKLOG:
         return getsockopt_option_int;
+#endif
+#ifdef ZMQ_BINDTODEVICE
+      case ZMQ_BINDTODEVICE:
+        return getsockopt_option_character_string;
 #endif
 #ifdef ZMQ_CONNECT_TIMEOUT
       case ZMQ_CONNECT_TIMEOUT:
@@ -516,13 +632,17 @@ namespace dromozoa {
       case ZMQ_GSSAPI_SERVICE_PRINCIPAL:
         return getsockopt_option_character_string;
 #endif
+#ifdef ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE
+      case ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_GSSAPI_PRINCIPAL_NAMETYPE
+      case ZMQ_GSSAPI_PRINCIPAL_NAMETYPE:
+        return getsockopt_option_int;
+#endif
 #ifdef ZMQ_HANDSHAKE_IVL
       case ZMQ_HANDSHAKE_IVL:
         return getsockopt_option_int;
-#endif
-#ifdef ZMQ_IDENTITY
-      case ZMQ_IDENTITY:
-        return getsockopt_option_binary_data;
 #endif
 #ifdef ZMQ_IMMEDIATE
       case ZMQ_IMMEDIATE:
@@ -612,6 +732,10 @@ namespace dromozoa {
       case ZMQ_RECOVERY_IVL:
         return getsockopt_option_int;
 #endif
+#ifdef ZMQ_ROUTING_ID
+      case ZMQ_ROUTING_ID:
+        return getsockopt_option_binary_data;
+#endif
 #ifdef ZMQ_SNDBUF
       case ZMQ_SNDBUF:
         return getsockopt_option_int;
@@ -648,6 +772,10 @@ namespace dromozoa {
       case ZMQ_TCP_MAXRT:
         return getsockopt_option_int;
 #endif
+#ifdef ZMQ_THREAD_SAFE
+      case ZMQ_THREAD_SAFE:
+        return getsockopt_option_int;
+#endif
 #ifdef ZMQ_TOS
       case ZMQ_TOS:
         return getsockopt_option_int;
@@ -659,6 +787,10 @@ namespace dromozoa {
 #ifdef ZMQ_ZAP_DOMAIN
       case ZMQ_ZAP_DOMAIN:
         return getsockopt_option_character_string;
+#endif
+#ifdef ZMQ_ZAP_ENFORCE_DOMAIN
+      case ZMQ_ZAP_ENFORCE_DOMAIN:
+        return getsockopt_option_int;
 #endif
 #ifdef ZMQ_VMCI_BUFFER_SIZE
       case ZMQ_VMCI_BUFFER_SIZE:
@@ -691,8 +823,12 @@ namespace dromozoa {
       case ZMQ_BACKLOG:
         return setsockopt_option_int;
 #endif
-#ifdef ZMQ_CONNECT_RID
-      case ZMQ_CONNECT_RID:
+#ifdef ZMQ_BINDTODEVICE
+      case ZMQ_BINDTODEVICE:
+        return setsockopt_option_character_string;
+#endif
+#ifdef ZMQ_CONNECT_ROUTING_ID
+      case ZMQ_CONNECT_ROUTING_ID:
         return setsockopt_option_binary_data;
 #endif
 #ifdef ZMQ_CONFLATE
@@ -735,6 +871,14 @@ namespace dromozoa {
       case ZMQ_GSSAPI_SERVICE_PRINCIPAL:
         return setsockopt_option_character_string;
 #endif
+#ifdef ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE
+      case ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_GSSAPI_PRINCIPAL_NAMETYPE
+      case ZMQ_GSSAPI_PRINCIPAL_NAMETYPE:
+        return setsockopt_option_int;
+#endif
 #ifdef ZMQ_HANDSHAKE_IVL
       case ZMQ_HANDSHAKE_IVL:
         return setsockopt_option_int;
@@ -750,10 +894,6 @@ namespace dromozoa {
 #ifdef ZMQ_HEARTBEAT_TTL
       case ZMQ_HEARTBEAT_TTL:
         return setsockopt_option_int;
-#endif
-#ifdef ZMQ_IDENTITY
-      case ZMQ_IDENTITY:
-        return setsockopt_option_binary_data;
 #endif
 #ifdef ZMQ_IMMEDIATE
       case ZMQ_IMMEDIATE:
@@ -851,6 +991,10 @@ namespace dromozoa {
       case ZMQ_ROUTER_RAW:
         return setsockopt_option_int;
 #endif
+#ifdef ZMQ_ROUTING_ID
+      case ZMQ_ROUTING_ID:
+        return setsockopt_option_binary_data;
+#endif
 #ifdef ZMQ_SNDBUF
       case ZMQ_SNDBUF:
         return setsockopt_option_int;
@@ -926,6 +1070,10 @@ namespace dromozoa {
 #ifdef ZMQ_ZAP_DOMAIN
       case ZMQ_ZAP_DOMAIN:
         return setsockopt_option_character_string;
+#endif
+#ifdef ZMQ_ZAP_ENFORCE_DOMAIN
+      case ZMQ_ZAP_ENFORCE_DOMAIN:
+        return setsockopt_option_int;
 #endif
 #ifdef ZMQ_TCP_ACCEPT_FILTER
       case ZMQ_TCP_ACCEPT_FILTER:

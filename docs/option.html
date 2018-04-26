@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>dromozoa-zmq</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
+<style>
+.markdown-body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+}
+@media (max-width: 767px) {
+  .markdown-body {
+    padding: 15px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="markdown-body">
+
+<h1>dromozoa-zmq</h1>
+
+<h2>zmq_getsockopt</h2>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Unit</th>
+    <th>Size</th>
+    <th>Default</th>
+  </tr>
+  <tr>
+    <td>ZMQ_AFFINITY</td>
+    <td>uint64_t</td>
+    <td>N/A (bitmap)</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_BACKLOG</td>
+    <td>int</td>
+    <td>connections</td>
+    <td></td>
+    <td>100</td>
+  </tr>
+  <tr>
+    <td>ZMQ_BINDTODEVICE</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CONNECT_TIMEOUT</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>0 (disabled)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CURVE_PUBLICKEY</td>
+    <td>binary data or Z85 text string</td>
+    <td></td>
+    <td>32 or 41</td>
+    <td>null</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CURVE_SECRETKEY</td>
+    <td>binary data or Z85 text string</td>
+    <td></td>
+    <td>32 or 41</td>
+    <td>null</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CURVE_SERVERKEY</td>
+    <td>binary data or Z85 text string</td>
+    <td></td>
+    <td>32 or 41</td>
+    <td>null</td>
+  </tr>
+  <tr>
+    <td>ZMQ_EVENTS</td>
+    <td>int</td>
+    <td>N/A (flags)</td>
+    <td></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td>ZMQ_FD</td>
+    <td>int on POSIX systems, SOCKET on Windows</td>
+    <td>N/A</td>
+    <td></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_PLAINTEXT</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_PRINCIPAL</td>
+    <td>NULL-terminated character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>null string</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_SERVER</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_SERVICE_PRINCIPAL</td>
+    <td>NULL-terminated character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>null string</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE</td>
+    <td>int</td>
+    <td>0, 1, 2</td>
+    <td></td>
+    <td>0 (ZMQ_GSSAPI_NT_HOSTBASED)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_PRINCIPAL_NAMETYPE</td>
+    <td>int</td>
+    <td>0, 1, 2</td>
+    <td></td>
+    <td>0 (ZMQ_GSSAPI_NT_HOSTBASED)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_HANDSHAKE_IVL</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>30000</td>
+  </tr>
+  <tr>
+    <td>ZMQ_IMMEDIATE</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_INVERT_MATCHING</td>
+    <td>int</td>
+    <td>0,1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_IPV4ONLY</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>1 (true)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_IPV6</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_LAST_ENDPOINT</td>
+    <td>NULL-terminated character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>NULL</td>
+  </tr>
+  <tr>
+    <td>ZMQ_LINGER</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>-1 (infinite)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_MAXMSGSIZE</td>
+    <td>int64_t</td>
+    <td>bytes</td>
+    <td></td>
+    <td>-1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_MECHANISM</td>
+    <td>int</td>
+    <td>ZMQ_NULL, ZMQ_PLAIN, ZMQ_CURVE, or ZMQ_GSSAPI</td>
+    <td></td>
+    <td>ZMQ_NULL</td>
+  </tr>
+  <tr>
+    <td>ZMQ_MULTICAST_HOPS</td>
+    <td>int</td>
+    <td>network hops</td>
+    <td></td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_MULTICAST_MAXTPDU</td>
+    <td>int</td>
+    <td>bytes</td>
+    <td></td>
+    <td>1500</td>
+  </tr>
+  <tr>
+    <td>ZMQ_PLAIN_PASSWORD</td>
+    <td>NULL-terminated character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>null string</td>
+  </tr>
+  <tr>
+    <td>ZMQ_PLAIN_SERVER</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>int</td>
+  </tr>
+  <tr>
+    <td>ZMQ_PLAIN_USERNAME</td>
+    <td>NULL-terminated character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>null string</td>
+  </tr>
+  <tr>
+    <td>ZMQ_USE_FD</td>
+    <td>int</td>
+    <td>file descriptor</td>
+    <td></td>
+    <td>-1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RATE</td>
+    <td>int</td>
+    <td>kilobits per second</td>
+    <td></td>
+    <td>100</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RCVBUF</td>
+    <td>int</td>
+    <td>bytes</td>
+    <td></td>
+    <td>8192</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RCVHWM</td>
+    <td>int</td>
+    <td>messages</td>
+    <td></td>
+    <td>1000</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RCVMORE</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RCVTIMEO</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>-1 (infinite)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RECONNECT_IVL</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>100</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RECONNECT_IVL_MAX</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>0 (only use ZMQ_RECONNECT_IVL)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RECOVERY_IVL</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>10000</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ROUTING_ID</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>NULL</td>
+  </tr>
+  <tr>
+    <td>ZMQ_SNDBUF</td>
+    <td>int</td>
+    <td>bytes</td>
+    <td></td>
+    <td>8192</td>
+  </tr>
+  <tr>
+    <td>ZMQ_SNDHWM</td>
+    <td>int</td>
+    <td>messages</td>
+    <td></td>
+    <td>1000</td>
+  </tr>
+  <tr>
+    <td>ZMQ_SNDTIMEO</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>-1 (infinite)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_SOCKS_PROXY</td>
+    <td>NULL-terminated character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>null string</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TCP_KEEPALIVE</td>
+    <td>int</td>
+    <td>-1,0,1</td>
+    <td></td>
+    <td>-1 (leave to OS default)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TCP_KEEPALIVE_CNT</td>
+    <td>int</td>
+    <td>-1,>0</td>
+    <td></td>
+    <td>-1 (leave to OS default)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TCP_KEEPALIVE_IDLE</td>
+    <td>int</td>
+    <td>-1,>0</td>
+    <td></td>
+    <td>-1 (leave to OS default)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TCP_KEEPALIVE_INTVL</td>
+    <td>int</td>
+    <td>-1,>0</td>
+    <td></td>
+    <td>-1 (leave to OS default)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TCP_MAXRT</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>0 (leave to OS default)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_THREAD_SAFE</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>nil</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TOS</td>
+    <td>int</td>
+    <td>>0</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TYPE</td>
+    <td>int</td>
+    <td>N/A</td>
+    <td></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ZAP_DOMAIN</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ZAP_ENFORCE_DOMAIN</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_VMCI_BUFFER_SIZE</td>
+    <td>uint64_t</td>
+    <td>bytes</td>
+    <td></td>
+    <td>65546</td>
+  </tr>
+  <tr>
+    <td>ZMQ_VMCI_BUFFER_MIN_SIZE</td>
+    <td>uint64_t</td>
+    <td>bytes</td>
+    <td></td>
+    <td>128</td>
+  </tr>
+  <tr>
+    <td>ZMQ_VMCI_BUFFER_MAX_SIZE</td>
+    <td>uint64_t</td>
+    <td>bytes</td>
+    <td></td>
+    <td>262144</td>
+  </tr>
+  <tr>
+    <td>ZMQ_VMCI_CONNECT_TIMEOUT</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>-1</td>
+  </tr>
+</table>
+
+<h2>zmq_setsockopt</h2>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Unit</th>
+    <th>Size</th>
+    <th>Default</th>
+  </tr>
+  <tr>
+    <td>ZMQ_AFFINITY</td>
+    <td>uint64_t</td>
+    <td>N/A (bitmap)</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_BACKLOG</td>
+    <td>int</td>
+    <td>connections</td>
+    <td></td>
+    <td>100</td>
+  </tr>
+  <tr>
+    <td>ZMQ_BINDTODEVICE</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CONNECT_ROUTING_ID</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>NULL</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CONFLATE</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CONNECT_TIMEOUT</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>0 (disabled)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CURVE_PUBLICKEY</td>
+    <td>binary data or Z85 text string</td>
+    <td></td>
+    <td>32 or 41</td>
+    <td>NULL</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CURVE_SECRETKEY</td>
+    <td>binary data or Z85 text string</td>
+    <td></td>
+    <td>32 or 41</td>
+    <td>NULL</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CURVE_SERVER</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_CURVE_SERVERKEY</td>
+    <td>binary data or Z85 text string</td>
+    <td></td>
+    <td>32 or 41</td>
+    <td>NULL</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_PLAINTEXT</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_PRINCIPAL</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_SERVER</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_SERVICE_PRINCIPAL</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE</td>
+    <td>int</td>
+    <td>0, 1, 2</td>
+    <td></td>
+    <td>0 (ZMQ_GSSAPI_NT_HOSTBASED)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_GSSAPI_PRINCIPAL_NAMETYPE</td>
+    <td>int</td>
+    <td>0, 1, 2</td>
+    <td></td>
+    <td>0 (ZMQ_GSSAPI_NT_HOSTBASED)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_HANDSHAKE_IVL</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>30000</td>
+  </tr>
+  <tr>
+    <td>ZMQ_HEARTBEAT_IVL</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_HEARTBEAT_TIMEOUT</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_HEARTBEAT_TTL</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_IMMEDIATE</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_INVERT_MATCHING</td>
+    <td>int</td>
+    <td>0,1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_IPV6</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_LINGER</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>-1 (infinite)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_MAXMSGSIZE</td>
+    <td>int64_t</td>
+    <td>bytes</td>
+    <td></td>
+    <td>-1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_MULTICAST_HOPS</td>
+    <td>int</td>
+    <td>network hops</td>
+    <td></td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_MULTICAST_MAXTPDU</td>
+    <td>int</td>
+    <td>bytes</td>
+    <td></td>
+    <td>1500</td>
+  </tr>
+  <tr>
+    <td>ZMQ_PLAIN_PASSWORD</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
+    <td>ZMQ_PLAIN_SERVER</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_PLAIN_USERNAME</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
+    <td>ZMQ_USE_FD</td>
+    <td>int</td>
+    <td>file descriptor</td>
+    <td></td>
+    <td>-1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_PROBE_ROUTER</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RATE</td>
+    <td>int</td>
+    <td>kilobits per second</td>
+    <td></td>
+    <td>100</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RCVBUF</td>
+    <td>int</td>
+    <td>bytes</td>
+    <td></td>
+    <td>-1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RCVHWM</td>
+    <td>int</td>
+    <td>messages</td>
+    <td></td>
+    <td>1000</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RCVTIMEO</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>-1 (infinite)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RECONNECT_IVL</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>100</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RECONNECT_IVL_MAX</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>0 (only use ZMQ_RECONNECT_IVL)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RECOVERY_IVL</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>10000</td>
+  </tr>
+  <tr>
+    <td>ZMQ_REQ_CORRELATE</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_REQ_RELAXED</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ROUTER_HANDOVER</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ROUTER_MANDATORY</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ROUTER_RAW</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ROUTING_ID</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>NULL</td>
+  </tr>
+  <tr>
+    <td>ZMQ_SNDBUF</td>
+    <td>int</td>
+    <td>bytes</td>
+    <td></td>
+    <td>-1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_SNDHWM</td>
+    <td>int</td>
+    <td>messages</td>
+    <td></td>
+    <td>1000</td>
+  </tr>
+  <tr>
+    <td>ZMQ_SNDTIMEO</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>-1 (infinite)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_SOCKS_PROXY</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
+    <td>ZMQ_STREAM_NOTIFY</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_SUBSCRIBE</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TCP_KEEPALIVE</td>
+    <td>int</td>
+    <td>-1,0,1</td>
+    <td></td>
+    <td>-1 (leave to OS default)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TCP_KEEPALIVE_CNT</td>
+    <td>int</td>
+    <td>-1,>0</td>
+    <td></td>
+    <td>-1 (leave to OS default)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TCP_KEEPALIVE_IDLE</td>
+    <td>int</td>
+    <td>-1,>0</td>
+    <td></td>
+    <td>-1 (leave to OS default)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TCP_KEEPALIVE_INTVL</td>
+    <td>int</td>
+    <td>-1,>0</td>
+    <td></td>
+    <td>-1 (leave to OS default)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TCP_MAXRT</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>0 (leave to OS default)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TOS</td>
+    <td>int</td>
+    <td>>0</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_UNSUBSCRIBE</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>N/A</td>
+  </tr>
+  <tr>
+    <td>ZMQ_XPUB_VERBOSE</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_XPUB_VERBOSER</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_XPUB_MANUAL</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_XPUB_NODROP</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_XPUB_WELCOME_MSG</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>NULL</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ZAP_DOMAIN</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>empty</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ZAP_ENFORCE_DOMAIN</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_TCP_ACCEPT_FILTER</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>no filters (allow from all)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_IPC_FILTER_GID</td>
+    <td>gid_t</td>
+    <td>N/A</td>
+    <td></td>
+    <td>no filters (allow from all)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_IPC_FILTER_PID</td>
+    <td>pid_t</td>
+    <td>N/A</td>
+    <td></td>
+    <td>no filters (allow from all)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_IPC_FILTER_UID</td>
+    <td>uid_t</td>
+    <td>N/A</td>
+    <td></td>
+    <td>no filters (allow from all)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_IPV4ONLY</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>1 (true)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_VMCI_BUFFER_SIZE</td>
+    <td>uint64_t</td>
+    <td>bytes</td>
+    <td></td>
+    <td>65546</td>
+  </tr>
+  <tr>
+    <td>ZMQ_VMCI_BUFFER_MIN_SIZE</td>
+    <td>uint64_t</td>
+    <td>bytes</td>
+    <td></td>
+    <td>128</td>
+  </tr>
+  <tr>
+    <td>ZMQ_VMCI_BUFFER_MAX_SIZE</td>
+    <td>uint64_t</td>
+    <td>bytes</td>
+    <td></td>
+    <td>262144</td>
+  </tr>
+  <tr>
+    <td>ZMQ_VMCI_CONNECT_TIMEOUT</td>
+    <td>int</td>
+    <td>milliseconds</td>
+    <td></td>
+    <td>-1</td>
+  </tr>
+</table>
+
+</div>
+</body>
+</html>
