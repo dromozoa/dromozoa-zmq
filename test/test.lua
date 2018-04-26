@@ -19,10 +19,17 @@ local unix = require "dromozoa.unix"
 
 local PATH = os.getenv("PATH")
 
+local lua
+if _G["dromozoa.bind.driver"] then
+  lua = "lua"
+else
+  lua = arg[-1]
+end
+
 local process_req = assert(unix.process())
 local process_rep = assert(unix.process())
-assert(process_req:forkexec(PATH, { arg[-1], "test/req.lua" }))
-assert(process_rep:forkexec(PATH, { arg[-1], "test/rep.lua" }))
+assert(process_req:forkexec(PATH, { lua, "test/req.lua" }))
+assert(process_rep:forkexec(PATH, { lua, "test/rep.lua" }))
 
 local pid, reason, status = assert(unix.wait())
 assert(pid == process_req[1] or pid == process_rep[1])

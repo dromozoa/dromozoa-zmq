@@ -1,4 +1,4 @@
--- Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -19,23 +19,22 @@ local zmq = require "dromozoa.zmq"
 
 local ctx = assert(zmq.context())
 local socket = assert(ctx:socket(zmq.ZMQ_REQ))
-assert(socket:connect("tcp://127.0.0.1:5555"))
+assert(socket:connect "tcp://127.0.0.1:5555")
 
-local msg = assert(zmq.message("hello"))
+local msg = assert(zmq.message "hello")
 assert(msg:send(socket))
 assert(msg:close())
 
 local msg = zmq.message()
-assert(msg:set(-1, -1) == nil)
 assert(msg:recv(socket) == 5)
 assert(tostring(msg) == "world")
 assert(msg:get(zmq.ZMQ_MORE) == 0)
-if zmq.message.gets then
-  assert(msg:gets("Socket-Type") == "REP")
+if msg.gets then
+  assert(msg:gets "Socket-Type" == "REP")
 end
 assert(msg:more() == 0)
 
-assert(socket:disconnect("tcp://127.0.0.1:5555"))
+assert(socket:disconnect "tcp://127.0.0.1:5555")
 assert(socket:close())
 
 assert(ctx:term())
