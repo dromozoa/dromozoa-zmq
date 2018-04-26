@@ -40,7 +40,6 @@ local function parse_doc(filename)
           assert(not item.option_value_unit)
           item.option_value_type = "int"
           item.option_value_unit = "boolean"
-          item.default_value = ""
         end
         assert(name)
         assert(item.option_value_type)
@@ -95,7 +94,7 @@ Name|Type|Unit|Size|Default|Description
     if size == nil then
       size = ""
     end
-    out:write(("%s|%s|%s|%s|%s|%s\n"):format(name, item.option_value_type, unit, size, item.default_value, item.description))
+    out:write(("%s|%s|%s|%s|%s|%s\n"):format(name, item.option_value_type, unit, size, item.default_value or "", item.description))
   end
   out:close()
 end
