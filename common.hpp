@@ -1,4 +1,4 @@
-// Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -27,7 +27,7 @@
 namespace dromozoa {
   class context_handle {
   public:
-    context_handle(void* handle);
+    explicit context_handle(void* handle);
     ~context_handle();
     int term();
     void* get();
@@ -42,7 +42,7 @@ namespace dromozoa {
 
   class socket_handle {
   public:
-    socket_handle(void* handle);
+    explicit socket_handle(void* handle);
     ~socket_handle();
     int close();
     void* get();
