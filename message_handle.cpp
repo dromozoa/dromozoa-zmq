@@ -19,8 +19,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <utility>
-
 #include "common.hpp"
 
 namespace dromozoa {
@@ -36,73 +34,106 @@ namespace dromozoa {
     }
   }
 
-  message_handle::message_handle() : state_(state_constructed) {}
+  class message_handle_impl {
+  public:
+    message_handle_impl() : state_(state_constructed) {}
 
-  message_handle::~message_handle() {
-    if (state_ == state_initialized) {
-      if (close() == -1) {
-        DROMOZOA_UNEXPECTED(zmq_strerror(zmq_errno()));
+    ~message_handle_impl() {
+      if (state_ == state_initialized) {
+        if (close() == -1) {
+          DROMOZOA_UNEXPECTED(zmq_strerror(zmq_errno()));
+        }
       }
     }
-  }
 
-  int message_handle::init() {
-    if (state_ == state_constructed) {
-      if (zmq_msg_init(&message_) == -1) {
-        return -1;
-      } else {
-        state_ = state_initialized;
-        return 0;
-      }
-    } else {
-      errno = EINVAL;
-      return -1;
-    }
-  }
-
-  int message_handle::init_data(const void* data, size_t size) {
-    if (state_ == state_constructed) {
-      if (void* buffer = malloc(size)) {
-        memcpy(buffer, data, size);
-        if (zmq_msg_init_data(&message_, buffer, size, free_calback, 0) == -1) {
-          free(buffer);
+    int init() {
+      if (state_ == state_constructed) {
+        if (zmq_msg_init(&message_) == -1) {
           return -1;
         } else {
           state_ = state_initialized;
           return 0;
         }
       } else {
+        errno = EINVAL;
         return -1;
       }
-    } else {
-      errno = EINVAL;
-      return -1;
     }
+
+    int init_data(const void* data, size_t size) {
+      if (state_ == state_constructed) {
+        if (void* buffer = malloc(size)) {
+          memcpy(buffer, data, size);
+          if (zmq_msg_init_data(&message_, buffer, size, free_calback, 0) == -1) {
+            free(buffer);
+            return -1;
+          } else {
+            state_ = state_initialized;
+            return 0;
+          }
+        } else {
+          return -1;
+        }
+      } else {
+        errno = EINVAL;
+        return -1;
+      }
+    }
+
+    int close() {
+      if (state_ == state_initialized) {
+        state_ = state_closed;
+        return zmq_msg_close(&message_);
+      } else {
+        errno = EINVAL;
+        return -1;
+      }
+    }
+
+    zmq_msg_t* get() {
+      if (state_ == state_initialized) {
+        return &message_;
+      } else {
+        return 0;
+      }
+    }
+
+  private:
+    int state_;
+    zmq_msg_t message_;
+  };
+
+  message_handle_impl* message_handle::init() {
+    message_handle_impl* impl = new message_handle_impl();
+    if (impl->init() == -1) {
+      delete impl;
+      return 0;
+    } else {
+      return impl;
+    }
+  }
+
+  message_handle_impl* message_handle::init_data(const void* data, size_t size) {
+    message_handle_impl* impl = new message_handle_impl();
+    if (impl->init_data(data, size) == -1) {
+      delete impl;
+      return 0;
+    } else {
+      return impl;
+    }
+  }
+
+  message_handle::message_handle(message_handle_impl* impl) : impl_(impl) {}
+
+  message_handle::~message_handle() {
+    delete impl_;
   }
 
   int message_handle::close() {
-    if (state_ == state_initialized) {
-      state_ = state_closed;
-      return zmq_msg_close(&message_);
-    } else {
-      errno = EINVAL;
-      return -1;
-    }
+    return impl_->close();
   }
 
   zmq_msg_t* message_handle::get() {
-    if (state_ == state_initialized) {
-      return &message_;
-    } else {
-      return 0;
-    }
-  }
-
-  void message_handle::swap(message_handle& that) {
-    std::swap(state_, that.state_);
-    zmq_msg_t message;
-    memcpy(&message, &message_, sizeof(message));
-    memcpy(&message_, &that.message_, sizeof(message));
-    memcpy(&that.message_, &message, sizeof(message));
+    return impl_->get();
   }
 }

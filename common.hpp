@@ -57,18 +57,18 @@ namespace dromozoa {
   void* to_socket(lua_State* L, int arg);
   void new_socket(lua_State* L, void* handle);
 
+  class message_handle_impl;
+
   class message_handle {
   public:
-    message_handle();
+    static message_handle_impl* init();
+    static message_handle_impl* init_data(const void* data, size_t size);
+    explicit message_handle(message_handle_impl* impl);
     ~message_handle();
-    int init();
-    int init_data(const void* data, size_t size);
     int close();
     zmq_msg_t* get();
-    void swap(message_handle& that);
   private:
-    int state_;
-    zmq_msg_t message_;
+    message_handle_impl* impl_;
     message_handle(const message_handle&);
     message_handle& operator=(const message_handle&);
   };
