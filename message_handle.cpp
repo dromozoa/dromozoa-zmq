@@ -19,25 +19,21 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <utility>
+
 #include "common.hpp"
 
 namespace dromozoa {
   namespace {
-    enum {
-      state_constructed,
-      state_initialized,
-      state_closed,
-    };
-
     void free_calback(void* data, void*) {
       free(data);
     }
   }
 
-  message_handle::message_handle() : state_(state_constructed) {}
+  message_handle::message_handle() : initialized_() {}
 
   message_handle::~message_handle() {
-    if (state_ == state_initialized) {
+    if (initialized_) {
       if (close() == -1) {
         DROMOZOA_UNEXPECTED(zmq_strerror(zmq_errno()));
       }
@@ -45,51 +41,51 @@ namespace dromozoa {
   }
 
   int message_handle::init() {
-    int result = -1;
-    if (state_ == state_constructed) {
-      result = zmq_msg_init(&message_);
-      if (result != -1) {
-        state_ = state_initialized;
-      }
-    } else {
+    if (initialized_) {
       errno = EINVAL;
+      return -1;
+    } else {
+      if (zmq_msg_init(&message_) == -1) {
+        return -1;
+      } else {
+        initialized_ = true;
+        return 0;
+      }
     }
-    return result;
   }
 
   int message_handle::init_data(const void* data, size_t size) {
-    int result = -1;
-    if (state_ == state_constructed) {
+    if (initialized_) {
+      errno = EINVAL;
+      return -1;
+    } else {
       if (void* buffer = malloc(size)) {
         memcpy(buffer, data, size);
-        result = zmq_msg_init_data(&message_, buffer, size, free_calback, 0);
-        if (result == -1) {
+        if (zmq_msg_init_data(&message_, buffer, size, free_calback, 0) == -1) {
           free(buffer);
+          return -1;
         } else {
-          state_ = state_initialized;
+          initialized_ = true;
+          return 0;
         }
+      } else {
+        return -1;
       }
-    } else {
-      errno = EINVAL;
     }
-    return result;
   }
 
   int message_handle::close() {
-    int result = -1;
-    if (state_ == state_initialized) {
-      result = zmq_msg_close(&message_);
-      if (result != -1) {
-        state_ = state_closed;
-      }
+    if (initialized_) {
+      initialized_ = false;
+      return zmq_msg_close(&message_);
     } else {
       errno = EINVAL;
+      return -1;
     }
-    return result;
   }
 
   zmq_msg_t* message_handle::get() {
-    if (state_ == state_initialized) {
+    if (initialized_) {
       return &message_;
     } else {
       return 0;
@@ -97,9 +93,7 @@ namespace dromozoa {
   }
 
   void message_handle::swap(message_handle& that) {
-    int state = state_;
-    state_ = that.state_;
-    that.state_ = state;
+    std::swap(initialized_, that.initialized_);
 
     zmq_msg_t message;
     memcpy(&message, &message_, sizeof(message));
