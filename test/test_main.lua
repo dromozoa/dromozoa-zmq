@@ -17,12 +17,23 @@
 
 local zmq = require "dromozoa.zmq"
 
+local verbose = os.getenv "VERBOSE" == "1"
+
 if zmq.has then
   local capabilities = { "ipc", "pgm", "tipc", "norm", "curve", "gssapi", "draft" }
   for i = 1, #capabilities do
     local capability = capabilities[i]
-    print(capability, zmq.has(capability))
+    local capable = zmq.has(capability)
+    if verbose then
+      io.stderr:write(("%s: %s\n"):format(capability, capable))
+    end
+    assert(capable == 0 or capable == 1)
   end
 end
 
-print(zmq.version())
+local major, minor, patch = zmq.version()
+local version = ("%d.%d.%d"):format(major, minor, patch)
+if verbose then
+  io.stderr:write(version, "\n")
+end
+assert(major >= 4)

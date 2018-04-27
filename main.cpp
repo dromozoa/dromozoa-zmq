@@ -1,4 +1,4 @@
-// Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -28,7 +28,7 @@
 
 #ifdef HAVE_ZMQ_CURVE_KEYPAIR
 extern "C" {
-  int zmq_curve_keypair (char*, char*);
+  int zmq_curve_keypair(char *z85_public_key, char *z85_secret_key);
 }
 #endif
 
@@ -86,7 +86,6 @@ namespace dromozoa {
           push_error(L);
         } else {
           lua_pushlstring(L, &z85_public_key[0], 40);
-          lua_pushvalue(L, 1);
         }
       } else {
         errno = EINVAL;
