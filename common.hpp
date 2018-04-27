@@ -67,7 +67,7 @@ namespace dromozoa {
     zmq_msg_t* get();
     void swap(message_handle& that);
   private:
-    bool initialized_;
+    int state_;
     zmq_msg_t message_;
     message_handle(const message_handle&);
     message_handle& operator=(const message_handle&);
