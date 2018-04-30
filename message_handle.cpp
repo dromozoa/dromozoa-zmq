@@ -104,22 +104,20 @@ namespace dromozoa {
   };
 
   message_handle_impl* message_handle::init() {
-    message_handle_impl* impl = new message_handle_impl();
+    scoped_ptr<message_handle_impl> impl(new message_handle_impl());
     if (impl->init() == -1) {
-      delete impl;
       return 0;
     } else {
-      return impl;
+      return impl.release();
     }
   }
 
   message_handle_impl* message_handle::init_data(const void* data, size_t size) {
-    message_handle_impl* impl = new message_handle_impl();
+    scoped_ptr<message_handle_impl> impl(new message_handle_impl());
     if (impl->init_data(data, size) == -1) {
-      delete impl;
       return 0;
     } else {
-      return impl;
+      return impl.release();
     }
   }
 
