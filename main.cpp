@@ -63,13 +63,13 @@ namespace dromozoa {
 
 #ifdef HAVE_ZMQ_CURVE_KEYPAIR
     void impl_curve_keypair(lua_State* L) {
-      std::vector<char> z85_public_key(41);
-      std::vector<char> z85_secret_key(41);
-      if (zmq_curve_keypair(&z85_public_key[0], &z85_secret_key[0]) == -1) {
+      char z85_public_key[41] = { 0 };
+      char z85_secret_key[41] = { 0 };
+      if (zmq_curve_keypair(z85_public_key, z85_secret_key) == -1) {
         push_error(L);
       } else {
-        lua_pushlstring(L, &z85_public_key[0], 40);
-        lua_pushlstring(L, &z85_secret_key[0], 40);
+        lua_pushlstring(L, z85_public_key, 40);
+        lua_pushlstring(L, z85_secret_key, 40);
       }
     }
 #endif
@@ -79,11 +79,11 @@ namespace dromozoa {
       size_t size = 0;
       const char* z85_secret_key = luaL_checklstring(L, 1, &size);
       if (size == 40) {
-        std::vector<char> z85_public_key(41);
-        if (zmq_curve_public(&z85_public_key[0], z85_secret_key) == -1) {
+        char z85_public_key[41] = { 0 };
+        if (zmq_curve_public(z85_public_key, z85_secret_key) == -1) {
           push_error(L);
         } else {
-          lua_pushlstring(L, &z85_public_key[0], 40);
+          lua_pushlstring(L, z85_public_key, 40);
         }
       } else {
         errno = EINVAL;
