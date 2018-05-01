@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+# Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-zmq.
 #
@@ -26,7 +26,8 @@ EXTRA_DIST = \
 	generate.lua \
 	m4/update \
 	test \
-	test.sh
+	$(TESTS)
+TESTS = test.sh
 
 luaexec_LTLIBRARIES = zmq.la
 
