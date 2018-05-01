@@ -123,9 +123,7 @@ namespace dromozoa {
 
   message_handle::message_handle(message_handle_impl* impl) : impl_(impl) {}
 
-  message_handle::~message_handle() {
-    delete impl_;
-  }
+  message_handle::~message_handle() {}
 
   int message_handle::close() {
     return impl_->close();

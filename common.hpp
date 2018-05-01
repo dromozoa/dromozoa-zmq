@@ -68,7 +68,7 @@ namespace dromozoa {
     int close();
     zmq_msg_t* get();
   private:
-    message_handle_impl* impl_;
+    scoped_ptr<message_handle_impl> impl_;
     message_handle(const message_handle&);
     message_handle& operator=(const message_handle&);
   };
