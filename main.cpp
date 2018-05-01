@@ -27,7 +27,7 @@
 #include "common.hpp"
 
 #if defined(HAVE_ZMQ_CURVE_KEYPAIR) && !HAVE_DECL_ZMQ_CURVE_KEYPAIR
-#include <zmq_util.h>
+#include <zmq_utils.h>
 #endif
 
 namespace dromozoa {
