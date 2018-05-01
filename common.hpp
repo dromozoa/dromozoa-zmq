@@ -1,4 +1,4 @@
-// Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -27,7 +27,7 @@
 namespace dromozoa {
   class context_handle {
   public:
-    context_handle(void* handle);
+    explicit context_handle(void* handle);
     ~context_handle();
     int term();
     void* get();
@@ -42,7 +42,7 @@ namespace dromozoa {
 
   class socket_handle {
   public:
-    socket_handle(void* handle);
+    explicit socket_handle(void* handle);
     ~socket_handle();
     int close();
     void* get();
@@ -57,18 +57,18 @@ namespace dromozoa {
   void* to_socket(lua_State* L, int arg);
   void new_socket(lua_State* L, void* handle);
 
+  class message_handle_impl;
+
   class message_handle {
   public:
-    message_handle();
+    static message_handle_impl* init();
+    static message_handle_impl* init_data(const void* data, size_t size);
+    explicit message_handle(message_handle_impl* impl);
     ~message_handle();
-    int init();
-    int init_data(const void* data, size_t size);
     int close();
     zmq_msg_t* get();
-    void swap(message_handle& that);
   private:
-    int state_;
-    zmq_msg_t message_;
+    scoped_ptr<message_handle_impl> impl_;
     message_handle(const message_handle&);
     message_handle& operator=(const message_handle&);
   };

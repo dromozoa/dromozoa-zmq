@@ -1,4 +1,4 @@
-// Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -29,11 +29,9 @@ namespace dromozoa {
   }
 
   int socket_handle::close() {
-    int result = zmq_close(handle_);
-    if (result == 0) {
-      handle_ = 0;
-    }
-    return result;
+    void* handle = handle_;
+    handle_ = 0;
+    return zmq_close(handle);
   }
 
   void* socket_handle::get() {
