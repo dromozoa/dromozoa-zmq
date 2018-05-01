@@ -22,16 +22,16 @@ namespace dromozoa {
 
   context_handle::~context_handle() {
     if (handle_) {
-      if (term() == -1) {
+      if (destroy() == -1) {
         DROMOZOA_UNEXPECTED(zmq_strerror(zmq_errno()));
       }
     }
   }
 
-  int context_handle::term() {
+  int context_handle::destroy() {
     void* handle = handle_;
     handle_ = 0;
-    return zmq_ctx_term(handle);
+    return zmq_ctx_destroy(handle);
   }
 
   void* context_handle::get() {

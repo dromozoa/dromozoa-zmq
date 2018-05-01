@@ -49,4 +49,4 @@ assert(socket:getsockopt(zmq.ZMQ_CURVE_SECRETKEY, 32) == zmq.z85_decode(z85_secr
 assert(socket:getsockopt(zmq.ZMQ_CURVE_SECRETKEY, 41) == z85_secret_key)
 
 assert(socket:close())
-assert(ctx:term())
+assert(ctx:destroy())

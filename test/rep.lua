@@ -51,4 +51,4 @@ assert(socket:unbind(endpoint))
 
 assert(socket:close())
 
-assert(ctx:term())
+assert(ctx:destroy())

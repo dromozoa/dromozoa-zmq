@@ -37,4 +37,4 @@ assert(msg:more() == 0)
 assert(socket:disconnect "tcp://127.0.0.1:5555")
 assert(socket:close())
 
-assert(ctx:term())
+assert(ctx:destroy())

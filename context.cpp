@@ -32,8 +32,8 @@ namespace dromozoa {
       }
     }
 
-    void impl_term(lua_State* L) {
-      if (check_context_handle(L, 1)->term() == -1) {
+    void impl_destroy(lua_State* L) {
+      if (check_context_handle(L, 1)->destroy() == -1) {
         push_error(L);
       } else {
         luaX_push_success(L);
@@ -96,7 +96,7 @@ namespace dromozoa {
       lua_pop(L, 1);
 
       luaX_set_metafield(L, -1, "__call", impl_call);
-      luaX_set_field(L, -1, "term", impl_term);
+      luaX_set_field(L, -1, "destroy", impl_destroy);
       luaX_set_field(L, -1, "shutdown", impl_shutdown);
       luaX_set_field(L, -1, "socket", impl_socket);
       luaX_set_field(L, -1, "get", impl_get);
