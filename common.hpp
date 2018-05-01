@@ -29,7 +29,7 @@ namespace dromozoa {
   public:
     explicit context_handle(void* handle);
     ~context_handle();
-    int destroy();
+    int term();
     void* get();
   private:
     void* handle_;
