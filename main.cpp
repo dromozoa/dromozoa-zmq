@@ -26,10 +26,8 @@
 
 #include "common.hpp"
 
-#ifdef HAVE_ZMQ_CURVE_KEYPAIR
-extern "C" {
-  int zmq_curve_keypair(char *z85_public_key, char *z85_secret_key);
-}
+#if defined(HAVE_ZMQ_CURVE_KEYPAIR) && !HAVE_DECL_ZMQ_CURVE_KEYPAIR
+#include <zmq_util.h>
 #endif
 
 namespace dromozoa {
