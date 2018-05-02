@@ -21,9 +21,9 @@ EXTRA_DIST = \
 	.gitignore \
 	README.md \
 	bind \
-	doc \
+	build_symbols.lua \
+	docs \
 	dromozoa-zmq-*.rockspec \
-	generate.lua \
 	m4/update \
 	test \
 	$(TESTS)
