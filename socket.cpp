@@ -98,7 +98,15 @@ namespace dromozoa {
       }
     }
 
-    // TODO socket_monitor
+    void impl_monitor(lua_State* L) {
+      const char* endpoint = luaL_checkstring(L, 2);
+      int events = luaX_opt_integer<int>(L, 3, ZMQ_EVENT_ALL);
+      if (zmq_socket_monitor(check_socket(L, 1), endpoint, events) == -1) {
+        push_error(L);
+      } else {
+        luaX_push_success(L);
+      }
+    }
   }
 
   socket_handle* check_socket_handle(lua_State* L, int arg) {
@@ -141,6 +149,7 @@ namespace dromozoa {
       luaX_set_field(L, -1, "disconnect", impl_disconnect);
       luaX_set_field(L, -1, "recv", impl_recv);
       luaX_set_field(L, -1, "send", impl_send);
+      luaX_set_field(L, -1, "monitor", impl_monitor);
 
       initialize_socket_getsockopt(L);
       initialize_socket_setsockopt(L);
