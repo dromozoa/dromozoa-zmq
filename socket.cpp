@@ -1,4 +1,4 @@
-// Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -42,18 +42,18 @@ namespace dromozoa {
       }
     }
 
-    void impl_unbind(lua_State* L) {
+    void impl_connect(lua_State* L) {
       const char* endpoint = luaL_checkstring(L, 2);
-      if (zmq_unbind(check_socket(L, 1), endpoint) == -1) {
+      if (zmq_connect(check_socket(L, 1), endpoint) == -1) {
         push_error(L);
       } else {
         luaX_push_success(L);
       }
     }
 
-    void impl_connect(lua_State* L) {
+    void impl_unbind(lua_State* L) {
       const char* endpoint = luaL_checkstring(L, 2);
-      if (zmq_connect(check_socket(L, 1), endpoint) == -1) {
+      if (zmq_unbind(check_socket(L, 1), endpoint) == -1) {
         push_error(L);
       } else {
         luaX_push_success(L);
@@ -66,18 +66,6 @@ namespace dromozoa {
         push_error(L);
       } else {
         luaX_push_success(L);
-      }
-    }
-
-    void impl_recv(lua_State* L) {
-      size_t size = luaX_check_integer<size_t>(L, 2);
-      int flags = luaX_opt_integer<int>(L, 3, 0);
-      std::vector<char> buffer(size);
-      int result = zmq_recv(check_socket(L, 1), &buffer[0], size, flags);
-      if (result == -1) {
-        push_error(L);
-      } else {
-        lua_pushlstring(L, &buffer[0], result);
       }
     }
 
@@ -95,6 +83,28 @@ namespace dromozoa {
         push_error(L);
       } else {
         luaX_push(L, result);
+      }
+    }
+
+    void impl_recv(lua_State* L) {
+      size_t size = luaX_check_integer<size_t>(L, 2);
+      int flags = luaX_opt_integer<int>(L, 3, 0);
+      std::vector<char> buffer(size);
+      int result = zmq_recv(check_socket(L, 1), &buffer[0], size, flags);
+      if (result == -1) {
+        push_error(L);
+      } else {
+        lua_pushlstring(L, &buffer[0], result);
+      }
+    }
+
+    void impl_monitor(lua_State* L) {
+      const char* endpoint = luaL_checkstring(L, 2);
+      int events = luaX_opt_integer<int>(L, 3, ZMQ_EVENT_ALL);
+      if (zmq_socket_monitor(check_socket(L, 1), endpoint, events) == -1) {
+        push_error(L);
+      } else {
+        luaX_push_success(L);
       }
     }
   }
@@ -134,11 +144,12 @@ namespace dromozoa {
 
       luaX_set_field(L, -1, "close", impl_close);
       luaX_set_field(L, -1, "bind", impl_bind);
-      luaX_set_field(L, -1, "unbind", impl_unbind);
       luaX_set_field(L, -1, "connect", impl_connect);
+      luaX_set_field(L, -1, "unbind", impl_unbind);
       luaX_set_field(L, -1, "disconnect", impl_disconnect);
       luaX_set_field(L, -1, "recv", impl_recv);
       luaX_set_field(L, -1, "send", impl_send);
+      luaX_set_field(L, -1, "monitor", impl_monitor);
 
       initialize_socket_getsockopt(L);
       initialize_socket_setsockopt(L);
