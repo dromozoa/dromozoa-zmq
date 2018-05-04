@@ -1,7 +1,7 @@
 package = "dromozoa-zmq"
-version = "1.7-1"
+version = "1.8-1"
 source = {
-  url = "https://github.com/dromozoa/dromozoa-zmq/releases/download/v1.7/dromozoa-zmq-1.7.tar.gz";
+  url = "https://github.com/dromozoa/dromozoa-zmq/releases/download/v1.8/dromozoa-zmq-1.8.tar.gz";
 }
 description = {
   summary = "Lua bindings for ZeroMQ";

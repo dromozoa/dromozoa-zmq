@@ -28,8 +28,6 @@ else
   lua = arg[-1]
 end
 
-local selfpipe = assert(unix.selfpipe())
-
 local ctx = assert(zmq.context())
 
 local xsub = assert(ctx:socket(zmq.ZMQ_XSUB))
