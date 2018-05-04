@@ -1,4 +1,4 @@
--- Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -20,5 +20,3 @@ local zmq = require "dromozoa.zmq"
 local ctx = assert(zmq.context())
 local socket = assert(ctx:socket(zmq.ZMQ_SUB))
 assert(socket:setsockopt(zmq.ZMQ_SUBSCRIBE, ""))
-assert(socket:close())
-assert(ctx:term())

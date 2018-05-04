@@ -1,4 +1,4 @@
--- Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -17,23 +17,11 @@
 
 local zmq = require "dromozoa.zmq"
 
-local verbose = os.getenv "VERBOSE" == "1"
+local msg = assert(zmq.message())
+assert(tostring(msg) == "")
 
-if zmq.has then
-  local capabilities = { "ipc", "pgm", "tipc", "norm", "curve", "gssapi", "draft" }
-  for i = 1, #capabilities do
-    local capability = capabilities[i]
-    local capable = zmq.has(capability)
-    if verbose then
-      io.stderr:write(("%s: %s\n"):format(capability, capable))
-    end
-    assert(capable == 0 or capable == 1)
-  end
-end
+local msg = assert(zmq.message(("X"):rep(16)))
+assert(tostring(msg) == "XXXXXXXXXXXXXXXX")
 
-local major, minor, patch = zmq.version()
-local version = ("%d.%d.%d"):format(major, minor, patch)
-if verbose then
-  io.stderr:write(version, "\n")
-end
-assert(major >= 4)
+local msg = assert(zmq.message "foo\0bar\0baz\0qux")
+assert(tostring(msg) == "foo\0bar\0baz\0qux")

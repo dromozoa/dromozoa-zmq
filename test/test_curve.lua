@@ -1,4 +1,4 @@
--- Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -17,6 +17,8 @@
 
 local zmq = require "dromozoa.zmq"
 
+local verbose = os.getenv "VERBOSE" == "1"
+
 local bin_public_key = string.char(
   0xBB, 0x88, 0x47, 0x1D, 0x65, 0xE2, 0x65, 0x9B,
   0x30, 0xC5, 0x5A, 0x53, 0x21, 0xCE, 0xBB, 0x5A,
@@ -25,18 +27,14 @@ local bin_public_key = string.char(
 local z85_public_key = "Yne@$w-vo<fVvi]a<NY6T1ed:M$fCG*[IaLV{hID"
 local z85_secret_key = "D:)Q[IlAW!ahhC2ac:9*A}h:p?([4%wOTJ%JR%cs"
 
-if zmq.curve_public then
-  assert(zmq.curve_public(z85_secret_key) == z85_public_key)
-end
 assert(zmq.z85_encode(bin_public_key) == z85_public_key)
 assert(zmq.z85_decode(z85_public_key) == bin_public_key)
 
-local p1, s1 = zmq.curve_keypair()
-print(p1)
-print(s1)
-
+local z85_public_key, z85_secret_key = zmq.curve_keypair()
+if verbose then
+  print(z85_public_key)
+  print(z85_secret_key)
+end
 if zmq.curve_public then
-  local p2, s2 = zmq.curve_public(s1)
-  assert(p1 == p2)
-  assert(s1 == s2)
+  assert(zmq.curve_public(z85_secret_key) == z85_public_key)
 end

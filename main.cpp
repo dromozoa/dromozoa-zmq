@@ -1,4 +1,4 @@
-// Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -26,10 +26,8 @@
 
 #include "common.hpp"
 
-#ifdef HAVE_ZMQ_CURVE_KEYPAIR
-extern "C" {
-  int zmq_curve_keypair (char*, char*);
-}
+#if defined(HAVE_ZMQ_CURVE_KEYPAIR) && !HAVE_DECL_ZMQ_CURVE_KEYPAIR
+#include <zmq_utils.h>
 #endif
 
 namespace dromozoa {
@@ -44,13 +42,6 @@ namespace dromozoa {
       luaX_push(L, patch);
     }
 
-#ifdef HAVE_ZMQ_HAS
-    void impl_has(lua_State* L) {
-      const char* capability = luaL_checkstring(L, 1);
-      luaX_push(L, zmq_has(capability));
-    }
-#endif
-
     void impl_proxy(lua_State* L) {
       void* frontend = check_socket(L, 1);
       void* backend = check_socket(L, 2);
@@ -63,35 +54,10 @@ namespace dromozoa {
       }
     }
 
-#ifdef HAVE_ZMQ_CURVE_KEYPAIR
-    void impl_curve_keypair(lua_State* L) {
-      std::vector<char> z85_public_key(41);
-      std::vector<char> z85_secret_key(41);
-      if (zmq_curve_keypair(&z85_public_key[0], &z85_secret_key[0]) == -1) {
-        push_error(L);
-      } else {
-        lua_pushlstring(L, &z85_public_key[0], 40);
-        lua_pushlstring(L, &z85_secret_key[0], 40);
-      }
-    }
-#endif
-
-#ifdef HAVE_ZMQ_CURVE_PUBLIC
-    void impl_curve_public(lua_State* L) {
-      size_t size = 0;
-      const char* z85_secret_key = luaL_checklstring(L, 1, &size);
-      if (size == 40) {
-        std::vector<char> z85_public_key(41);
-        if (zmq_curve_public(&z85_public_key[0], z85_secret_key) == -1) {
-          push_error(L);
-        } else {
-          lua_pushlstring(L, &z85_public_key[0], 40);
-          lua_pushvalue(L, 1);
-        }
-      } else {
-        errno = EINVAL;
-        push_error(L);
-      }
+#ifdef HAVE_ZMQ_HAS
+    void impl_has(lua_State* L) {
+      const char* capability = luaL_checkstring(L, 1);
+      luaX_push(L, zmq_has(capability));
     }
 #endif
 
@@ -126,21 +92,52 @@ namespace dromozoa {
         push_error(L);
       }
     }
+
+#ifdef HAVE_ZMQ_CURVE_KEYPAIR
+    void impl_curve_keypair(lua_State* L) {
+      char z85_public_key[41] = { 0 };
+      char z85_secret_key[41] = { 0 };
+      if (zmq_curve_keypair(z85_public_key, z85_secret_key) == -1) {
+        push_error(L);
+      } else {
+        lua_pushlstring(L, z85_public_key, 40);
+        lua_pushlstring(L, z85_secret_key, 40);
+      }
+    }
+#endif
+
+#ifdef HAVE_ZMQ_CURVE_PUBLIC
+    void impl_curve_public(lua_State* L) {
+      size_t size = 0;
+      const char* z85_secret_key = luaL_checklstring(L, 1, &size);
+      if (size == 40) {
+        char z85_public_key[41] = { 0 };
+        if (zmq_curve_public(z85_public_key, z85_secret_key) == -1) {
+          push_error(L);
+        } else {
+          lua_pushlstring(L, z85_public_key, 40);
+        }
+      } else {
+        errno = EINVAL;
+        push_error(L);
+      }
+    }
+#endif
   }
 
   void initialize_main(lua_State* L) {
     luaX_set_field(L, -1, "version", impl_version);
+    luaX_set_field(L, -1, "proxy", impl_proxy);
 #ifdef HAVE_ZMQ_HAS
     luaX_set_field(L, -1, "has", impl_has);
 #endif
-    luaX_set_field(L, -1, "proxy", impl_proxy);
+    luaX_set_field(L, -1, "z85_decode", impl_z85_decode);
+    luaX_set_field(L, -1, "z85_encode", impl_z85_encode);
 #ifdef HAVE_ZMQ_CURVE_KEYPAIR
     luaX_set_field(L, -1, "curve_keypair", impl_curve_keypair);
 #endif
 #ifdef HAVE_ZMQ_CURVE_PUBLIC
     luaX_set_field(L, -1, "curve_public", impl_curve_public);
 #endif
-    luaX_set_field(L, -1, "z85_decode", impl_z85_decode);
-    luaX_set_field(L, -1, "z85_encode", impl_z85_encode);
   }
 }

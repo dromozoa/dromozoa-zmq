@@ -1,4 +1,4 @@
--- Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -15,9 +15,31 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-local pairs = require "dromozoa.commons.pairs"
 local zmq = require "dromozoa.zmq"
 
-for k, v in pairs(zmq) do
-  print(k, v)
+local verbose = os.getenv "VERBOSE" == "1"
+
+local symbols = {}
+local symbol_name_max = 0
+
+for name, value in pairs(zmq) do
+  if name:find "^ZMQ_" then
+    assert(type(value) == "number")
+    assert(value >= -1)
+    symbols[#symbols + 1] = { name = name, value = value }
+    if symbol_name_max < #name then
+      symbol_name_max = #name
+    end
+  end
+end
+
+table.sort(symbols, function (a, b) return a.value < b.value end)
+
+if verbose then
+  local format = "%-" .. symbol_name_max .. "s | %d\n"
+  io.stderr:write(("-"):rep(70), "\n")
+  for i = 1, #symbols do
+    local symbol = symbols[i]
+    io.stderr:write(format:format(symbol.name, symbol.value))
+  end
 end

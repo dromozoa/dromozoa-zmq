@@ -1,4 +1,4 @@
-// Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -29,8 +29,7 @@ namespace dromozoa {
     }
 
     void impl_call(lua_State* L) {
-      message_handle self;
-      int result = -1;
+      message_handle_impl* impl = 0;
       size_t size = 0;
       if (const char* data = lua_tolstring(L, 2, &size)) {
         size_t i = luaX_opt_range_i(L, 3, size);
@@ -38,33 +37,15 @@ namespace dromozoa {
         if (j < i) {
           j = i;
         }
-        result = self.init_data(data + i, j - i);
+        impl = message_handle::init_data(data + i, j - i);
       } else {
-        result = self.init();
+        impl = message_handle::init();
       }
-      if (result == -1) {
-        push_error(L);
-      } else {
-        luaX_new<message_handle>(L)->swap(self);
+      if (impl) {
+        luaX_new<message_handle>(L, impl);
         luaX_set_metatable(L, "dromozoa.zmq.message");
-      }
-    }
-
-    void impl_close(lua_State* L) {
-      if (check_message_handle(L, 1)->close() == -1) {
-        push_error(L);
       } else {
-        luaX_push_success(L);
-      }
-    }
-
-    void impl_recv(lua_State* L) {
-      int flags = luaX_opt_integer<int>(L, 3, 0);
-      int result = zmq_msg_recv(check_message(L, 1), check_socket(L, 2), flags);
-      if (result == -1) {
         push_error(L);
-      } else {
-        luaX_push(L, result);
       }
     }
 
@@ -78,6 +59,28 @@ namespace dromozoa {
       }
     }
 
+    void impl_recv(lua_State* L) {
+      int flags = luaX_opt_integer<int>(L, 3, 0);
+      int result = zmq_msg_recv(check_message(L, 1), check_socket(L, 2), flags);
+      if (result == -1) {
+        push_error(L);
+      } else {
+        luaX_push(L, result);
+      }
+    }
+
+    void impl_close(lua_State* L) {
+      if (check_message_handle(L, 1)->close() == -1) {
+        push_error(L);
+      } else {
+        luaX_push_success(L);
+      }
+    }
+
+    void impl_more(lua_State* L) {
+      luaX_push(L, zmq_msg_more(check_message(L, 1)));
+    }
+
     void impl_get(lua_State* L) {
       int property = luaX_check_integer<int>(L, 2);
       int result = zmq_msg_get(check_message(L, 1), property);
@@ -85,6 +88,16 @@ namespace dromozoa {
         push_error(L);
       } else {
         luaX_push(L, result);
+      }
+    }
+
+    void impl_set(lua_State* L) {
+      int property = luaX_check_integer<int>(L, 2);
+      int value = luaX_check_integer<int>(L, 3);
+      if (zmq_msg_set(check_message(L, 1), property, value) == -1) {
+        push_error(L);
+      } else {
+        luaX_push_success(L);
       }
     }
 
@@ -98,20 +111,6 @@ namespace dromozoa {
       }
     }
 #endif
-
-    void impl_more(lua_State* L) {
-      luaX_push(L, zmq_msg_more(check_message(L, 1)));
-    }
-
-    void impl_set(lua_State* L) {
-      int property = luaX_check_integer<int>(L, 2);
-      int value = luaX_check_integer<int>(L, 3);
-      if (zmq_msg_set(check_message(L, 1), property, value) == -1) {
-        push_error(L);
-      } else {
-        luaX_push_success(L);
-      }
-    }
   }
 
   message_handle* check_message_handle(lua_State* L, int arg) {
@@ -133,15 +132,15 @@ namespace dromozoa {
       lua_pop(L, 1);
 
       luaX_set_metafield(L, -1, "__call", impl_call);
-      luaX_set_field(L, -1, "close", impl_close);
-      luaX_set_field(L, -1, "recv", impl_recv);
       luaX_set_field(L, -1, "send", impl_send);
+      luaX_set_field(L, -1, "recv", impl_recv);
+      luaX_set_field(L, -1, "close", impl_close);
+      luaX_set_field(L, -1, "more", impl_more);
       luaX_set_field(L, -1, "get", impl_get);
+      luaX_set_field(L, -1, "set", impl_set);
 #ifdef HAVE_ZMQ_MSG_GETS
       luaX_set_field(L, -1, "gets", impl_gets);
 #endif
-      luaX_set_field(L, -1, "more", impl_more);
-      luaX_set_field(L, -1, "set", impl_set);
     }
     luaX_set_field(L, -2, "message");
   }

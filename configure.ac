@@ -1,4 +1,4 @@
-# Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+# Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-zmq.
 #
@@ -35,6 +35,8 @@ AC_CHECK_FUNCS([zmq_curve_keypair])
 AC_CHECK_FUNCS([zmq_curve_public])
 AC_CHECK_FUNCS([zmq_has])
 AC_CHECK_FUNCS([zmq_msg_gets])
+
+AC_CHECK_DECLS([zmq_curve_keypair], [], [], [#include <zmq.h>])
 
 AX_PROG_LUA([5.1], [], [], [AC_MSG_ERROR([could not find lua])])
 AX_LUA_HEADERS([], [AC_MSG_ERROR([could not find lua])])
