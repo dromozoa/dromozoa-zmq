@@ -42,7 +42,7 @@ if curve then
   assert(rep:setsockopt(zmq.ZMQ_CURVE_SERVER, 1))
   assert(rep:setsockopt(zmq.ZMQ_CURVE_SECRETKEY, server_secret_key))
 end
-assert(rep:bind "tcp://127.0.0.1:5555")
+assert(rep:bind "inproc://test_async")
 local rep_fd = assert(rep:getsockopt(zmq.ZMQ_FD))
 if verbose then
   io.stderr:write("rep_fd ", rep_fd, "\n")
@@ -54,7 +54,7 @@ if curve then
   assert(req:setsockopt(zmq.ZMQ_CURVE_PUBLICKEY, client_public_key))
   assert(req:setsockopt(zmq.ZMQ_CURVE_SECRETKEY, client_secret_key))
 end
-assert(req:connect "tcp://127.0.0.1:5555")
+assert(req:connect "inproc://test_async")
 local req_fd = assert(req:getsockopt(zmq.ZMQ_FD))
 if verbose then
   io.stderr:write("req_fd ", req_fd, "\n")
@@ -67,7 +67,6 @@ assert(req:send "hello")
 local done
 repeat
   local result = assert(selector:select(0.1))
-  assert(result == 1)
   for i = 1, result do
     local fd, event = selector:event(i)
     if verbose then
@@ -94,7 +93,6 @@ until done
 local done
 repeat
   local result = assert(selector:select(0.1))
-  assert(result == 1)
   for i = 1, result do
     local fd, event = selector:event(i)
     if verbose then
