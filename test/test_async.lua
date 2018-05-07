@@ -19,12 +19,29 @@ local unix = require "dromozoa.unix"
 local zmq = require "dromozoa.zmq"
 
 local verbose = os.getenv "VERBOSE" == "1"
+local curve = true
 
 local selector = assert(unix.selector())
 
 local ctx = assert(zmq.context())
 
+local server_public_key, server_secret_key = zmq.curve_keypair()
+if verbose then
+  io.stderr:write("server_public_key ", server_public_key, "\n")
+  io.stderr:write("server_secret_key ", server_secret_key, "\n")
+end
+
+local client_public_key, client_secret_key = zmq.curve_keypair()
+if verbose then
+  io.stderr:write("client_public_key ", client_public_key, "\n")
+  io.stderr:write("client_secret_key ", client_secret_key, "\n")
+end
+
 local rep = assert(ctx:socket(zmq.ZMQ_REP))
+if curve then
+  assert(rep:setsockopt(zmq.ZMQ_CURVE_SERVER, 1))
+  assert(rep:setsockopt(zmq.ZMQ_CURVE_SECRETKEY, server_secret_key))
+end
 assert(rep:bind "tcp://127.0.0.1:5555")
 local rep_fd = assert(rep:getsockopt(zmq.ZMQ_FD))
 if verbose then
@@ -32,6 +49,11 @@ if verbose then
 end
 
 local req = assert(ctx:socket(zmq.ZMQ_REQ))
+if curve then
+  assert(req:setsockopt(zmq.ZMQ_CURVE_SERVERKEY, server_public_key))
+  assert(req:setsockopt(zmq.ZMQ_CURVE_PUBLICKEY, client_public_key))
+  assert(req:setsockopt(zmq.ZMQ_CURVE_SECRETKEY, client_secret_key))
+end
 assert(req:connect "tcp://127.0.0.1:5555")
 local req_fd = assert(req:getsockopt(zmq.ZMQ_FD))
 if verbose then
