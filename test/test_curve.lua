@@ -32,8 +32,8 @@ assert(zmq.z85_decode(z85_public_key) == bin_public_key)
 
 local z85_public_key, z85_secret_key = zmq.curve_keypair()
 if verbose then
-  print(z85_public_key)
-  print(z85_secret_key)
+  io.stderr:write(z85_public_key, "\n")
+  io.stderr:write(z85_secret_key, "\n")
 end
 if zmq.curve_public then
   assert(zmq.curve_public(z85_secret_key) == z85_public_key)
