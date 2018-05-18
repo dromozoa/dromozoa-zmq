@@ -65,7 +65,8 @@ namespace dromozoa {
       luaX_string_reference source = luaX_check_string(L, 1);
       if (source.size() % 5 == 0) {
         std::vector<uint8_t> buffer(source.size() * 4 / 5);
-        if (zmq_z85_decode(&buffer[0], source.data())) {
+        // 2nd parameter of zmq_z85_decode did not have const qualifier in zeromq 5.0.4
+        if (zmq_z85_decode(&buffer[0], const_cast<char*>(source.data()))) {
           luaX_push(L, luaX_string_reference(&buffer[0], buffer.size()));
         } else {
           push_error(L);
@@ -80,7 +81,8 @@ namespace dromozoa {
       luaX_string_reference source = luaX_check_string(L, 1);
       if (source.size() % 4 == 0) {
         std::vector<char> buffer(source.size() * 5 / 4 + 1);
-        if (zmq_z85_encode(&buffer[0], reinterpret_cast<const uint8_t*>(source.data()), source.size())) {
+        // 2nd parameter of zmq_z85_encode did not have const qualifier in zeromq 5.0.4
+        if (zmq_z85_encode(&buffer[0], reinterpret_cast<const uint8_t*>(const_cast<char*>(source.data())), source.size())) {
           luaX_push(L, &buffer[0]);
         } else {
           push_error(L);
