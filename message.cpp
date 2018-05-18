@@ -25,19 +25,18 @@ namespace dromozoa {
 
     void impl_tostring(lua_State* L) {
       zmq_msg_t* message = check_message(L, 1);
-      lua_pushlstring(L, static_cast<const char*>(zmq_msg_data(message)), zmq_msg_size(message));
+      luaX_push(L, luaX_string_reference(static_cast<const char*>(zmq_msg_data(message)), zmq_msg_size(message)));
     }
 
     void impl_call(lua_State* L) {
       message_handle_impl* impl = 0;
-      size_t size = 0;
-      if (const char* data = lua_tolstring(L, 2, &size)) {
-        size_t i = luaX_opt_range_i(L, 3, size);
-        size_t j = luaX_opt_range_j(L, 4, size);
+      if (luaX_string_reference source = luaX_to_string(L, 2)) {
+        size_t i = luaX_opt_range_i(L, 3, source.size());
+        size_t j = luaX_opt_range_j(L, 4, source.size());
         if (j < i) {
           j = i;
         }
-        impl = message_handle::init_data(data + i, j - i);
+        impl = message_handle::init_data(source.data() + i, j - i);
       } else {
         impl = message_handle::init();
       }

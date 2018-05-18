@@ -70,15 +70,14 @@ namespace dromozoa {
     }
 
     void impl_send(lua_State* L) {
-      size_t size = 0;
-      const char* buffer = luaL_checklstring(L, 2, &size);
-      size_t i = luaX_opt_range_i(L, 3, size);
-      size_t j = luaX_opt_range_j(L, 4, size);
+      luaX_string_reference buffer = luaX_check_string(L, 2);
+      size_t i = luaX_opt_range_i(L, 3, buffer.size());
+      size_t j = luaX_opt_range_j(L, 4, buffer.size());
       if (j < i) {
         j = i;
       }
       int flags = luaX_opt_integer<int>(L, 5, 0);
-      int result = zmq_send(check_socket(L, 1), buffer + i, j - i, flags);
+      int result = zmq_send(check_socket(L, 1), buffer.data() + i, j - i, flags);
       if (result == -1) {
         push_error(L);
       } else {
@@ -94,7 +93,7 @@ namespace dromozoa {
       if (result == -1) {
         push_error(L);
       } else {
-        lua_pushlstring(L, &buffer[0], result);
+        luaX_push(L, luaX_string_reference(&buffer[0], result));
       }
     }
 

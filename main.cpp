@@ -62,12 +62,12 @@ namespace dromozoa {
 #endif
 
     void impl_z85_decode(lua_State* L) {
-      size_t size = 0;
-      const char* data = luaL_checklstring(L, 1, &size);
-      if (size % 5 == 0) {
-        std::vector<char> buffer(size * 4 / 5);
-        if (zmq_z85_decode(reinterpret_cast<uint8_t*>(&buffer[0]), const_cast<char*>(data))) {
-          lua_pushlstring(L, &buffer[0], buffer.size());
+      luaX_string_reference source = luaX_check_string(L, 1);
+      if (source.size() % 5 == 0) {
+        std::vector<uint8_t> buffer(source.size() * 4 / 5);
+        // 2nd parameter of zmq_z85_decode did not have const qualifier in zeromq 5.0.4
+        if (zmq_z85_decode(&buffer[0], const_cast<char*>(source.data()))) {
+          luaX_push(L, luaX_string_reference(&buffer[0], buffer.size()));
         } else {
           push_error(L);
         }
@@ -78,11 +78,11 @@ namespace dromozoa {
     }
 
     void impl_z85_encode(lua_State* L) {
-      size_t size = 0;
-      const char* data = luaL_checklstring(L, 1, &size);
-      if (size % 4 == 0) {
-        std::vector<char> buffer(size * 5 / 4 + 1);
-        if (zmq_z85_encode(&buffer[0], reinterpret_cast<uint8_t*>(const_cast<char*>(data)), size)) {
+      luaX_string_reference source = luaX_check_string(L, 1);
+      if (source.size() % 4 == 0) {
+        std::vector<char> buffer(source.size() * 5 / 4 + 1);
+        // 2nd parameter of zmq_z85_encode did not have const qualifier in zeromq 5.0.4
+        if (zmq_z85_encode(&buffer[0], reinterpret_cast<uint8_t*>(const_cast<char*>(source.data())), source.size())) {
           luaX_push(L, &buffer[0]);
         } else {
           push_error(L);
@@ -100,22 +100,20 @@ namespace dromozoa {
       if (zmq_curve_keypair(z85_public_key, z85_secret_key) == -1) {
         push_error(L);
       } else {
-        lua_pushlstring(L, z85_public_key, 40);
-        lua_pushlstring(L, z85_secret_key, 40);
+        luaX_push(L, luaX_string_reference(z85_public_key, 40), luaX_string_reference(z85_secret_key, 40));
       }
     }
 #endif
 
 #ifdef HAVE_ZMQ_CURVE_PUBLIC
     void impl_curve_public(lua_State* L) {
-      size_t size = 0;
-      const char* z85_secret_key = luaL_checklstring(L, 1, &size);
-      if (size == 40) {
+      luaX_string_reference z85_secret_key = luaX_check_string(L, 1);
+      if (z85_secret_key.size() == 40) {
         char z85_public_key[41] = { 0 };
-        if (zmq_curve_public(z85_public_key, z85_secret_key) == -1) {
+        if (zmq_curve_public(z85_public_key, z85_secret_key.data()) == -1) {
           push_error(L);
         } else {
-          lua_pushlstring(L, z85_public_key, 40);
+          luaX_push(L, luaX_string_reference(z85_public_key, 40));
         }
       } else {
         errno = EINVAL;
