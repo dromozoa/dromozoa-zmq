@@ -53,13 +53,13 @@ namespace dromozoa {
         char value[32] = { 0 };
         result = zmq_getsockopt(check_socket(L, 1), name, value, &size);
         if (result != -1) {
-          lua_pushlstring(L, value, 32);
+          luaX_push(L, luaX_string_reference(value, 32));
         }
       } else if (size == 41) {
         char value[41] = { 0 };
         result = zmq_getsockopt(check_socket(L, 1), name, value, &size);
         if (result != -1) {
-          lua_pushlstring(L, value, 40);
+          luaX_push(L, luaX_string_reference(value, 40));
         }
       } else {
         errno = EINVAL;
