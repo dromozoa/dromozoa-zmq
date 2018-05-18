@@ -57,4 +57,4 @@ assert(pub:close())
 assert(control:close())
 assert(ctx:term())
 
-assert(os.remove("test-" .. name .. ".sock"))
+os.remove("test-" .. name .. ".sock")
