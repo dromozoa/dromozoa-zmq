@@ -1,4 +1,4 @@
-// Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -53,16 +53,19 @@ namespace dromozoa {
     }
 
     int setsockopt_curve(lua_State* L, int name) {
-      luaX_string_reference value = luaX_check_string(L, 3);
-      int result = -1;
-      if (value.size() == 32) {
-        result = zmq_setsockopt(check_socket(L, 1), name, value.data(), 32);
-      } else if (value.size() == 40) {
-        result = zmq_setsockopt(check_socket(L, 1), name, value.data(), curve_key_size_z85);
+      if (lua_isnoneornil(L, 3)) {
+        return zmq_setsockopt(check_socket(L, 1), name, 0, 0);
       } else {
-        errno = EINVAL;
+        luaX_string_reference value = luaX_check_string(L, 3);
+        if (value.size() == 32) {
+          return zmq_setsockopt(check_socket(L, 1), name, value.data(), 32);
+        } else if (value.size() == 40) {
+          return zmq_setsockopt(check_socket(L, 1), name, value.data(), curve_key_size_z85);
+        } else {
+          errno = EINVAL;
+          return -1;
+        }
       }
-      return result;
     }
 
     void impl_setsockopt(lua_State* L) {
