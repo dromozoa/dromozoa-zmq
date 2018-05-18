@@ -82,7 +82,7 @@ namespace dromozoa {
       if (source.size() % 4 == 0) {
         std::vector<char> buffer(source.size() * 5 / 4 + 1);
         // 2nd parameter of zmq_z85_encode did not have const qualifier in zeromq 5.0.4
-        if (zmq_z85_encode(&buffer[0], reinterpret_cast<const uint8_t*>(const_cast<char*>(source.data())), source.size())) {
+        if (zmq_z85_encode(&buffer[0], reinterpret_cast<uint8_t*>(const_cast<char*>(source.data())), source.size())) {
           luaX_push(L, &buffer[0]);
         } else {
           push_error(L);
