@@ -37,9 +37,7 @@ namespace dromozoa {
       int minor = 0;
       int patch = 0;
       zmq_version(&major, &minor, &patch);
-      luaX_push(L, major);
-      luaX_push(L, minor);
-      luaX_push(L, patch);
+      luaX_push(L, major, minor, patch);
     }
 
     void impl_proxy(lua_State* L) {
