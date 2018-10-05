@@ -471,6 +471,12 @@ namespace dromozoa {
 #ifdef ZMQ_ZAP_ENFORCE_DOMAIN
     luaX_set_field(L, -1, "ZMQ_ZAP_ENFORCE_DOMAIN", ZMQ_ZAP_ENFORCE_DOMAIN);
 #endif
+#ifdef ZMQ_LOOPBACK_FASTPATH
+    luaX_set_field(L, -1, "ZMQ_LOOPBACK_FASTPATH", ZMQ_LOOPBACK_FASTPATH);
+#endif
+#ifdef ZMQ_METADATA
+    luaX_set_field(L, -1, "ZMQ_METADATA", ZMQ_METADATA);
+#endif
 #ifdef ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL
     luaX_set_field(L, -1, "ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL", ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL);
 #endif
@@ -554,6 +560,9 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_THREAD_NAME_PREFIX
     luaX_set_field(L, -1, "ZMQ_THREAD_NAME_PREFIX", ZMQ_THREAD_NAME_PREFIX);
+#endif
+#ifdef ZMQ_ZERO_COPY_RECV
+    luaX_set_field(L, -1, "ZMQ_ZERO_COPY_RECV", ZMQ_ZERO_COPY_RECV);
 #endif
 #ifdef ZMQ_MSG_PROPERTY_ROUTING_ID
     luaX_set_field(L, -1, "ZMQ_MSG_PROPERTY_ROUTING_ID", ZMQ_MSG_PROPERTY_ROUTING_ID);
@@ -914,6 +923,10 @@ namespace dromozoa {
 #ifdef ZMQ_MAXMSGSIZE
       case ZMQ_MAXMSGSIZE:
         return setsockopt_option_int64_t;
+#endif
+#ifdef ZMQ_METADATA
+      case ZMQ_METADATA:
+        return setsockopt_option_character_string;
 #endif
 #ifdef ZMQ_MULTICAST_HOPS
       case ZMQ_MULTICAST_HOPS:
