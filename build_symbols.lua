@@ -74,30 +74,6 @@ local function parse_doc(filename)
   return result, enums
 end
 
---[====[
-local function generate_md(filename, title, data)
-  local out = assert(io.open(filename, "w"))
-  out:write(([[
-# %s
-
-Name|Type|Unit|Size|Default|Description
-----|----|----|----|----|----
-]]):format(title))
-  for name, item in data:each() do
-    local unit = item.option_value_unit
-    if unit == nil then
-      unit = ""
-    end
-    local size = item.option_value_size
-    if size == nil then
-      size = ""
-    end
-    out:write(("%s|%s|%s|%s|%s|%s\n"):format(name, item.option_value_type, unit, size, item.default_value or "", item.description))
-  end
-  out:close()
-end
-]====]
-
 local header_file = source_dir .. "/include/zmq.h"
 local getsockopt_file = source_dir .. "/doc/zmq_getsockopt.txt"
 local setsockopt_file = source_dir .. "/doc/zmq_setsockopt.txt"
@@ -115,7 +91,7 @@ namespace dromozoa {
 local buffer
 for line in io.lines(header_file) do
   local name = line:match "^#define (ZMQ_[%w_]+) "
-  if name then
+  if name and name ~= "ZMQ_EXPORT" then
     out:write(([[
 #ifdef %s
     luaX_set_field(L, -1, "%s", %s);
@@ -132,7 +108,6 @@ out:write [[
 ]]
 
 local getsockopts, getsockopt_enums = parse_doc(getsockopt_file)
--- generate_md("docs/getsockopt.md", "zmq_getsockopt", getsockopts)
 
 for i = 1, #getsockopts do
   local item = getsockopts[i]
@@ -156,7 +131,6 @@ out:write([[
 ]])
 
 local setsockopts, setsockopt_enums = parse_doc(setsockopt_file)
--- generate_md("docs/setsockopt.md", "zmq_setsockopt", setsockopts)
 
 for i = 1, #setsockopts do
   local item = setsockopts[i]
