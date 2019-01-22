@@ -1,4 +1,4 @@
-// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -27,7 +27,7 @@
 namespace dromozoa {
   class context_handle {
   public:
-    explicit context_handle(void* handle);
+    explicit context_handle(void*);
     ~context_handle();
     int term();
     void* get();
@@ -37,12 +37,12 @@ namespace dromozoa {
     context_handle& operator=(const context_handle&);
   };
 
-  context_handle* check_context_handle(lua_State* L, int arg);
-  void* check_context(lua_State* L, int arg);
+  context_handle* check_context_handle(lua_State*, int);
+  void* check_context(lua_State*, int);
 
   class socket_handle {
   public:
-    explicit socket_handle(void* handle);
+    explicit socket_handle(void*);
     ~socket_handle();
     int close();
     void* get();
@@ -52,18 +52,18 @@ namespace dromozoa {
     socket_handle& operator=(const socket_handle&);
   };
 
-  socket_handle* check_socket_handle(lua_State* L, int arg);
-  void* check_socket(lua_State* L, int arg);
-  void* to_socket(lua_State* L, int arg);
-  void new_socket(lua_State* L, void* handle);
+  socket_handle* check_socket_handle(lua_State*, int);
+  void* check_socket(lua_State*, int);
+  void* to_socket(lua_State*, int);
+  void new_socket(lua_State*, void*);
 
   class message_handle_impl;
 
   class message_handle {
   public:
     static message_handle_impl* init();
-    static message_handle_impl* init_data(const void* data, size_t size);
-    explicit message_handle(message_handle_impl* impl);
+    static message_handle_impl* init_data(const void*, size_t);
+    explicit message_handle(message_handle_impl*);
     ~message_handle();
     int close();
     zmq_msg_t* get();
@@ -73,10 +73,10 @@ namespace dromozoa {
     message_handle& operator=(const message_handle&);
   };
 
-  message_handle* check_message_handle(lua_State* L, int arg);
-  zmq_msg_t* check_message(lua_State* L, int arg);
+  message_handle* check_message_handle(lua_State*, int);
+  zmq_msg_t* check_message(lua_State*, int);
 
-  void push_error(lua_State* L);
+  void push_error(lua_State*);
 }
 
 #endif
