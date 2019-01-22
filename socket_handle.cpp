@@ -34,7 +34,7 @@ namespace dromozoa {
     return zmq_close(handle);
   }
 
-  void* socket_handle::get() {
+  void* socket_handle::get() const {
     return handle_;
   }
 }

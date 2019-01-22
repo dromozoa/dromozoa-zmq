@@ -129,7 +129,7 @@ namespace dromozoa {
     return impl_->close();
   }
 
-  zmq_msg_t* message_handle::get() {
+  zmq_msg_t* message_handle::get() const {
     return impl_->get();
   }
 }

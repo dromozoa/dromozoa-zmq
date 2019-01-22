@@ -34,7 +34,7 @@ namespace dromozoa {
     return zmq_ctx_term(handle);
   }
 
-  void* context_handle::get() {
+  void* context_handle::get() const {
     return handle_;
   }
 }

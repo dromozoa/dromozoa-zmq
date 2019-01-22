@@ -25,12 +25,24 @@
 #include <dromozoa/bind.hpp>
 
 namespace dromozoa {
+  class shared_context {
+  public:
+    shared_context();
+    ~shared_context();
+    void* get();
+  private:
+    void* counter_;
+    void* handle_;
+    shared_context(const shared_context&);
+    shared_context& operator=(const shared_context&);
+  };
+
   class context_handle {
   public:
     explicit context_handle(void*);
     ~context_handle();
     int term();
-    void* get();
+    void* get() const;
   private:
     void* handle_;
     context_handle(const context_handle&);
@@ -45,7 +57,7 @@ namespace dromozoa {
     explicit socket_handle(void*);
     ~socket_handle();
     int close();
-    void* get();
+    void* get() const;
   private:
     void* handle_;
     socket_handle(const socket_handle&);
@@ -66,7 +78,7 @@ namespace dromozoa {
     explicit message_handle(message_handle_impl*);
     ~message_handle();
     int close();
-    zmq_msg_t* get();
+    zmq_msg_t* get() const;
   private:
     scoped_ptr<message_handle_impl> impl_;
     message_handle(const message_handle&);
