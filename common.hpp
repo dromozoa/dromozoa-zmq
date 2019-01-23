@@ -30,7 +30,6 @@ namespace dromozoa {
   public:
     context_handle_impl();
     ~context_handle_impl();
-    void initialize(void*, void*);
     void add_ref();
     void release();
     void* get();
