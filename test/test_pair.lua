@@ -18,8 +18,6 @@
 local multi = require "dromozoa.multi"
 local zmq = require "dromozoa.zmq"
 
-os.exit()
-
 local verbose = os.getenv "VERBOSE" == "1"
 
 local ctx = assert(zmq.context())
@@ -32,8 +30,13 @@ local unix = require "dromozoa.unix"
 local zmq = require "dromozoa.zmq"
 
 local verbose = os.getenv "VERBOSE" == "1"
+local ptr = ...
 
-local ctx = assert(zmq.context())
+if verbose then
+  print(ptr)
+end
+
+local ctx = assert(zmq.context(ptr))
 local p1 = assert(ctx:socket(zmq.ZMQ_PAIR))
 assert(p1:connect "inproc://p1")
 
@@ -47,7 +50,11 @@ if verbose then
 end
 ]]
 
-local t = multi.thread(s)
+local ptr = ctx:share()
+if verbose then
+  print(ptr)
+end
+local t = multi.thread(s, ptr)
 
 local msg = assert(zmq.message())
 assert(msg:recv(p1))

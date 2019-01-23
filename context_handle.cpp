@@ -53,16 +53,16 @@ namespace dromozoa {
     }
   }
 
+  void* context_handle_impl::get() {
+    lock_guard<> lock(mutex_);
+    return handle_;
+  }
+
   int context_handle_impl::term() {
     lock_guard<> lock(mutex_);
     void* handle = handle_;
     handle_ = 0;
     return zmq_ctx_term(handle);
-  }
-
-  void* context_handle_impl::get() {
-    lock_guard<> lock(mutex_);
-    return handle_;
   }
 
   context_handle::context_handle(context_handle_impl* impl) : impl_(impl) {
@@ -73,15 +73,15 @@ namespace dromozoa {
     impl_->release();
   }
 
-  int context_handle::term() {
-    return impl_->term();
-  }
-
   void* context_handle::get() const {
     return impl_->get();
   }
 
   context_handle_impl* context_handle::share() const {
     return impl_;
+  }
+
+  int context_handle::term() {
+    return impl_->term();
   }
 }

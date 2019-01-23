@@ -33,8 +33,8 @@ namespace dromozoa {
     void initialize(void*, void*);
     void add_ref();
     void release();
-    int term();
     void* get();
+    int term();
   private:
     void* counter_;
     void* handle_;
@@ -47,9 +47,9 @@ namespace dromozoa {
   public:
     explicit context_handle(context_handle_impl*);
     ~context_handle();
-    int term();
     void* get() const;
     context_handle_impl* share() const;
+    int term();
   private:
     context_handle_impl* impl_;
     context_handle(const context_handle&);
