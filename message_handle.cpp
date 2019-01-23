@@ -31,18 +31,21 @@ namespace dromozoa {
   message_handle_impl::message_handle_impl() : closed_() {
     if (zmq_msg_init(&message_) == -1) {
       throw_failure();
+      return;
     }
   }
 
   message_handle_impl::message_handle_impl(const void* data, size_t size) : closed_() {
-    if (void* buffer = malloc(size)) {
-      memcpy(buffer, data, size);
-      if (zmq_msg_init_data(&message_, buffer, size, free_calback, 0) == -1) {
-        free(buffer);
-        throw_failure();
-      }
-    } else {
+    void* buffer = malloc(size);
+    if (!buffer) {
       throw_failure();
+      return;
+    }
+    memcpy(buffer, data, size);
+    if (zmq_msg_init_data(&message_, buffer, size, free_calback, 0) == -1) {
+      free(buffer);
+      throw_failure();
+      return;
     }
   }
 

@@ -19,14 +19,16 @@
 
 namespace dromozoa {
   context_handle_impl::context_handle_impl() : counter_(), handle_() {
-    if ((counter_ = zmq_atomic_counter_new())) {
-      handle_ = zmq_ctx_new();
-      if (!handle_) {
-        zmq_atomic_counter_destroy(&counter_);
-        throw_failure();
-      }
-    } else {
+    counter_ = zmq_atomic_counter_new();
+    if (!counter_) {
       throw_failure();
+      return;
+    }
+    handle_ = zmq_ctx_new();
+    if (!handle_) {
+      zmq_atomic_counter_destroy(&counter_);
+      throw_failure();
+      return;
     }
   }
 
