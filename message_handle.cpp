@@ -23,101 +23,52 @@
 
 namespace dromozoa {
   namespace {
-    enum {
-      state_constructed,
-      state_initialized,
-      state_closed,
-    };
-
     void free_calback(void* data, void*) {
       free(data);
     }
   }
 
-  class message_handle_impl {
-  public:
-    message_handle_impl() : state_(state_constructed) {}
-
-    ~message_handle_impl() {
-      if (state_ == state_initialized) {
-        if (close() == -1) {
-          DROMOZOA_UNEXPECTED(zmq_strerror(zmq_errno()));
-        }
-      }
-    }
-
-    int init() {
-      if (state_ == state_constructed) {
-        if (zmq_msg_init(&message_) == -1) {
-          return -1;
-        } else {
-          state_ = state_initialized;
-          return 0;
-        }
-      } else {
-        errno = EINVAL;
-        return -1;
-      }
-    }
-
-    int init_data(const void* data, size_t size) {
-      if (state_ == state_constructed) {
-        if (void* buffer = malloc(size)) {
-          memcpy(buffer, data, size);
-          if (zmq_msg_init_data(&message_, buffer, size, free_calback, 0) == -1) {
-            free(buffer);
-            return -1;
-          } else {
-            state_ = state_initialized;
-            return 0;
-          }
-        } else {
-          return -1;
-        }
-      } else {
-        errno = EINVAL;
-        return -1;
-      }
-    }
-
-    int close() {
-      if (state_ == state_initialized) {
-        state_ = state_closed;
-        return zmq_msg_close(&message_);
-      } else {
-        errno = EINVAL;
-        return -1;
-      }
-    }
-
-    zmq_msg_t* get() {
-      if (state_ == state_initialized) {
-        return &message_;
-      } else {
-        return 0;
-      }
-    }
-
-  private:
-    int state_;
-    zmq_msg_t message_;
-  };
-
-  message_handle_impl* message_handle::init() {
-    scoped_ptr<message_handle_impl> impl(new message_handle_impl());
-    if (impl->init() == -1) {
-      return 0;
-    } else {
-      return impl.release();
+  message_handle_impl::message_handle_impl() : closed_() {
+    if (zmq_msg_init(&message_) == -1) {
+      throw_failure();
     }
   }
 
-  message_handle_impl* message_handle::init_data(const void* data, size_t size) {
-    scoped_ptr<message_handle_impl> impl(new message_handle_impl());
-    if (impl->init_data(data, size) == -1) {
-      return 0;
+  message_handle_impl::message_handle_impl(const void* data, size_t size) : closed_() {
+    if (void* buffer = malloc(size)) {
+      memcpy(buffer, data, size);
+      if (zmq_msg_init_data(&message_, buffer, size, free_calback, 0) == -1) {
+        free(buffer);
+        throw_failure();
+      }
     } else {
-      return impl.release();
+      throw_failure();
+    }
+  }
+
+  message_handle_impl::~message_handle_impl() {
+    if (!closed_) {
+      if (close() == -1) {
+        DROMOZOA_UNEXPECTED(zmq_strerror(zmq_errno()));
+      }
+    }
+  }
+
+  int message_handle_impl::close() {
+    if (!closed_) {
+      closed_ = true;
+      return zmq_msg_close(&message_);
+    } else {
+      errno = EINVAL;
+      return -1;
+    }
+  }
+
+  zmq_msg_t* message_handle_impl::get() {
+    if (!closed_) {
+      return &message_;
+    } else {
+      return 0;
     }
   }
 
