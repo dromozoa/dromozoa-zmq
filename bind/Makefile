@@ -1,4 +1,4 @@
-# Copyright (C) 2016-2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+# Copyright (C) 2016-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-bind.
 #
@@ -18,22 +18,25 @@
 CPPFLAGS += -I$(LUA_INCDIR)
 CXXFLAGS += -Wall -W $(CFLAGS)
 LDFLAGS += -L$(LUA_LIBDIR) $(LIBFLAG)
-LDLIBS += -ldl
+LDLIBS += -lpthread -ldl
 
 OBJS = \
 	callback.o \
 	common.o \
 	core.o \
 	module.o \
+	mutex.o \
 	handle.o \
 	scoped_ptr.o \
+	system_error.o \
+	thread.o \
 	util.o
 TARGET = bind.so
 
-all: $(TARGET)
+all: $(TARGET) driver
 
 clean:
-	rm -f *.o $(TARGET)
+	rm -f *.o $(TARGET) driver
 
 check:
 	./test.sh
@@ -43,6 +46,9 @@ bind.so: $(OBJS)
 
 .cpp.o:
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
+
+driver: driver.c
+	$(CC) $(CPPFLAGS) -Wall -W $(CFLAGS) -L$(LUA_LIBDIR) $< -llua -o $@
 
 install:
 	mkdir -p $(LIBDIR)/dromozoa

@@ -1,4 +1,4 @@
-// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -24,12 +24,19 @@ namespace dromozoa {
     }
 
     void impl_call(lua_State* L) {
-      if (void* handle = zmq_ctx_new()) {
-        luaX_new<context_handle>(L, handle);
+      if (lua_islightuserdata(L, 2)) {
+        luaX_new<context_handle>(L, static_cast<context_handle_impl*>(lua_touserdata(L, 2)));
         luaX_set_metatable(L, "dromozoa.zmq.context");
       } else {
-        push_error(L);
+        scoped_ptr<context_handle_impl> impl(new context_handle_impl());
+        luaX_new<context_handle>(L, impl.get());
+        impl.release();
+        luaX_set_metatable(L, "dromozoa.zmq.context");
       }
+    }
+
+    void impl_share(lua_State* L) {
+      lua_pushlightuserdata(L, check_context_handle(L, 1)->share());
     }
 
     void impl_term(lua_State* L) {
@@ -96,6 +103,7 @@ namespace dromozoa {
       lua_pop(L, 1);
 
       luaX_set_metafield(L, -1, "__call", impl_call);
+      luaX_set_field(L, -1, "share", impl_share);
       luaX_set_field(L, -1, "term", impl_term);
       luaX_set_field(L, -1, "shutdown", impl_shutdown);
       luaX_set_field(L, -1, "get", impl_get);

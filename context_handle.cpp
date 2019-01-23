@@ -1,4 +1,4 @@
-// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -18,23 +18,71 @@
 #include "common.hpp"
 
 namespace dromozoa {
-  context_handle::context_handle(void* handle) : handle_(handle) {}
+  context_handle_impl::context_handle_impl() : counter_(), handle_() {
+    counter_ = zmq_atomic_counter_new();
+    if (!counter_) {
+      throw_failure();
+      return;
+    }
+    handle_ = zmq_ctx_new();
+    if (!handle_) {
+      zmq_atomic_counter_destroy(&counter_);
+      throw_failure();
+      return;
+    }
+  }
 
-  context_handle::~context_handle() {
+  context_handle_impl::~context_handle_impl() {
+    lock_guard<> lock(mutex_);
+    zmq_atomic_counter_destroy(&counter_);
     if (handle_) {
-      if (term() == -1) {
+      void* handle = handle_;
+      handle_ = 0;
+      if (zmq_ctx_term(handle) == -1) {
         DROMOZOA_UNEXPECTED(zmq_strerror(zmq_errno()));
       }
     }
   }
 
-  int context_handle::term() {
+  void context_handle_impl::add_ref() {
+    zmq_atomic_counter_inc(counter_);
+  }
+
+  void context_handle_impl::release() {
+    if (zmq_atomic_counter_dec(counter_) == 0) {
+      delete this;
+    }
+  }
+
+  void* context_handle_impl::get() {
+    lock_guard<> lock(mutex_);
+    return handle_;
+  }
+
+  int context_handle_impl::term() {
+    lock_guard<> lock(mutex_);
     void* handle = handle_;
     handle_ = 0;
     return zmq_ctx_term(handle);
   }
 
-  void* context_handle::get() {
-    return handle_;
+  context_handle::context_handle(context_handle_impl* impl) : impl_(impl) {
+    impl_->add_ref();
+  }
+
+  context_handle::~context_handle() {
+    impl_->release();
+  }
+
+  void* context_handle::get() const {
+    return impl_->get();
+  }
+
+  context_handle_impl* context_handle::share() const {
+    return impl_;
+  }
+
+  int context_handle::term() {
+    return impl_->term();
   }
 }

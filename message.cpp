@@ -1,4 +1,4 @@
-// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -29,19 +29,20 @@ namespace dromozoa {
     }
 
     void impl_call(lua_State* L) {
-      message_handle_impl* impl = 0;
+      scoped_ptr<message_handle_impl> impl;
       if (luaX_string_reference source = luaX_to_string(L, 2)) {
         size_t i = luaX_opt_range_i(L, 3, source.size());
         size_t j = luaX_opt_range_j(L, 4, source.size());
         if (j < i) {
           j = i;
         }
-        impl = message_handle::init_data(source.data() + i, j - i);
+        impl.reset(new message_handle_impl(source.data() + i, j - i));
       } else {
-        impl = message_handle::init();
+        impl.reset(new message_handle_impl());
       }
       if (impl) {
-        luaX_new<message_handle>(L, impl);
+        luaX_new<message_handle>(L, impl.get());
+        impl.release();
         luaX_set_metatable(L, "dromozoa.zmq.message");
       } else {
         push_error(L);
