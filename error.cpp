@@ -1,4 +1,4 @@
-// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -21,5 +21,10 @@ namespace dromozoa {
   void push_error(lua_State* L) {
     int code = zmq_errno();
     luaX_push(L, luaX_nil, zmq_strerror(code), code);
+  }
+
+  void throw_failure() {
+    int code = zmq_errno();
+    luaX_throw_failure(zmq_strerror(code), code);
   }
 }

@@ -24,11 +24,14 @@ namespace dromozoa {
     }
 
     void impl_call(lua_State* L) {
-      if (void* handle = zmq_ctx_new()) {
-        luaX_new<context_handle>(L, handle);
+      if (lua_islightuserdata(L, 2)) {
+        luaX_new<context_handle>(L, static_cast<context_handle_impl*>(lua_touserdata(L, 2)));
         luaX_set_metatable(L, "dromozoa.zmq.context");
       } else {
-        push_error(L);
+        scoped_ptr<context_handle_impl> impl(new context_handle_impl());
+        luaX_new<context_handle>(L, impl.get());
+        impl.release();
+        luaX_set_metatable(L, "dromozoa.zmq.context");
       }
     }
 

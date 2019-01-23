@@ -23,28 +23,35 @@
 #include <zmq.h>
 
 #include <dromozoa/bind.hpp>
+#include <dromozoa/bind/mutex.hpp>
 
 namespace dromozoa {
-  class shared_context {
+  class context_handle_impl {
   public:
-    shared_context();
-    ~shared_context();
+    context_handle_impl();
+    ~context_handle_impl();
+    void initialize(void*, void*);
+    void add_ref();
+    void release();
+    int term();
     void* get();
   private:
     void* counter_;
     void* handle_;
-    shared_context(const shared_context&);
-    shared_context& operator=(const shared_context&);
+    mutex mutex_;
+    context_handle_impl(const context_handle_impl&);
+    context_handle_impl& operator=(const context_handle_impl&);
   };
 
   class context_handle {
   public:
-    explicit context_handle(void*);
+    explicit context_handle(context_handle_impl*);
     ~context_handle();
     int term();
     void* get() const;
+    context_handle_impl* share() const;
   private:
-    void* handle_;
+    context_handle_impl* impl_;
     context_handle(const context_handle&);
     context_handle& operator=(const context_handle&);
   };
@@ -89,6 +96,7 @@ namespace dromozoa {
   zmq_msg_t* check_message(lua_State*, int);
 
   void push_error(lua_State*);
+  void throw_failure();
 }
 
 #endif
