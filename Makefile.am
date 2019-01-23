@@ -1,4 +1,4 @@
-# Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+# Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-zmq.
 #
@@ -33,7 +33,7 @@ luaexec_LTLIBRARIES = zmq.la
 
 noinst_HEADERS = common.hpp symbols.hpp
 
-zmq_la_CPPFLAGS = -I$(top_srcdir)/bind -I$(top_srcdir)/include
+zmq_la_CPPFLAGS = -I$(top_srcdir)/bind
 zmq_la_LDFLAGS = -module -avoid-version -shared
 zmq_la_SOURCES = \
 	context.cpp \

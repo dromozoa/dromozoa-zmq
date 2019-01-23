@@ -1,4 +1,4 @@
-// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -23,60 +23,89 @@
 #include <zmq.h>
 
 #include <dromozoa/bind.hpp>
+#include <dromozoa/bind/mutex.hpp>
 
 namespace dromozoa {
+  class context_handle_impl {
+  public:
+    context_handle_impl();
+    ~context_handle_impl();
+    void add_ref();
+    void release();
+    void* get();
+    int term();
+  private:
+    void* counter_;
+    void* handle_;
+    mutex mutex_;
+    context_handle_impl(const context_handle_impl&);
+    context_handle_impl& operator=(const context_handle_impl&);
+  };
+
   class context_handle {
   public:
-    explicit context_handle(void* handle);
+    explicit context_handle(context_handle_impl*);
     ~context_handle();
+    void* get() const;
+    context_handle_impl* share() const;
     int term();
-    void* get();
   private:
-    void* handle_;
+    context_handle_impl* impl_;
     context_handle(const context_handle&);
     context_handle& operator=(const context_handle&);
   };
 
-  context_handle* check_context_handle(lua_State* L, int arg);
-  void* check_context(lua_State* L, int arg);
+  context_handle* check_context_handle(lua_State*, int);
+  void* check_context(lua_State*, int);
 
   class socket_handle {
   public:
-    explicit socket_handle(void* handle);
+    explicit socket_handle(void*);
     ~socket_handle();
     int close();
-    void* get();
+    void* get() const;
   private:
     void* handle_;
     socket_handle(const socket_handle&);
     socket_handle& operator=(const socket_handle&);
   };
 
-  socket_handle* check_socket_handle(lua_State* L, int arg);
-  void* check_socket(lua_State* L, int arg);
-  void* to_socket(lua_State* L, int arg);
-  void new_socket(lua_State* L, void* handle);
+  socket_handle* check_socket_handle(lua_State*, int);
+  void* check_socket(lua_State*, int);
+  void* to_socket(lua_State*, int);
+  void new_socket(lua_State*, void*);
 
-  class message_handle_impl;
+  class message_handle_impl {
+  public:
+    message_handle_impl();
+    message_handle_impl(const void*, size_t);
+    ~message_handle_impl();
+    int close();
+    zmq_msg_t* get();
+  private:
+    bool closed_;
+    zmq_msg_t message_;
+    message_handle_impl(const message_handle_impl&);
+    message_handle_impl& operator=(const message_handle_impl&);
+  };
 
   class message_handle {
   public:
-    static message_handle_impl* init();
-    static message_handle_impl* init_data(const void* data, size_t size);
-    explicit message_handle(message_handle_impl* impl);
+    explicit message_handle(message_handle_impl*);
     ~message_handle();
     int close();
-    zmq_msg_t* get();
+    zmq_msg_t* get() const;
   private:
     scoped_ptr<message_handle_impl> impl_;
     message_handle(const message_handle&);
     message_handle& operator=(const message_handle&);
   };
 
-  message_handle* check_message_handle(lua_State* L, int arg);
-  zmq_msg_t* check_message(lua_State* L, int arg);
+  message_handle* check_message_handle(lua_State*, int);
+  zmq_msg_t* check_message(lua_State*, int);
 
-  void push_error(lua_State* L);
+  void push_error(lua_State*);
+  void throw_failure();
 }
 
 #endif

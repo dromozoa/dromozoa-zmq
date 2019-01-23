@@ -1,4 +1,4 @@
-# Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+# Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-zmq.
 #
@@ -37,6 +37,11 @@ AC_CHECK_FUNCS([zmq_has])
 AC_CHECK_FUNCS([zmq_msg_gets])
 
 AC_CHECK_DECLS([zmq_curve_keypair], [], [], [#include <zmq.h>])
+
+AX_PTHREAD([], [AC_MSG_ERROR([could not find pthread])])
+CXXFLAGS="$CXXFLAGS $PTHREAD_CFLAGS"
+LIBS="$LIBS $PTHREAD_LIBS"
+AC_SEARCH_LIBS([pthread_create], [pthread])
 
 AX_PROG_LUA([5.1], [], [], [AC_MSG_ERROR([could not find lua])])
 AX_LUA_HEADERS([], [AC_MSG_ERROR([could not find lua])])
