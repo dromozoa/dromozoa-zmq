@@ -1,4 +1,4 @@
--- Copyright (C) 2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2018,2019 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -23,7 +23,10 @@ local function parse_doc(filename)
   local item
   local prev
   local mode
+  local count = 0
+
   for line in io.lines(filename) do
+    count = count + 1
     if line:find "^~+$" then
       local name, description = assert(prev:match "^(ZMQ_[%w_]+):%s+(.*)")
       item = { name = name, description = description }
@@ -63,8 +66,10 @@ local function parse_doc(filename)
           item.default_value = v
         elseif k == "Applicable socket types" then
           item.applicable_socket_types = v
+        elseif k == "Maximum value" then
+          item.maximum_value = v
         else
-          error "could not parse line"
+          error(("could not parse line at file %s line %d: %q"):format(filename, count, line))
         end
       end
     end
@@ -218,7 +223,6 @@ out:write [[
 .markdown-body {
   box-sizing: border-box;
   min-width: 200px;
-  max-width: 980px;
   margin: 0 auto;
   padding: 45px;
 }
