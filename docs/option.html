@@ -9,7 +9,6 @@
 .markdown-body {
   box-sizing: border-box;
   min-width: 200px;
-  max-width: 980px;
   margin: 0 auto;
   padding: 45px;
 }
@@ -434,6 +433,20 @@
     <td></td>
     <td>-1</td>
   </tr>
+  <tr>
+    <td>ZMQ_MULTICAST_LOOP</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ROUTER_NOTIFY</td>
+    <td>int</td>
+    <td>0, ZMQ_NOTIFY_CONNECT, ZMQ_NOTIFY_DISCONNECT, ZMQ_NOTIFY_CONNECT|ZMQ_NOTIFY_DISCONNECT</td>
+    <td></td>
+    <td>0</td>
+  </tr>
 </table>
 
 <h2>zmq_setsockopt</h2>
@@ -577,7 +590,7 @@
     <td>int</td>
     <td>milliseconds</td>
     <td></td>
-    <td>0</td>
+    <td>0 normally, ZMQ_HEARTBEAT_IVL if it is set</td>
   </tr>
   <tr>
     <td>ZMQ_HEARTBEAT_TTL</td>
@@ -970,6 +983,20 @@
     <td>milliseconds</td>
     <td></td>
     <td>-1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_MULTICAST_LOOP</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ROUTER_NOTIFY</td>
+    <td>int</td>
+    <td>0, ZMQ_NOTIFY_CONNECT, ZMQ_NOTIFY_DISCONNECT, ZMQ_NOTIFY_CONNECT|ZMQ_NOTIFY_DISCONNECT</td>
+    <td></td>
+    <td>0</td>
   </tr>
 </table>
 

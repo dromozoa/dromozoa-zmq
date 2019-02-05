@@ -39,6 +39,18 @@ namespace dromozoa {
 #ifdef ZMQ_MAX_MSGSZ
     luaX_set_field(L, -1, "ZMQ_MAX_MSGSZ", ZMQ_MAX_MSGSZ);
 #endif
+#ifdef ZMQ_MSG_T_SIZE
+    luaX_set_field(L, -1, "ZMQ_MSG_T_SIZE", ZMQ_MSG_T_SIZE);
+#endif
+#ifdef ZMQ_THREAD_AFFINITY_CPU_ADD
+    luaX_set_field(L, -1, "ZMQ_THREAD_AFFINITY_CPU_ADD", ZMQ_THREAD_AFFINITY_CPU_ADD);
+#endif
+#ifdef ZMQ_THREAD_AFFINITY_CPU_REMOVE
+    luaX_set_field(L, -1, "ZMQ_THREAD_AFFINITY_CPU_REMOVE", ZMQ_THREAD_AFFINITY_CPU_REMOVE);
+#endif
+#ifdef ZMQ_THREAD_NAME_PREFIX
+    luaX_set_field(L, -1, "ZMQ_THREAD_NAME_PREFIX", ZMQ_THREAD_NAME_PREFIX);
+#endif
 #ifdef ZMQ_IO_THREADS_DFLT
     luaX_set_field(L, -1, "ZMQ_IO_THREADS_DFLT", ZMQ_IO_THREADS_DFLT);
 #endif
@@ -312,6 +324,15 @@ namespace dromozoa {
 #ifdef ZMQ_USE_FD
     luaX_set_field(L, -1, "ZMQ_USE_FD", ZMQ_USE_FD);
 #endif
+#ifdef ZMQ_GSSAPI_PRINCIPAL_NAMETYPE
+    luaX_set_field(L, -1, "ZMQ_GSSAPI_PRINCIPAL_NAMETYPE", ZMQ_GSSAPI_PRINCIPAL_NAMETYPE);
+#endif
+#ifdef ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE
+    luaX_set_field(L, -1, "ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE", ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE);
+#endif
+#ifdef ZMQ_BINDTODEVICE
+    luaX_set_field(L, -1, "ZMQ_BINDTODEVICE", ZMQ_BINDTODEVICE);
+#endif
 #ifdef ZMQ_MORE
     luaX_set_field(L, -1, "ZMQ_MORE", ZMQ_MORE);
 #endif
@@ -375,6 +396,15 @@ namespace dromozoa {
 #ifdef ZMQ_SRCFD
     luaX_set_field(L, -1, "ZMQ_SRCFD", ZMQ_SRCFD);
 #endif
+#ifdef ZMQ_GSSAPI_NT_HOSTBASED
+    luaX_set_field(L, -1, "ZMQ_GSSAPI_NT_HOSTBASED", ZMQ_GSSAPI_NT_HOSTBASED);
+#endif
+#ifdef ZMQ_GSSAPI_NT_USER_NAME
+    luaX_set_field(L, -1, "ZMQ_GSSAPI_NT_USER_NAME", ZMQ_GSSAPI_NT_USER_NAME);
+#endif
+#ifdef ZMQ_GSSAPI_NT_KRB5_PRINCIPAL
+    luaX_set_field(L, -1, "ZMQ_GSSAPI_NT_KRB5_PRINCIPAL", ZMQ_GSSAPI_NT_KRB5_PRINCIPAL);
+#endif
 #ifdef ZMQ_EVENT_CONNECTED
     luaX_set_field(L, -1, "ZMQ_EVENT_CONNECTED", ZMQ_EVENT_CONNECTED);
 #endif
@@ -410,72 +440,6 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_EVENT_ALL
     luaX_set_field(L, -1, "ZMQ_EVENT_ALL", ZMQ_EVENT_ALL);
-#endif
-#ifdef ZMQ_POLLIN
-    luaX_set_field(L, -1, "ZMQ_POLLIN", ZMQ_POLLIN);
-#endif
-#ifdef ZMQ_POLLOUT
-    luaX_set_field(L, -1, "ZMQ_POLLOUT", ZMQ_POLLOUT);
-#endif
-#ifdef ZMQ_POLLERR
-    luaX_set_field(L, -1, "ZMQ_POLLERR", ZMQ_POLLERR);
-#endif
-#ifdef ZMQ_POLLPRI
-    luaX_set_field(L, -1, "ZMQ_POLLPRI", ZMQ_POLLPRI);
-#endif
-#ifdef ZMQ_POLLITEMS_DFLT
-    luaX_set_field(L, -1, "ZMQ_POLLITEMS_DFLT", ZMQ_POLLITEMS_DFLT);
-#endif
-#ifdef ZMQ_HAS_CAPABILITIES
-    luaX_set_field(L, -1, "ZMQ_HAS_CAPABILITIES", ZMQ_HAS_CAPABILITIES);
-#endif
-#ifdef ZMQ_STREAMER
-    luaX_set_field(L, -1, "ZMQ_STREAMER", ZMQ_STREAMER);
-#endif
-#ifdef ZMQ_FORWARDER
-    luaX_set_field(L, -1, "ZMQ_FORWARDER", ZMQ_FORWARDER);
-#endif
-#ifdef ZMQ_QUEUE
-    luaX_set_field(L, -1, "ZMQ_QUEUE", ZMQ_QUEUE);
-#endif
-#ifdef ZMQ_SERVER
-    luaX_set_field(L, -1, "ZMQ_SERVER", ZMQ_SERVER);
-#endif
-#ifdef ZMQ_CLIENT
-    luaX_set_field(L, -1, "ZMQ_CLIENT", ZMQ_CLIENT);
-#endif
-#ifdef ZMQ_RADIO
-    luaX_set_field(L, -1, "ZMQ_RADIO", ZMQ_RADIO);
-#endif
-#ifdef ZMQ_DISH
-    luaX_set_field(L, -1, "ZMQ_DISH", ZMQ_DISH);
-#endif
-#ifdef ZMQ_GATHER
-    luaX_set_field(L, -1, "ZMQ_GATHER", ZMQ_GATHER);
-#endif
-#ifdef ZMQ_SCATTER
-    luaX_set_field(L, -1, "ZMQ_SCATTER", ZMQ_SCATTER);
-#endif
-#ifdef ZMQ_DGRAM
-    luaX_set_field(L, -1, "ZMQ_DGRAM", ZMQ_DGRAM);
-#endif
-#ifdef ZMQ_GSSAPI_PRINCIPAL_NAMETYPE
-    luaX_set_field(L, -1, "ZMQ_GSSAPI_PRINCIPAL_NAMETYPE", ZMQ_GSSAPI_PRINCIPAL_NAMETYPE);
-#endif
-#ifdef ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE
-    luaX_set_field(L, -1, "ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE", ZMQ_GSSAPI_SERVICE_PRINCIPAL_NAMETYPE);
-#endif
-#ifdef ZMQ_BINDTODEVICE
-    luaX_set_field(L, -1, "ZMQ_BINDTODEVICE", ZMQ_BINDTODEVICE);
-#endif
-#ifdef ZMQ_ZAP_ENFORCE_DOMAIN
-    luaX_set_field(L, -1, "ZMQ_ZAP_ENFORCE_DOMAIN", ZMQ_ZAP_ENFORCE_DOMAIN);
-#endif
-#ifdef ZMQ_LOOPBACK_FASTPATH
-    luaX_set_field(L, -1, "ZMQ_LOOPBACK_FASTPATH", ZMQ_LOOPBACK_FASTPATH);
-#endif
-#ifdef ZMQ_METADATA
-    luaX_set_field(L, -1, "ZMQ_METADATA", ZMQ_METADATA);
 #endif
 #ifdef ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL
     luaX_set_field(L, -1, "ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL", ZMQ_EVENT_HANDSHAKE_FAILED_NO_DETAIL);
@@ -549,17 +513,68 @@ namespace dromozoa {
 #ifdef ZMQ_PROTOCOL_ERROR_ZAP_INVALID_METADATA
     luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZAP_INVALID_METADATA", ZMQ_PROTOCOL_ERROR_ZAP_INVALID_METADATA);
 #endif
-#ifdef ZMQ_MSG_T_SIZE
-    luaX_set_field(L, -1, "ZMQ_MSG_T_SIZE", ZMQ_MSG_T_SIZE);
+#ifdef ZMQ_POLLIN
+    luaX_set_field(L, -1, "ZMQ_POLLIN", ZMQ_POLLIN);
 #endif
-#ifdef ZMQ_THREAD_AFFINITY_CPU_ADD
-    luaX_set_field(L, -1, "ZMQ_THREAD_AFFINITY_CPU_ADD", ZMQ_THREAD_AFFINITY_CPU_ADD);
+#ifdef ZMQ_POLLOUT
+    luaX_set_field(L, -1, "ZMQ_POLLOUT", ZMQ_POLLOUT);
 #endif
-#ifdef ZMQ_THREAD_AFFINITY_CPU_REMOVE
-    luaX_set_field(L, -1, "ZMQ_THREAD_AFFINITY_CPU_REMOVE", ZMQ_THREAD_AFFINITY_CPU_REMOVE);
+#ifdef ZMQ_POLLERR
+    luaX_set_field(L, -1, "ZMQ_POLLERR", ZMQ_POLLERR);
 #endif
-#ifdef ZMQ_THREAD_NAME_PREFIX
-    luaX_set_field(L, -1, "ZMQ_THREAD_NAME_PREFIX", ZMQ_THREAD_NAME_PREFIX);
+#ifdef ZMQ_POLLPRI
+    luaX_set_field(L, -1, "ZMQ_POLLPRI", ZMQ_POLLPRI);
+#endif
+#ifdef ZMQ_POLLITEMS_DFLT
+    luaX_set_field(L, -1, "ZMQ_POLLITEMS_DFLT", ZMQ_POLLITEMS_DFLT);
+#endif
+#ifdef ZMQ_HAS_CAPABILITIES
+    luaX_set_field(L, -1, "ZMQ_HAS_CAPABILITIES", ZMQ_HAS_CAPABILITIES);
+#endif
+#ifdef ZMQ_STREAMER
+    luaX_set_field(L, -1, "ZMQ_STREAMER", ZMQ_STREAMER);
+#endif
+#ifdef ZMQ_FORWARDER
+    luaX_set_field(L, -1, "ZMQ_FORWARDER", ZMQ_FORWARDER);
+#endif
+#ifdef ZMQ_QUEUE
+    luaX_set_field(L, -1, "ZMQ_QUEUE", ZMQ_QUEUE);
+#endif
+#ifdef ZMQ_SERVER
+    luaX_set_field(L, -1, "ZMQ_SERVER", ZMQ_SERVER);
+#endif
+#ifdef ZMQ_CLIENT
+    luaX_set_field(L, -1, "ZMQ_CLIENT", ZMQ_CLIENT);
+#endif
+#ifdef ZMQ_RADIO
+    luaX_set_field(L, -1, "ZMQ_RADIO", ZMQ_RADIO);
+#endif
+#ifdef ZMQ_DISH
+    luaX_set_field(L, -1, "ZMQ_DISH", ZMQ_DISH);
+#endif
+#ifdef ZMQ_GATHER
+    luaX_set_field(L, -1, "ZMQ_GATHER", ZMQ_GATHER);
+#endif
+#ifdef ZMQ_SCATTER
+    luaX_set_field(L, -1, "ZMQ_SCATTER", ZMQ_SCATTER);
+#endif
+#ifdef ZMQ_DGRAM
+    luaX_set_field(L, -1, "ZMQ_DGRAM", ZMQ_DGRAM);
+#endif
+#ifdef ZMQ_ZAP_ENFORCE_DOMAIN
+    luaX_set_field(L, -1, "ZMQ_ZAP_ENFORCE_DOMAIN", ZMQ_ZAP_ENFORCE_DOMAIN);
+#endif
+#ifdef ZMQ_LOOPBACK_FASTPATH
+    luaX_set_field(L, -1, "ZMQ_LOOPBACK_FASTPATH", ZMQ_LOOPBACK_FASTPATH);
+#endif
+#ifdef ZMQ_METADATA
+    luaX_set_field(L, -1, "ZMQ_METADATA", ZMQ_METADATA);
+#endif
+#ifdef ZMQ_MULTICAST_LOOP
+    luaX_set_field(L, -1, "ZMQ_MULTICAST_LOOP", ZMQ_MULTICAST_LOOP);
+#endif
+#ifdef ZMQ_ROUTER_NOTIFY
+    luaX_set_field(L, -1, "ZMQ_ROUTER_NOTIFY", ZMQ_ROUTER_NOTIFY);
 #endif
 #ifdef ZMQ_ZERO_COPY_RECV
     luaX_set_field(L, -1, "ZMQ_ZERO_COPY_RECV", ZMQ_ZERO_COPY_RECV);
@@ -576,14 +591,11 @@ namespace dromozoa {
 #ifdef ZMQ_MSG_PROPERTY_PEER_ADDRESS
     luaX_set_field(L, -1, "ZMQ_MSG_PROPERTY_PEER_ADDRESS", ZMQ_MSG_PROPERTY_PEER_ADDRESS);
 #endif
-#ifdef ZMQ_GSSAPI_NT_HOSTBASED
-    luaX_set_field(L, -1, "ZMQ_GSSAPI_NT_HOSTBASED", ZMQ_GSSAPI_NT_HOSTBASED);
+#ifdef ZMQ_NOTIFY_CONNECT
+    luaX_set_field(L, -1, "ZMQ_NOTIFY_CONNECT", ZMQ_NOTIFY_CONNECT);
 #endif
-#ifdef ZMQ_GSSAPI_NT_USER_NAME
-    luaX_set_field(L, -1, "ZMQ_GSSAPI_NT_USER_NAME", ZMQ_GSSAPI_NT_USER_NAME);
-#endif
-#ifdef ZMQ_GSSAPI_NT_KRB5_PRINCIPAL
-    luaX_set_field(L, -1, "ZMQ_GSSAPI_NT_KRB5_PRINCIPAL", ZMQ_GSSAPI_NT_KRB5_PRINCIPAL);
+#ifdef ZMQ_NOTIFY_DISCONNECT
+    luaX_set_field(L, -1, "ZMQ_NOTIFY_DISCONNECT", ZMQ_NOTIFY_DISCONNECT);
 #endif
   }
 
@@ -815,6 +827,14 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_VMCI_CONNECT_TIMEOUT
       case ZMQ_VMCI_CONNECT_TIMEOUT:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_MULTICAST_LOOP
+      case ZMQ_MULTICAST_LOOP:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_ROUTER_NOTIFY
+      case ZMQ_ROUTER_NOTIFY:
         return getsockopt_option_int;
 #endif
       default:
@@ -1122,6 +1142,14 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_VMCI_CONNECT_TIMEOUT
       case ZMQ_VMCI_CONNECT_TIMEOUT:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_MULTICAST_LOOP
+      case ZMQ_MULTICAST_LOOP:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_ROUTER_NOTIFY
+      case ZMQ_ROUTER_NOTIFY:
         return setsockopt_option_int;
 #endif
       default:
