@@ -19,9 +19,9 @@
 
 namespace dromozoa {
 #ifndef HAVE_ZMQ_ATOMIC_COUNTER_NEW
-  class atomic_counter {
+  class atomic_counter_impl {
   public:
-    atomic_counter() : count_() {}
+    atomic_counter_impl() : count_() {}
 
     int increment() {
       lock_guard<> lock(mutex_);
@@ -36,8 +36,8 @@ namespace dromozoa {
   private:
     int count_;
     mutex mutex_;
-    atomic_counter(const atomic_counter&);
-    atomic_counter& operator=(const atomic_counter&);
+    atomic_counter_impl(const atomic_counter_impl&);
+    atomic_counter_impl& operator=(const atomic_counter_impl&);
   };
 #endif
 
@@ -46,7 +46,7 @@ namespace dromozoa {
 #ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
     counter_ = zmq_atomic_counter_new();
 #else
-    counter_.reset(new atomic_counter());
+    counter_.reset(new atomic_counter_impl());
 #endif
     if (!counter_) {
       throw_failure();
