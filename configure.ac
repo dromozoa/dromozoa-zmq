@@ -35,6 +35,7 @@ AC_CHECK_FUNCS([zmq_curve_keypair])
 AC_CHECK_FUNCS([zmq_curve_public])
 AC_CHECK_FUNCS([zmq_has])
 AC_CHECK_FUNCS([zmq_msg_gets])
+AC_CHECK_FUNCS([zmq_atomic_counter_new])
 
 AC_CHECK_DECLS([zmq_curve_keypair], [], [], [#include <zmq.h>])
 

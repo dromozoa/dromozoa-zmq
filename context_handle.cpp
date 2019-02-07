@@ -18,15 +18,48 @@
 #include "common.hpp"
 
 namespace dromozoa {
+#ifndef HAVE_ZMQ_ATOMIC_COUNTER_NEW
+  class atomic_counter {
+  public:
+    atomic_counter() : count_() {}
+
+    int increment() {
+      lock_guard<> lock(mutex_);
+      return count_++;
+    }
+
+    int decrement() {
+      lock_guard<> lock(mutex_);
+      return --count_ > 0 ? 1 : 0;
+    }
+
+  private:
+    int count_;
+    mutex mutex_;
+    atomic_counter(const atomic_counter&);
+    atomic_counter& operator=(const atomic_counter&);
+  };
+#endif
+
+
   context_handle_impl::context_handle_impl() : counter_(), handle_() {
+#ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
     counter_ = zmq_atomic_counter_new();
+#else
+    counter_.reset(new atomic_counter());
+#endif
     if (!counter_) {
       throw_failure();
       return;
     }
+
     handle_ = zmq_ctx_new();
     if (!handle_) {
+#ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
       zmq_atomic_counter_destroy(&counter_);
+#else
+      counter_.reset();
+#endif
       throw_failure();
       return;
     }
@@ -34,7 +67,11 @@ namespace dromozoa {
 
   context_handle_impl::~context_handle_impl() {
     lock_guard<> lock(mutex_);
+#ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
     zmq_atomic_counter_destroy(&counter_);
+#else
+    counter_.reset();
+#endif
     if (handle_) {
       void* handle = handle_;
       handle_ = 0;
@@ -45,11 +82,20 @@ namespace dromozoa {
   }
 
   void context_handle_impl::add_ref() {
+#ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
     zmq_atomic_counter_inc(counter_);
+#else
+    counter_->increment();
+#endif
   }
 
   void context_handle_impl::release() {
-    if (zmq_atomic_counter_dec(counter_) == 0) {
+#ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
+    bool reached_zero = zmq_atomic_counter_dec(counter_) == 0;
+#else
+    bool reached_zero = counter_->decrement() == 0;
+#endif
+    if (reached_zero) {
       delete this;
     }
   }
