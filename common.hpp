@@ -18,6 +18,10 @@
 #ifndef DROMOZOA_COMMON_HPP
 #define DROMOZOA_COMMON_HPP
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stddef.h>
 
 #include <zmq.h>
@@ -26,6 +30,13 @@
 #include <dromozoa/bind/mutex.hpp>
 
 namespace dromozoa {
+#ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
+  typedef void* atomic_counter;
+#else
+  class atomic_counter_impl;
+  typedef scoped_ptr<atomic_counter_impl> atomic_counter;
+#endif
+
   class context_handle_impl {
   public:
     context_handle_impl();
@@ -35,7 +46,7 @@ namespace dromozoa {
     void* get();
     int term();
   private:
-    void* counter_;
+    atomic_counter counter_;
     void* handle_;
     mutex mutex_;
     context_handle_impl(const context_handle_impl&);
