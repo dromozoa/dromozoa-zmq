@@ -1,8 +1,8 @@
 rockspec_format = "3.0"
 package = "dromozoa-zmq"
-version = "1.15-1"
+version = "1.16-1"
 source = {
-  url = "https://github.com/dromozoa/dromozoa-zmq/releases/download/v1.15/dromozoa-zmq-1.15.tar.gz";
+  url = "https://github.com/dromozoa/dromozoa-zmq/releases/download/v1.16/dromozoa-zmq-1.16.tar.gz";
 }
 description = {
   summary = "Lua bindings for ZeroMQ";
