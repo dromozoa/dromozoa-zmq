@@ -27,14 +27,14 @@
 #include <zmq.h>
 
 #include <dromozoa/bind.hpp>
+#include <dromozoa/bind/atomic.hpp>
 #include <dromozoa/bind/mutex.hpp>
 
 namespace dromozoa {
 #ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
-  typedef void* atomic_counter;
+  typedef void* atomic_count_t;
 #else
-  class atomic_counter_impl;
-  typedef scoped_ptr<atomic_counter_impl> atomic_counter;
+  typedef atomic_count<int> atomic_count_t;
 #endif
 
   class context_handle_impl {
@@ -46,7 +46,7 @@ namespace dromozoa {
     void* get();
     int term();
   private:
-    atomic_counter counter_;
+    atomic_count_t count_;
     void* handle_;
     mutex mutex_;
     context_handle_impl(const context_handle_impl&);
