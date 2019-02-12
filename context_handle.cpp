@@ -21,11 +21,11 @@ namespace dromozoa {
   context_handle_impl::context_handle_impl() : count_(), handle_() {
 #ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
     count_ = zmq_atomic_counter_new();
-#endif
     if (!count_) {
       throw_failure();
       return;
     }
+#endif
 
     handle_ = zmq_ctx_new();
     if (!handle_) {
