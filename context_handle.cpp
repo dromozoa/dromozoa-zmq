@@ -18,37 +18,11 @@
 #include "common.hpp"
 
 namespace dromozoa {
-#ifndef HAVE_ZMQ_ATOMIC_COUNTER_NEW
-  class atomic_counter_impl {
-  public:
-    atomic_counter_impl() : count_() {}
-
-    int increment() {
-      lock_guard<> lock(mutex_);
-      return count_++;
-    }
-
-    int decrement() {
-      lock_guard<> lock(mutex_);
-      return --count_ > 0 ? 1 : 0;
-    }
-
-  private:
-    int count_;
-    mutex mutex_;
-    atomic_counter_impl(const atomic_counter_impl&);
-    atomic_counter_impl& operator=(const atomic_counter_impl&);
-  };
-#endif
-
-
-  context_handle_impl::context_handle_impl() : counter_(), handle_() {
+  context_handle_impl::context_handle_impl() : count_(), handle_() {
 #ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
-    counter_ = zmq_atomic_counter_new();
-#else
-    counter_.reset(new atomic_counter_impl());
+    count_ = zmq_atomic_counter_new();
 #endif
-    if (!counter_) {
+    if (!count_) {
       throw_failure();
       return;
     }
@@ -56,9 +30,7 @@ namespace dromozoa {
     handle_ = zmq_ctx_new();
     if (!handle_) {
 #ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
-      zmq_atomic_counter_destroy(&counter_);
-#else
-      counter_.reset();
+      zmq_atomic_counter_destroy(&count_);
 #endif
       throw_failure();
       return;
@@ -68,9 +40,7 @@ namespace dromozoa {
   context_handle_impl::~context_handle_impl() {
     lock_guard<> lock(mutex_);
 #ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
-    zmq_atomic_counter_destroy(&counter_);
-#else
-    counter_.reset();
+    zmq_atomic_counter_destroy(&count_);
 #endif
     if (handle_) {
       void* handle = handle_;
@@ -83,17 +53,17 @@ namespace dromozoa {
 
   void context_handle_impl::add_ref() {
 #ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
-    zmq_atomic_counter_inc(counter_);
+    zmq_atomic_counter_inc(count_);
 #else
-    counter_->increment();
+    ++count_;
 #endif
   }
 
   void context_handle_impl::release() {
 #ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
-    bool reached_zero = zmq_atomic_counter_dec(counter_) == 0;
+    bool reached_zero = zmq_atomic_counter_dec(count_) == 0;
 #else
-    bool reached_zero = counter_->decrement() == 0;
+    bool reached_zero = --count_ == 0;
 #endif
     if (reached_zero) {
       delete this;
