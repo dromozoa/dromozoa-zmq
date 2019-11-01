@@ -46,6 +46,5 @@ AC_SEARCH_LIBS([pthread_create], [pthread])
 
 AX_PROG_LUA([5.1], [], [], [AC_MSG_ERROR([could not find lua])])
 AX_LUA_HEADERS([], [AC_MSG_ERROR([could not find lua])])
-AX_LUA_LIBS([], [AC_MSG_ERROR([could not find lua])])
 
 AC_OUTPUT

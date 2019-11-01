@@ -443,9 +443,23 @@
   <tr>
     <td>ZMQ_ROUTER_NOTIFY</td>
     <td>int</td>
-    <td>0, ZMQ_NOTIFY_CONNECT, ZMQ_NOTIFY_DISCONNECT, ZMQ_NOTIFY_CONNECT|ZMQ_NOTIFY_DISCONNECT</td>
+    <td>0, ZMQ_NOTIFY_CONNECT, ZMQ_NOTIFY_DISCONNECT, ZMQ_NOTIFY_CONNECT | ZMQ_NOTIFY_DISCONNECT</td>
     <td></td>
     <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_IN_BATCH_SIZE</td>
+    <td>int</td>
+    <td>messages</td>
+    <td></td>
+    <td>8192</td>
+  </tr>
+  <tr>
+    <td>ZMQ_OUT_BATCH_SIZE</td>
+    <td>int</td>
+    <td>messages</td>
+    <td></td>
+    <td>8192</td>
   </tr>
 </table>
 
@@ -810,6 +824,20 @@
     <td>not set</td>
   </tr>
   <tr>
+    <td>ZMQ_SOCKS_USERNAME</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
+    <td>ZMQ_SOCKS_PASSWORD</td>
+    <td>character string</td>
+    <td>N/A</td>
+    <td></td>
+    <td>not set</td>
+  </tr>
+  <tr>
     <td>ZMQ_STREAM_NOTIFY</td>
     <td>int</td>
     <td>0, 1</td>
@@ -888,6 +916,13 @@
   </tr>
   <tr>
     <td>ZMQ_XPUB_MANUAL</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_XPUB_MANUAL_LAST_VALUE</td>
     <td>int</td>
     <td>0, 1</td>
     <td></td>
@@ -994,9 +1029,23 @@
   <tr>
     <td>ZMQ_ROUTER_NOTIFY</td>
     <td>int</td>
-    <td>0, ZMQ_NOTIFY_CONNECT, ZMQ_NOTIFY_DISCONNECT, ZMQ_NOTIFY_CONNECT|ZMQ_NOTIFY_DISCONNECT</td>
+    <td>0, ZMQ_NOTIFY_CONNECT, ZMQ_NOTIFY_DISCONNECT, ZMQ_NOTIFY_CONNECT | ZMQ_NOTIFY_DISCONNECT</td>
     <td></td>
     <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_IN_BATCH_SIZE</td>
+    <td>int</td>
+    <td>messages</td>
+    <td></td>
+    <td>8192</td>
+  </tr>
+  <tr>
+    <td>ZMQ_OUT_BATCH_SIZE</td>
+    <td>int</td>
+    <td>messages</td>
+    <td></td>
+    <td>8192</td>
   </tr>
 </table>
 
