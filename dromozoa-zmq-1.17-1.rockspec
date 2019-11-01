@@ -1,8 +1,8 @@
 rockspec_format = "3.0"
 package = "dromozoa-zmq"
-version = "1.16-1"
+version = "1.17-1"
 source = {
-  url = "https://github.com/dromozoa/dromozoa-zmq/releases/download/v1.16/dromozoa-zmq-1.16.tar.gz";
+  url = "https://github.com/dromozoa/dromozoa-zmq/releases/download/v1.17/dromozoa-zmq-1.17.tar.gz";
 }
 description = {
   summary = "Lua bindings for ZeroMQ";
@@ -16,6 +16,6 @@ test = {
 }
 build = {
   type = "command";
-  build_command = [[env PATH="$(LUA_BINDIR):$PATH" CPPFLAGS="$CPPFLAGS -I$(LUA_INCDIR)" CXXFLAGS="$CXXFLAGS -Wall -W -Wno-missing-field-initializers $(CFLAGS)" LDFLAGS="$LDFLAGS -L$(LUA_LIBDIR)" LUA="$(LUA)" ./configure --prefix="$(PREFIX)" && make]];
+  build_command = [[env PATH="$(LUA_BINDIR):$PATH" CPPFLAGS="$CPPFLAGS -I$(LUA_INCDIR)" CXXFLAGS="$CXXFLAGS -Wall -W -Wno-missing-field-initializers $(CFLAGS)" LUA="$(LUA)" ./configure --prefix="$(PREFIX)" && make]];
   install_command = [[make luadir="$(LUADIR)" luaexecdir="$(LIBDIR)/dromozoa" install]];
 }
