@@ -576,6 +576,21 @@ namespace dromozoa {
 #ifdef ZMQ_ROUTER_NOTIFY
     luaX_set_field(L, -1, "ZMQ_ROUTER_NOTIFY", ZMQ_ROUTER_NOTIFY);
 #endif
+#ifdef ZMQ_XPUB_MANUAL_LAST_VALUE
+    luaX_set_field(L, -1, "ZMQ_XPUB_MANUAL_LAST_VALUE", ZMQ_XPUB_MANUAL_LAST_VALUE);
+#endif
+#ifdef ZMQ_SOCKS_USERNAME
+    luaX_set_field(L, -1, "ZMQ_SOCKS_USERNAME", ZMQ_SOCKS_USERNAME);
+#endif
+#ifdef ZMQ_SOCKS_PASSWORD
+    luaX_set_field(L, -1, "ZMQ_SOCKS_PASSWORD", ZMQ_SOCKS_PASSWORD);
+#endif
+#ifdef ZMQ_IN_BATCH_SIZE
+    luaX_set_field(L, -1, "ZMQ_IN_BATCH_SIZE", ZMQ_IN_BATCH_SIZE);
+#endif
+#ifdef ZMQ_OUT_BATCH_SIZE
+    luaX_set_field(L, -1, "ZMQ_OUT_BATCH_SIZE", ZMQ_OUT_BATCH_SIZE);
+#endif
 #ifdef ZMQ_ZERO_COPY_RECV
     luaX_set_field(L, -1, "ZMQ_ZERO_COPY_RECV", ZMQ_ZERO_COPY_RECV);
 #endif
@@ -596,6 +611,21 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_NOTIFY_DISCONNECT
     luaX_set_field(L, -1, "ZMQ_NOTIFY_DISCONNECT", ZMQ_NOTIFY_DISCONNECT);
+#endif
+#ifdef ZMQ_EVENT_PIPES_STATS
+    luaX_set_field(L, -1, "ZMQ_EVENT_PIPES_STATS", ZMQ_EVENT_PIPES_STATS);
+#endif
+#ifdef ZMQ_CURRENT_EVENT_VERSION
+    luaX_set_field(L, -1, "ZMQ_CURRENT_EVENT_VERSION", ZMQ_CURRENT_EVENT_VERSION);
+#endif
+#ifdef ZMQ_CURRENT_EVENT_VERSION_DRAFT
+    luaX_set_field(L, -1, "ZMQ_CURRENT_EVENT_VERSION_DRAFT", ZMQ_CURRENT_EVENT_VERSION_DRAFT);
+#endif
+#ifdef ZMQ_EVENT_ALL_V1
+    luaX_set_field(L, -1, "ZMQ_EVENT_ALL_V1", ZMQ_EVENT_ALL_V1);
+#endif
+#ifdef ZMQ_EVENT_ALL_V2
+    luaX_set_field(L, -1, "ZMQ_EVENT_ALL_V2", ZMQ_EVENT_ALL_V2);
 #endif
   }
 
@@ -837,6 +867,14 @@ namespace dromozoa {
       case ZMQ_ROUTER_NOTIFY:
         return getsockopt_option_int;
 #endif
+#ifdef ZMQ_IN_BATCH_SIZE
+      case ZMQ_IN_BATCH_SIZE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_OUT_BATCH_SIZE
+      case ZMQ_OUT_BATCH_SIZE:
+        return getsockopt_option_int;
+#endif
       default:
         return getsockopt_option_unknown;
     }
@@ -1044,6 +1082,14 @@ namespace dromozoa {
       case ZMQ_SOCKS_PROXY:
         return setsockopt_option_character_string;
 #endif
+#ifdef ZMQ_SOCKS_USERNAME
+      case ZMQ_SOCKS_USERNAME:
+        return setsockopt_option_character_string;
+#endif
+#ifdef ZMQ_SOCKS_PASSWORD
+      case ZMQ_SOCKS_PASSWORD:
+        return setsockopt_option_character_string;
+#endif
 #ifdef ZMQ_STREAM_NOTIFY
       case ZMQ_STREAM_NOTIFY:
         return setsockopt_option_int;
@@ -1090,6 +1136,10 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_XPUB_MANUAL
       case ZMQ_XPUB_MANUAL:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_XPUB_MANUAL_LAST_VALUE
+      case ZMQ_XPUB_MANUAL_LAST_VALUE:
         return setsockopt_option_int;
 #endif
 #ifdef ZMQ_XPUB_NODROP
@@ -1150,6 +1200,14 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_ROUTER_NOTIFY
       case ZMQ_ROUTER_NOTIFY:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_IN_BATCH_SIZE
+      case ZMQ_IN_BATCH_SIZE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_OUT_BATCH_SIZE
+      case ZMQ_OUT_BATCH_SIZE:
         return setsockopt_option_int;
 #endif
       default:
