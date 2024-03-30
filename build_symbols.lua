@@ -1,4 +1,4 @@
--- Copyright (C) 2018,2019 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2018,2019,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -36,10 +36,13 @@ local function parse_doc(filename)
       if line == "" then
         mode = nil
         if item.name == "ZMQ_THREAD_SAFE" then
-          assert(item.option_value_type == "boolean")
-          assert(not item.option_value_unit)
-          item.option_value_type = "int"
-          item.option_value_unit = "boolean"
+          -- zeromq 4.3.2の不備に対応する。
+          if item.option_value_type == "boolean" then
+            assert(item.option_value_type == "boolean", "filename="..filename)
+            assert(not item.option_value_unit)
+            item.option_value_type = "int"
+            item.option_value_unit = "boolean"
+          end
         end
         assert(item.name)
         assert(item.option_value_type)
@@ -55,7 +58,7 @@ local function parse_doc(filename)
         item.option_value_enum = enum
         result[#result + 1] = item
       else
-        local k, v = assert(line:match "(.-):: (.*)")
+        local k, v = line:match "(.-):: (.*)"
         if k == "Option value type" then
           item.option_value_type = v
         elseif k == "Option value unit" then
@@ -68,6 +71,9 @@ local function parse_doc(filename)
           item.applicable_socket_types = v
         elseif k == "Maximum value" then
           item.maximum_value = v
+        elseif not k and item.name == "ZMQ_RECONNECT_STOP" then
+          assert(item.applicable_socket_types)
+          item.applicable_socket_types = item.applicable_socket_types.." "..line
         else
           error(("could not parse line at file %s line %d: %q"):format(filename, count, line))
         end
@@ -218,7 +224,7 @@ out:write [[
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>dromozoa-zmq</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/2.10.0/github-markdown.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown.min.css">
 <style>
 .markdown-body {
   box-sizing: border-box;

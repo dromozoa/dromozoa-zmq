@@ -1,4 +1,4 @@
-// Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017,2018,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -84,7 +84,7 @@ namespace dromozoa {
         case getsockopt_option_character_string:
           result = getsockopt_string(L, name);
           break;
-        case setsockopt_option_binary_data_or_Z85_text_string:
+        case getsockopt_option_binary_data_or_Z85_text_string:
           result = getsockopt_curve(L, name);
           break;
         default:
