@@ -16,12 +16,12 @@
 # along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
 m4_include([dromozoa-zmq-version.m4])
-AC_INIT([dromozoa-zmq], DROMOZOA_ZMQ_VERSION, [moyu@dromozoa.com], [], [https://github.com/dromozoa/dromozoa-zmq/])
+AC_INIT([dromozoa-zmq],[DROMOZOA_ZMQ_VERSION],[moyu@dromozoa.com],[],[https://github.com/dromozoa/dromozoa-zmq/])
 AM_INIT_AUTOMAKE
 LT_INIT
 
 AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([Makefile])
 
 AC_PROG_CXX
