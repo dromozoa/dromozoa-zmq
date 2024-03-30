@@ -64,8 +64,8 @@ assert(selector:add(rep_fd, unix.SELECTOR_READ))
 
 assert(req:send "hello")
 
-local done
 repeat
+  local done
   local result = assert(selector:select(0.1))
   for i = 1, result do
     local fd, event = selector:event(i)
@@ -90,8 +90,8 @@ repeat
   end
 until done
 
-local done
 repeat
+  local done
   local result = assert(selector:select(0.1))
   for i = 1, result do
     local fd, event = selector:event(i)
