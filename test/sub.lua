@@ -19,6 +19,8 @@ local zmq = require "dromozoa.zmq"
 
 local verbose = os.getenv "VERBOSE" == "1"
 
+local names = {...}
+
 local ctx = assert(zmq.context())
 
 local sub = assert(ctx:socket(zmq.ZMQ_SUB))
@@ -31,9 +33,9 @@ do
   assert(control:connect "tcp://127.0.0.1:5557")
   controls[#controls + 1] = control
 end
-for i = 1, #arg do
+for i = 1, #names do
   local control = assert(ctx:socket(zmq.ZMQ_PUB))
-  assert(control:connect("ipc://test-" .. arg[i] .. ".sock"))
+  assert(control:connect("ipc://test-" .. names[i] .. ".sock"))
   controls[#controls + 1] = control
 end
 
@@ -54,3 +56,4 @@ for i = 1, #controls do
   assert(control:send "TERMINATE")
   assert(control:close())
 end
+assert(ctx:term())
