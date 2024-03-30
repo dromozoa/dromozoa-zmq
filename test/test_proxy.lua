@@ -20,13 +20,7 @@ local zmq = require "dromozoa.zmq"
 
 local verbose = os.getenv "VERBOSE" == "1"
 local PATH = os.getenv("PATH")
-
-local lua
-if _G["dromozoa.bind.driver"] then
-  lua = "lua"
-else
-  lua = arg[-1]
-end
+local lua = arg[-1]
 
 local ctx = assert(zmq.context())
 
@@ -39,7 +33,7 @@ assert(xpub:bind("tcp://127.0.0.1:5556"))
 local control = assert(ctx:socket(zmq.ZMQ_REP))
 assert(control:bind "tcp://127.0.0.1:5557")
 
-local names = { "A", "B", "C" }
+local names = { "A", "B", "C", "D" }
 local processes = {}
 for i = 1, #names do
   local process = assert(unix.process())
@@ -50,21 +44,21 @@ for i = 1, #names do
   end
   processes[#processes + 1] = process
 end
-do
-  local process = assert(unix.process())
-  assert(process:forkexec(PATH, { lua, "test/sub.lua", (table.unpack or unpack)(names) }))
-  if verbose then
-    io.stderr:write("forkexec test/sub.lua " .. table.concat(names, " ") .. " " .. process[1] .. "\n")
-    io.stderr:flush()
-  end
-  processes[#processes + 1] = process
+
+local process = assert(unix.process())
+assert(process:forkexec(PATH, { lua, "test/sub.lua", (table.unpack or unpack)(names) }))
+if verbose then
+  io.stderr:write("forkexec test/sub.lua " .. table.concat(names, " ") .. " " .. process[1] .. "\n")
+  io.stderr:flush()
 end
+processes[#processes + 1] = process
 
 assert(zmq.proxy(xsub, xpub, nil, control))
 
 assert(xsub:close())
 assert(xpub:close())
 assert(control:close())
+assert(ctx:term())
 
 local m = #processes
 local n = m
