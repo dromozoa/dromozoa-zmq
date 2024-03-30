@@ -17,6 +17,12 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
+mkdir -p .test
+(cd .test && ln -f -s ../.libs dromozoa)
+
+LUA_CPATH=".test/?.so;;"
+export LUA_CPATH
+
 for i in test/test*.lua
 do
   case X$# in

@@ -25,13 +25,13 @@ local selector = assert(unix.selector())
 
 local ctx = assert(zmq.context())
 
-local server_public_key, server_secret_key = zmq.curve_keypair()
+local server_public_key, server_secret_key = assert(zmq.curve_keypair())
 if verbose then
   io.stderr:write("server_public_key ", server_public_key, "\n")
   io.stderr:write("server_secret_key ", server_secret_key, "\n")
 end
 
-local client_public_key, client_secret_key = zmq.curve_keypair()
+local client_public_key, client_secret_key = assert(zmq.curve_keypair())
 if verbose then
   io.stderr:write("client_public_key ", client_public_key, "\n")
   io.stderr:write("client_secret_key ", client_secret_key, "\n")

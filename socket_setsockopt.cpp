@@ -39,7 +39,7 @@ namespace dromozoa {
 
     template <class T>
     inline int setsockopt_integer(lua_State* L, int name) {
-      int value = luaX_check_integer<int>(L, 3);
+      T value = luaX_check_integer<T>(L, 3);
       return zmq_setsockopt(check_socket(L, 1), name, &value, sizeof(value));
     }
 

@@ -25,9 +25,9 @@ local sub = assert(ctx:socket(zmq.ZMQ_SUB))
 assert(sub:connect "tcp://127.0.0.1:5556")
 assert(sub:setsockopt(zmq.ZMQ_SUBSCRIBE, "X"))
 
-local controls = { control }
+local controls = {}
 do
-  local control = assert(ctx:socket(zmq.ZMQ_PUB))
+  local control = assert(ctx:socket(zmq.ZMQ_REQ))
   assert(control:connect "tcp://127.0.0.1:5557")
   controls[#controls + 1] = control
 end

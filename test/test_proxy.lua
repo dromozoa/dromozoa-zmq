@@ -36,9 +36,8 @@ assert(xsub:bind("tcp://127.0.0.1:5555"))
 local xpub = assert(ctx:socket(zmq.ZMQ_XPUB))
 assert(xpub:bind("tcp://127.0.0.1:5556"))
 
-local control = assert(ctx:socket(zmq.ZMQ_SUB))
+local control = assert(ctx:socket(zmq.ZMQ_REP))
 assert(control:bind "tcp://127.0.0.1:5557")
-assert(control:setsockopt(zmq.ZMQ_SUBSCRIBE, ""))
 
 local names = { "A", "B", "C" }
 local processes = {}

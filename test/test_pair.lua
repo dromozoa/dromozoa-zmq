@@ -15,10 +15,19 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-local multi = require "dromozoa.multi"
 local zmq = require "dromozoa.zmq"
-
 local verbose = os.getenv "VERBOSE" == "1"
+
+-- TODO プロセスで書きなおす。
+
+local multi
+pcall(function ()
+  multi = require "dromozoa.multi"
+end)
+if not multi then
+  print "dromozoa.multi not found"
+  return
+end
 
 local ctx = assert(zmq.context())
 local p1 = assert(ctx:socket(zmq.ZMQ_PAIR))
