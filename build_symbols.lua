@@ -36,7 +36,7 @@ local function parse_doc(filename)
       if line == "" then
         mode = nil
         if item.name == "ZMQ_THREAD_SAFE" then
-          -- zeromq 4.3.2の不備に対応
+          -- zeromq 4.3.2の不備に対応する。
           if item.option_value_type == "boolean" then
             assert(item.option_value_type == "boolean", "filename="..filename)
             assert(not item.option_value_unit)
@@ -58,7 +58,7 @@ local function parse_doc(filename)
         item.option_value_enum = enum
         result[#result + 1] = item
       else
-        local k, v = assert(line:match "(.-):: (.*)")
+        local k, v = line:match "(.-):: (.*)"
         if k == "Option value type" then
           item.option_value_type = v
         elseif k == "Option value unit" then
@@ -71,6 +71,9 @@ local function parse_doc(filename)
           item.applicable_socket_types = v
         elseif k == "Maximum value" then
           item.maximum_value = v
+        elseif not k and item.name == "ZMQ_RECONNECT_STOP" then
+          assert(item.applicable_socket_types)
+          item.applicable_socket_types = item.applicable_socket_types.." "..line
         else
           error(("could not parse line at file %s line %d: %q"):format(filename, count, line))
         end

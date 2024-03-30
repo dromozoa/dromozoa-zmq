@@ -245,6 +245,13 @@
     <td>-1</td>
   </tr>
   <tr>
+    <td>ZMQ_PRIORITY</td>
+    <td>int</td>
+    <td>>0</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
     <td>ZMQ_RATE</td>
     <td>int</td>
     <td>kilobits per second</td>
@@ -291,7 +298,14 @@
     <td>int</td>
     <td>milliseconds</td>
     <td></td>
-    <td>0 (only use ZMQ_RECONNECT_IVL)</td>
+    <td>0 (ZMQ_RECONNECT_IVL will be used)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RECONNECT_STOP</td>
+    <td>int</td>
+    <td>'ZMQ_RECONNECT_STOP_CONN_REFUSED'</td>
+    <td></td>
+    <td>0</td>
   </tr>
   <tr>
     <td>ZMQ_RECOVERY_IVL</td>
@@ -461,6 +475,69 @@
     <td></td>
     <td>8192</td>
   </tr>
+  <tr>
+    <td>ZMQ_TOPICS_COUNT</td>
+    <td>int</td>
+    <td>N/A</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_MODE</td>
+    <td>int</td>
+    <td>0, 1, 2, 3, 4</td>
+    <td></td>
+    <td>1 ('ZMQ_NORM_CC')</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_UNICAST_NACK</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_BUFFER_SIZE</td>
+    <td>int</td>
+    <td>kilobytes</td>
+    <td></td>
+    <td>2048</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_SEGMENT_SIZE</td>
+    <td>int</td>
+    <td>bytes</td>
+    <td></td>
+    <td>1400</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_BLOCK_SIZE</td>
+    <td>int</td>
+    <td>>0, <=255</td>
+    <td></td>
+    <td>16</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_NUM_PARITY</td>
+    <td>int</td>
+    <td>>0, <255</td>
+    <td></td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_NUM_AUTOPARITY</td>
+    <td>int</td>
+    <td>>=0, <255</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_PUSH</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
 </table>
 
 <h2>zmq_setsockopt</h2>
@@ -493,6 +570,13 @@
     <td>N/A</td>
     <td></td>
     <td>not set</td>
+  </tr>
+  <tr>
+    <td>ZMQ_BUSY_POLL</td>
+    <td>int</td>
+    <td>0,1</td>
+    <td></td>
+    <td>0</td>
   </tr>
   <tr>
     <td>ZMQ_CONNECT_ROUTING_ID</td>
@@ -544,6 +628,20 @@
     <td>NULL</td>
   </tr>
   <tr>
+    <td>ZMQ_DISCONNECT_MSG</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>NULL</td>
+  </tr>
+  <tr>
+    <td>ZMQ_HICCUP_MSG</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>NULL</td>
+  </tr>
+  <tr>
     <td>ZMQ_GSSAPI_PLAINTEXT</td>
     <td>int</td>
     <td>0, 1</td>
@@ -591,6 +689,13 @@
     <td>milliseconds</td>
     <td></td>
     <td>30000</td>
+  </tr>
+  <tr>
+    <td>ZMQ_HELLO_MSG</td>
+    <td>binary data</td>
+    <td>N/A</td>
+    <td></td>
+    <td>NULL</td>
   </tr>
   <tr>
     <td>ZMQ_HEARTBEAT_IVL</td>
@@ -698,6 +803,13 @@
     <td>-1</td>
   </tr>
   <tr>
+    <td>ZMQ_PRIORITY</td>
+    <td>int</td>
+    <td>>0</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
     <td>ZMQ_PROBE_ROUTER</td>
     <td>int</td>
     <td>0, 1</td>
@@ -744,7 +856,14 @@
     <td>int</td>
     <td>milliseconds</td>
     <td></td>
-    <td>0 (only use ZMQ_RECONNECT_IVL)</td>
+    <td>0 (ZMQ_RECONNECT_IVL will be used)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_RECONNECT_STOP</td>
+    <td>int</td>
+    <td>0, ZMQ_RECONNECT_STOP_CONN_REFUSED, ZMQ_RECONNECT_STOP_HANDSHAKE_FAILED, ZMQ_RECONNECT_STOP_CONN_REFUSED | ZMQ_RECONNECT_STOP_HANDSHAKE_FAILED</td>
+    <td></td>
+    <td>0</td>
   </tr>
   <tr>
     <td>ZMQ_RECOVERY_IVL</td>
@@ -943,6 +1062,20 @@
     <td>NULL</td>
   </tr>
   <tr>
+    <td>ZMQ_XSUB_VERBOSE_UNSUBSCRIBE</td>
+    <td>int</td>
+    <td>0, 1</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_ONLY_FIRST_SUBSCRIBE</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
     <td>ZMQ_ZAP_DOMAIN</td>
     <td>character string</td>
     <td>N/A</td>
@@ -1046,6 +1179,62 @@
     <td>messages</td>
     <td></td>
     <td>8192</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_MODE</td>
+    <td>int</td>
+    <td>0, 1, 2, 3, 4</td>
+    <td></td>
+    <td>1 ('ZMQ_NORM_CC')</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_UNICAST_NACK</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>0 (false)</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_BUFFER_SIZE</td>
+    <td>int</td>
+    <td>kilobytes</td>
+    <td></td>
+    <td>2048</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_SEGMENT_SIZE</td>
+    <td>int</td>
+    <td>bytes</td>
+    <td></td>
+    <td>1400</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_BLOCK_SIZE</td>
+    <td>int</td>
+    <td>>0, <=255</td>
+    <td></td>
+    <td>16</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_NUM_PARITY</td>
+    <td>int</td>
+    <td>>0, <255</td>
+    <td></td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_NUM_AUTOPARITY</td>
+    <td>int</td>
+    <td>>=0, <255</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>ZMQ_NORM_PUSH</td>
+    <td>int</td>
+    <td>boolean</td>
+    <td></td>
+    <td>0 (false)</td>
   </tr>
 </table>
 
