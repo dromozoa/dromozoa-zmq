@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
-m4_include([version.m4])
+m4_include([dromozoa-zmq-version.m4])
 AC_INIT([dromozoa-zmq], DROMOZOA_ZMQ_VERSION, [moyu@dromozoa.com], [], [https://github.com/dromozoa/dromozoa-zmq/])
 AM_INIT_AUTOMAKE
 LT_INIT
