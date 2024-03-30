@@ -1,4 +1,4 @@
--- Copyright (C) 2018,2019 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2018,2019,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -36,10 +36,13 @@ local function parse_doc(filename)
       if line == "" then
         mode = nil
         if item.name == "ZMQ_THREAD_SAFE" then
-          assert(item.option_value_type == "boolean")
-          assert(not item.option_value_unit)
-          item.option_value_type = "int"
-          item.option_value_unit = "boolean"
+          -- zeromq 4.3.2の不備に対応
+          if item.option_value_type == "boolean" then
+            assert(item.option_value_type == "boolean", "filename="..filename)
+            assert(not item.option_value_unit)
+            item.option_value_type = "int"
+            item.option_value_unit = "boolean"
+          end
         end
         assert(item.name)
         assert(item.option_value_type)
