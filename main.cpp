@@ -42,7 +42,7 @@ namespace dromozoa_zmq {
       void* capture = to_socket(L, 3);
       void* control = to_socket(L, 4);
       if (zmq_proxy_steerable(frontend, backend, capture, control) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -63,11 +63,11 @@ namespace dromozoa_zmq {
         if (zmq_z85_decode(&buffer[0], const_cast<char*>(source.data()))) {
           luaX_push(L, luaX_string_reference(&buffer[0], buffer.size()));
         } else {
-          push_error(L);
+          throw_failure();
         }
       } else {
         errno = EINVAL;
-        push_error(L);
+        throw_failure();
       }
     }
 
@@ -79,11 +79,11 @@ namespace dromozoa_zmq {
         if (zmq_z85_encode(&buffer[0], reinterpret_cast<uint8_t*>(const_cast<char*>(source.data())), source.size())) {
           luaX_push(L, &buffer[0]);
         } else {
-          push_error(L);
+          throw_failure();
         }
       } else {
         errno = EINVAL;
-        push_error(L);
+        throw_failure();
       }
     }
 
@@ -92,7 +92,7 @@ namespace dromozoa_zmq {
       char z85_public_key[41] = { 0 };
       char z85_secret_key[41] = { 0 };
       if (zmq_curve_keypair(z85_public_key, z85_secret_key) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push(L, luaX_string_reference(z85_public_key, 40), luaX_string_reference(z85_secret_key, 40));
       }
@@ -105,13 +105,13 @@ namespace dromozoa_zmq {
       if (z85_secret_key.size() == 40) {
         char z85_public_key[41] = { 0 };
         if (zmq_curve_public(z85_public_key, z85_secret_key.data()) == -1) {
-          push_error(L);
+          throw_failure();
         } else {
           luaX_push(L, luaX_string_reference(z85_public_key, 40));
         }
       } else {
         errno = EINVAL;
-        push_error(L);
+        throw_failure();
       }
     }
 #endif
