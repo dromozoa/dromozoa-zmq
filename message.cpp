@@ -45,7 +45,7 @@ namespace dromozoa_zmq {
         impl.release();
         luaX_set_metatable(L, "dromozoa.zmq.message");
       } else {
-        push_error(L);
+        throw_failure();
       }
     }
 
@@ -53,7 +53,7 @@ namespace dromozoa_zmq {
       int flags = luaX_opt_integer<int>(L, 3, 0);
       int result = zmq_msg_send(check_message(L, 1), check_socket(L, 2), flags);
       if (result == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push(L, result);
       }
@@ -63,7 +63,7 @@ namespace dromozoa_zmq {
       int flags = luaX_opt_integer<int>(L, 3, 0);
       int result = zmq_msg_recv(check_message(L, 1), check_socket(L, 2), flags);
       if (result == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push(L, result);
       }
@@ -71,7 +71,7 @@ namespace dromozoa_zmq {
 
     void impl_close(lua_State* L) {
       if (check_message_handle(L, 1)->close() == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -85,7 +85,7 @@ namespace dromozoa_zmq {
       int property = luaX_check_integer<int>(L, 2);
       int result = zmq_msg_get(check_message(L, 1), property);
       if (result == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push(L, result);
       }
@@ -95,7 +95,7 @@ namespace dromozoa_zmq {
       int property = luaX_check_integer<int>(L, 2);
       int value = luaX_check_integer<int>(L, 3);
       if (zmq_msg_set(check_message(L, 1), property, value) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -107,7 +107,7 @@ namespace dromozoa_zmq {
       if (const char* result = zmq_msg_gets(check_message(L, 1), property)) {
         luaX_push(L, result);
       } else {
-        push_error(L);
+        throw_failure();
       }
     }
 #endif

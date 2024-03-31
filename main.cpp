@@ -17,7 +17,7 @@
 
 #include <errno.h>
 #include <stdint.h>
-
+#include <string.h>
 #include <vector>
 
 #include "common.hpp"
@@ -42,7 +42,7 @@ namespace dromozoa_zmq {
       void* capture = to_socket(L, 3);
       void* control = to_socket(L, 4);
       if (zmq_proxy_steerable(frontend, backend, capture, control) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -63,11 +63,11 @@ namespace dromozoa_zmq {
         if (zmq_z85_decode(&buffer[0], const_cast<char*>(source.data()))) {
           luaX_push(L, luaX_string_reference(&buffer[0], buffer.size()));
         } else {
-          push_error(L);
+          throw_failure();
         }
       } else {
         errno = EINVAL;
-        push_error(L);
+        throw_failure();
       }
     }
 
@@ -79,11 +79,11 @@ namespace dromozoa_zmq {
         if (zmq_z85_encode(&buffer[0], reinterpret_cast<uint8_t*>(const_cast<char*>(source.data())), source.size())) {
           luaX_push(L, &buffer[0]);
         } else {
-          push_error(L);
+          throw_failure();
         }
       } else {
         errno = EINVAL;
-        push_error(L);
+        throw_failure();
       }
     }
 
@@ -92,7 +92,7 @@ namespace dromozoa_zmq {
       char z85_public_key[41] = { 0 };
       char z85_secret_key[41] = { 0 };
       if (zmq_curve_keypair(z85_public_key, z85_secret_key) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push(L, luaX_string_reference(z85_public_key, 40), luaX_string_reference(z85_secret_key, 40));
       }
@@ -105,16 +105,84 @@ namespace dromozoa_zmq {
       if (z85_secret_key.size() == 40) {
         char z85_public_key[41] = { 0 };
         if (zmq_curve_public(z85_public_key, z85_secret_key.data()) == -1) {
-          push_error(L);
+          throw_failure();
         } else {
           luaX_push(L, luaX_string_reference(z85_public_key, 40));
         }
       } else {
         errno = EINVAL;
-        push_error(L);
+        throw_failure();
       }
     }
 #endif
+
+    void impl_poll(lua_State* L) {
+      luaL_checktype(L, 1, LUA_TTABLE);
+      long timeout = luaX_opt_integer<long>(L, 2, -1);
+
+      std::vector<zmq_pollitem_t> items;
+      for (int i = 1; ; ++i) {
+        luaX_get_field(L, 1, i);
+        if (lua_isnil(L, -1)) {
+          lua_pop(L, 1);
+          break;
+        } else if (lua_istable(L, -1)) {
+          zmq_pollitem_t item;
+
+          luaX_get_field(L, -1, "socket");
+          item.socket = to_socket(L, -1);
+          lua_pop(L, 1);
+
+          item.fd = luaX_opt_integer_field<int>(L, -1, "fd", -1);
+          item.events = luaX_opt_integer_field<short>(L, -1, "events", 0);
+          item.revents = luaX_opt_integer_field<short>(L, -1, "revents", 0);
+
+          items.push_back(item);
+
+          lua_pop(L, 1);
+        } else {
+          luaX_field_error(L, i, "not a table");
+          return;
+        }
+      }
+
+      int result = zmq_poll(items.data(), items.size(), timeout);
+      if (result == -1) {
+        throw_failure();
+        return;
+      }
+
+      for (size_t i = 0; i < items.size(); ++i) {
+        luaX_get_field(L, 1, i + 1);
+        luaX_set_field(L, -1, "revents", items[i].revents);
+        lua_pop(L, 1);
+      }
+
+      luaX_push(L, result);
+    }
+
+    static const char* registry_key = "dromozoa.zmq.falure_policy";
+
+    void impl_set_failure_policy(lua_State* L) {
+      lua_pushvalue(L, 1);
+      luaX_set_field(L, LUA_REGISTRYINDEX, registry_key);
+    }
+
+    void impl_get_failure_policy(lua_State* L) {
+      lua_getfield(L, LUA_REGISTRYINDEX, registry_key);
+    }
+  }
+
+  bool failure_policy_is_error(lua_State* L){
+    luaX_top_saver saver(L);
+    lua_getfield(L, LUA_REGISTRYINDEX, registry_key);
+    luaX_string_reference failure_policy = luaX_to_string(L, -1);
+    return failure_policy.size() == 5 && strncmp(failure_policy.data(), "error", 5) == 0;
+  }
+
+  void throw_failure() {
+    int code = zmq_errno();
+    luaX_throw_failure(zmq_strerror(code), code);
   }
 
   void initialize_main(lua_State* L) {
@@ -131,5 +199,10 @@ namespace dromozoa_zmq {
 #ifdef HAVE_ZMQ_CURVE_PUBLIC
     luaX_set_field(L, -1, "curve_public", impl_curve_public);
 #endif
+    luaX_set_field(L, -1, "poll", impl_poll);
+
+    luaX_set_field(L, LUA_REGISTRYINDEX, registry_key, "fail");
+    luaX_set_field(L, -1, "set_failure_policy", impl_set_failure_policy);
+    luaX_set_field(L, -1, "get_failure_policy", impl_get_failure_policy);
   }
 }

@@ -92,7 +92,7 @@ namespace dromozoa_zmq {
           errno = EINVAL;
       }
       if (result == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
