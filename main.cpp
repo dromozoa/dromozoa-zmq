@@ -1,4 +1,4 @@
-// Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017-2019,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -26,7 +26,7 @@
 #include <zmq_utils.h>
 #endif
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   namespace {
     void impl_version(lua_State* L) {
       int major = 0;

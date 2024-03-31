@@ -23,7 +23,7 @@
 #include "common.hpp"
 #include "symbols.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   namespace {
     template <class T>
     inline int getsockopt_integer(lua_State* L, int name) {

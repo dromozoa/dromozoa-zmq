@@ -1,4 +1,4 @@
-// Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017-2019,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -17,7 +17,7 @@
 
 #include "common.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   void push_error(lua_State* L) {
     int code = zmq_errno();
     luaX_push(L, luaX_nil, zmq_strerror(code), code);

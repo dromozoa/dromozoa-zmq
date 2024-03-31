@@ -21,7 +21,7 @@
 #include "common.hpp"
 #include "symbols.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   namespace {
     size_t initialize_curve_key_size_z85() {
       int major = 0;
