@@ -117,6 +117,48 @@ namespace dromozoa_zmq {
 #endif
 
     void impl_poll(lua_State* L) {
+      luaL_checktype(L, 1, LUA_TTABLE);
+      long timeout = luaX_opt_integer<long>(L, 2, -1);
+
+      std::vector<zmq_pollitem_t> items;
+      for (int i = 1; ; ++i) {
+        luaX_get_field(L, 1, i);
+        if (lua_isnil(L, -1)) {
+          lua_pop(L, 1);
+          break;
+        } else if (lua_istable(L, -1)) {
+          zmq_pollitem_t item;
+
+          luaX_get_field(L, -1, "socket");
+          item.socket = to_socket(L, -1);
+          lua_pop(L, 1);
+
+          item.fd = luaX_opt_integer_field<int>(L, -1, "fd", -1);
+          item.events = luaX_opt_integer_field<short>(L, -1, "events", 0);
+          item.revents = luaX_opt_integer_field<short>(L, -1, "revents", 0);
+
+          items.push_back(item);
+
+          lua_pop(L, 1);
+        } else {
+          luaX_field_error(L, i, "not a table");
+          return;
+        }
+      }
+
+      int result = zmq_poll(items.data(), items.size(), timeout);
+      if (result == -1) {
+        throw_failure();
+        return;
+      }
+
+      for (size_t i = 0; i < items.size(); ++i) {
+        luaX_get_field(L, 1, i + 1);
+        luaX_set_field(L, -1, "revents", items[i].revents);
+        lua_pop(L, 1);
+      }
+
+      luaX_push(L, result);
     }
 
     static const char* registry_key = "dromozoa.zmq.falure_policy";
@@ -157,6 +199,7 @@ namespace dromozoa_zmq {
 #ifdef HAVE_ZMQ_CURVE_PUBLIC
     luaX_set_field(L, -1, "curve_public", impl_curve_public);
 #endif
+    luaX_set_field(L, -1, "poll", impl_poll);
 
     luaX_set_field(L, LUA_REGISTRYINDEX, registry_key, "fail");
     luaX_set_field(L, -1, "set_failure_policy", impl_set_failure_policy);
