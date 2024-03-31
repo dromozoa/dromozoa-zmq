@@ -17,7 +17,7 @@
 
 #include "common.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   context_handle_impl::context_handle_impl() : count_(), handle_() {
 #ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
     count_ = zmq_atomic_counter_new();

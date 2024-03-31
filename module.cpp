@@ -18,7 +18,7 @@
 #include "common.hpp"
 #include "symbols.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   void initialize_context(lua_State* L);
   void initialize_main(lua_State* L);
   void initialize_message(lua_State* L);
@@ -35,6 +35,6 @@ namespace dromozoa {
 
 extern "C" int luaopen_dromozoa_zmq(lua_State* L) {
   lua_newtable(L);
-  dromozoa::initialize(L);
+  dromozoa_zmq::initialize(L);
   return 1;
 }

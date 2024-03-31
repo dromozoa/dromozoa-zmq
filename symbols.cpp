@@ -1,7 +1,7 @@
 #include "common.hpp"
 #include "symbols.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   void initialize_symbols(lua_State* L) {
 #ifdef ZMQ_VERSION_MAJOR
     luaX_set_field(L, -1, "ZMQ_VERSION_MAJOR", ZMQ_VERSION_MAJOR);

@@ -21,7 +21,7 @@
 
 #include "common.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   namespace {
     void free_calback(void* data, void*) {
       free(data);

@@ -26,7 +26,7 @@
 #include <zmq_utils.h>
 #endif
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   namespace {
     void impl_version(lua_State* L) {
       int major = 0;

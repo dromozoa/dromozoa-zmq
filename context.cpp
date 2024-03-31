@@ -17,7 +17,7 @@
 
 #include "common.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   namespace {
     void impl_gc(lua_State* L) {
       check_context_handle(L, 1)->~context_handle();

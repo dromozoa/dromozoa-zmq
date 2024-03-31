@@ -17,7 +17,7 @@
 
 #include "common.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   socket_handle::socket_handle(void* handle) : handle_(handle) {}
 
   socket_handle::~socket_handle() {
