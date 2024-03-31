@@ -17,7 +17,7 @@
 
 #include <errno.h>
 #include <stdint.h>
-
+#include <string.h>
 #include <vector>
 
 #include "common.hpp"
@@ -115,6 +115,29 @@ namespace dromozoa_zmq {
       }
     }
 #endif
+
+    static const char* registry_key = "dromozoa.zmq.falure_policy";
+
+    void impl_set_failure_policy(lua_State* L) {
+      lua_pushvalue(L, 1);
+      lua_setfield(L, LUA_REGISTRYINDEX, registry_key);
+    }
+
+    void impl_get_failure_policy(lua_State* L) {
+      lua_getfield(L, LUA_REGISTRYINDEX, registry_key);
+    }
+  }
+
+  bool failure_policy_is_error(lua_State* L){
+    luaX_top_saver saver(L);
+
+    lua_getfield(L, LUA_REGISTRYINDEX, registry_key);
+    std::size_t size = 0;
+    if (const char* data = lua_tolstring(L, -1, &size)) {
+      return size == 5 && strncmp(data, "error", 5) == 0;
+    } else {
+      return false;
+    }
   }
 
   void initialize_main(lua_State* L) {
@@ -131,5 +154,7 @@ namespace dromozoa_zmq {
 #ifdef HAVE_ZMQ_CURVE_PUBLIC
     luaX_set_field(L, -1, "curve_public", impl_curve_public);
 #endif
+    luaX_set_field(L, -1, "set_failure_policy", impl_set_failure_policy);
+    luaX_set_field(L, -1, "get_failure_policy", impl_get_failure_policy);
   }
 }

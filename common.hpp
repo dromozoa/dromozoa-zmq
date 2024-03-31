@@ -23,8 +23,16 @@
 #endif
 
 #include <stddef.h>
-
 #include <zmq.h>
+
+extern "C" {
+#include <lua.h>
+}
+
+#define DROMOZOA_FAILURE_POLICY_IS_ERROR(L) dromozoa_zmq::failure_policy_is_error(L)
+namespace dromozoa_zmq {
+  bool failure_policy_is_error(lua_State*);
+}
 
 #include <dromozoa/bind.hpp>
 #include <dromozoa/bind/atomic.hpp>
