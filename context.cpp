@@ -106,8 +106,8 @@ namespace dromozoa_zmq {
       luaX_set_field(L, -1, "share", impl_share);
       luaX_set_field(L, -1, "term", impl_term);
       luaX_set_field(L, -1, "shutdown", impl_shutdown);
-      luaX_set_field(L, -1, "get", impl_get);
       luaX_set_field(L, -1, "set", impl_set);
+      luaX_set_field(L, -1, "get", impl_get);
       luaX_set_field(L, -1, "socket", impl_socket);
     }
     luaX_set_field(L, -2, "context");
