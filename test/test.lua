@@ -1,4 +1,4 @@
--- Copyright (C) 2017,2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2017,2018,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -18,13 +18,7 @@
 local unix = require "dromozoa.unix"
 
 local PATH = os.getenv("PATH")
-
-local lua
-if _G["dromozoa.bind.driver"] then
-  lua = "lua"
-else
-  lua = arg[-1]
-end
+local lua = arg[-1]
 
 local process_req = assert(unix.process())
 local process_rep = assert(unix.process())

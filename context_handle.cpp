@@ -1,4 +1,4 @@
-// Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017-2019,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -17,7 +17,7 @@
 
 #include "common.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   context_handle_impl::context_handle_impl() : count_(), handle_() {
 #ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
     count_ = zmq_atomic_counter_new();

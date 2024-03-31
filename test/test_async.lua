@@ -1,4 +1,4 @@
--- Copyright (C) 2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2018,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -25,13 +25,13 @@ local selector = assert(unix.selector())
 
 local ctx = assert(zmq.context())
 
-local server_public_key, server_secret_key = zmq.curve_keypair()
+local server_public_key, server_secret_key = assert(zmq.curve_keypair())
 if verbose then
   io.stderr:write("server_public_key ", server_public_key, "\n")
   io.stderr:write("server_secret_key ", server_secret_key, "\n")
 end
 
-local client_public_key, client_secret_key = zmq.curve_keypair()
+local client_public_key, client_secret_key = assert(zmq.curve_keypair())
 if verbose then
   io.stderr:write("client_public_key ", client_public_key, "\n")
   io.stderr:write("client_secret_key ", client_secret_key, "\n")
@@ -64,8 +64,8 @@ assert(selector:add(rep_fd, unix.SELECTOR_READ))
 
 assert(req:send "hello")
 
-local done
 repeat
+  local done
   local result = assert(selector:select(0.1))
   for i = 1, result do
     local fd, event = selector:event(i)
@@ -90,8 +90,8 @@ repeat
   end
 until done
 
-local done
 repeat
+  local done
   local result = assert(selector:select(0.1))
   for i = 1, result do
     local fd, event = selector:event(i)

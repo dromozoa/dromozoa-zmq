@@ -3,7 +3,7 @@
 
 #include "common.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   enum getsockopt_option_enum {
     getsockopt_option_unknown,
     getsockopt_option_binary_data,

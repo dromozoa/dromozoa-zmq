@@ -1,4 +1,4 @@
-// Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017-2019,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -30,7 +30,9 @@
 #include <dromozoa/bind/atomic.hpp>
 #include <dromozoa/bind/mutex.hpp>
 
-namespace dromozoa {
+namespace dromozoa_zmq {
+  using namespace dromozoa;
+
 #ifdef HAVE_ZMQ_ATOMIC_COUNTER_NEW
   typedef void* atomic_count_t;
 #else

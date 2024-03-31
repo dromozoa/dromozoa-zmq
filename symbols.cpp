@@ -1,7 +1,7 @@
 #include "common.hpp"
 #include "symbols.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   void initialize_symbols(lua_State* L) {
 #ifdef ZMQ_VERSION_MAJOR
     luaX_set_field(L, -1, "ZMQ_VERSION_MAJOR", ZMQ_VERSION_MAJOR);
@@ -513,6 +513,9 @@ namespace dromozoa {
 #ifdef ZMQ_PROTOCOL_ERROR_ZAP_INVALID_METADATA
     luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_ZAP_INVALID_METADATA", ZMQ_PROTOCOL_ERROR_ZAP_INVALID_METADATA);
 #endif
+#ifdef ZMQ_PROTOCOL_ERROR_WS_UNSPECIFIED
+    luaX_set_field(L, -1, "ZMQ_PROTOCOL_ERROR_WS_UNSPECIFIED", ZMQ_PROTOCOL_ERROR_WS_UNSPECIFIED);
+#endif
 #ifdef ZMQ_POLLIN
     luaX_set_field(L, -1, "ZMQ_POLLIN", ZMQ_POLLIN);
 #endif
@@ -561,6 +564,12 @@ namespace dromozoa {
 #ifdef ZMQ_DGRAM
     luaX_set_field(L, -1, "ZMQ_DGRAM", ZMQ_DGRAM);
 #endif
+#ifdef ZMQ_PEER
+    luaX_set_field(L, -1, "ZMQ_PEER", ZMQ_PEER);
+#endif
+#ifdef ZMQ_CHANNEL
+    luaX_set_field(L, -1, "ZMQ_CHANNEL", ZMQ_CHANNEL);
+#endif
 #ifdef ZMQ_ZAP_ENFORCE_DOMAIN
     luaX_set_field(L, -1, "ZMQ_ZAP_ENFORCE_DOMAIN", ZMQ_ZAP_ENFORCE_DOMAIN);
 #endif
@@ -590,6 +599,96 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_OUT_BATCH_SIZE
     luaX_set_field(L, -1, "ZMQ_OUT_BATCH_SIZE", ZMQ_OUT_BATCH_SIZE);
+#endif
+#ifdef ZMQ_WSS_KEY_PEM
+    luaX_set_field(L, -1, "ZMQ_WSS_KEY_PEM", ZMQ_WSS_KEY_PEM);
+#endif
+#ifdef ZMQ_WSS_CERT_PEM
+    luaX_set_field(L, -1, "ZMQ_WSS_CERT_PEM", ZMQ_WSS_CERT_PEM);
+#endif
+#ifdef ZMQ_WSS_TRUST_PEM
+    luaX_set_field(L, -1, "ZMQ_WSS_TRUST_PEM", ZMQ_WSS_TRUST_PEM);
+#endif
+#ifdef ZMQ_WSS_HOSTNAME
+    luaX_set_field(L, -1, "ZMQ_WSS_HOSTNAME", ZMQ_WSS_HOSTNAME);
+#endif
+#ifdef ZMQ_WSS_TRUST_SYSTEM
+    luaX_set_field(L, -1, "ZMQ_WSS_TRUST_SYSTEM", ZMQ_WSS_TRUST_SYSTEM);
+#endif
+#ifdef ZMQ_ONLY_FIRST_SUBSCRIBE
+    luaX_set_field(L, -1, "ZMQ_ONLY_FIRST_SUBSCRIBE", ZMQ_ONLY_FIRST_SUBSCRIBE);
+#endif
+#ifdef ZMQ_RECONNECT_STOP
+    luaX_set_field(L, -1, "ZMQ_RECONNECT_STOP", ZMQ_RECONNECT_STOP);
+#endif
+#ifdef ZMQ_HELLO_MSG
+    luaX_set_field(L, -1, "ZMQ_HELLO_MSG", ZMQ_HELLO_MSG);
+#endif
+#ifdef ZMQ_DISCONNECT_MSG
+    luaX_set_field(L, -1, "ZMQ_DISCONNECT_MSG", ZMQ_DISCONNECT_MSG);
+#endif
+#ifdef ZMQ_PRIORITY
+    luaX_set_field(L, -1, "ZMQ_PRIORITY", ZMQ_PRIORITY);
+#endif
+#ifdef ZMQ_BUSY_POLL
+    luaX_set_field(L, -1, "ZMQ_BUSY_POLL", ZMQ_BUSY_POLL);
+#endif
+#ifdef ZMQ_HICCUP_MSG
+    luaX_set_field(L, -1, "ZMQ_HICCUP_MSG", ZMQ_HICCUP_MSG);
+#endif
+#ifdef ZMQ_XSUB_VERBOSE_UNSUBSCRIBE
+    luaX_set_field(L, -1, "ZMQ_XSUB_VERBOSE_UNSUBSCRIBE", ZMQ_XSUB_VERBOSE_UNSUBSCRIBE);
+#endif
+#ifdef ZMQ_TOPICS_COUNT
+    luaX_set_field(L, -1, "ZMQ_TOPICS_COUNT", ZMQ_TOPICS_COUNT);
+#endif
+#ifdef ZMQ_NORM_MODE
+    luaX_set_field(L, -1, "ZMQ_NORM_MODE", ZMQ_NORM_MODE);
+#endif
+#ifdef ZMQ_NORM_UNICAST_NACK
+    luaX_set_field(L, -1, "ZMQ_NORM_UNICAST_NACK", ZMQ_NORM_UNICAST_NACK);
+#endif
+#ifdef ZMQ_NORM_BUFFER_SIZE
+    luaX_set_field(L, -1, "ZMQ_NORM_BUFFER_SIZE", ZMQ_NORM_BUFFER_SIZE);
+#endif
+#ifdef ZMQ_NORM_SEGMENT_SIZE
+    luaX_set_field(L, -1, "ZMQ_NORM_SEGMENT_SIZE", ZMQ_NORM_SEGMENT_SIZE);
+#endif
+#ifdef ZMQ_NORM_BLOCK_SIZE
+    luaX_set_field(L, -1, "ZMQ_NORM_BLOCK_SIZE", ZMQ_NORM_BLOCK_SIZE);
+#endif
+#ifdef ZMQ_NORM_NUM_PARITY
+    luaX_set_field(L, -1, "ZMQ_NORM_NUM_PARITY", ZMQ_NORM_NUM_PARITY);
+#endif
+#ifdef ZMQ_NORM_NUM_AUTOPARITY
+    luaX_set_field(L, -1, "ZMQ_NORM_NUM_AUTOPARITY", ZMQ_NORM_NUM_AUTOPARITY);
+#endif
+#ifdef ZMQ_NORM_PUSH
+    luaX_set_field(L, -1, "ZMQ_NORM_PUSH", ZMQ_NORM_PUSH);
+#endif
+#ifdef ZMQ_NORM_FIXED
+    luaX_set_field(L, -1, "ZMQ_NORM_FIXED", ZMQ_NORM_FIXED);
+#endif
+#ifdef ZMQ_NORM_CC
+    luaX_set_field(L, -1, "ZMQ_NORM_CC", ZMQ_NORM_CC);
+#endif
+#ifdef ZMQ_NORM_CCL
+    luaX_set_field(L, -1, "ZMQ_NORM_CCL", ZMQ_NORM_CCL);
+#endif
+#ifdef ZMQ_NORM_CCE
+    luaX_set_field(L, -1, "ZMQ_NORM_CCE", ZMQ_NORM_CCE);
+#endif
+#ifdef ZMQ_NORM_CCE_ECNONLY
+    luaX_set_field(L, -1, "ZMQ_NORM_CCE_ECNONLY", ZMQ_NORM_CCE_ECNONLY);
+#endif
+#ifdef ZMQ_RECONNECT_STOP_CONN_REFUSED
+    luaX_set_field(L, -1, "ZMQ_RECONNECT_STOP_CONN_REFUSED", ZMQ_RECONNECT_STOP_CONN_REFUSED);
+#endif
+#ifdef ZMQ_RECONNECT_STOP_HANDSHAKE_FAILED
+    luaX_set_field(L, -1, "ZMQ_RECONNECT_STOP_HANDSHAKE_FAILED", ZMQ_RECONNECT_STOP_HANDSHAKE_FAILED);
+#endif
+#ifdef ZMQ_RECONNECT_STOP_AFTER_DISCONNECT
+    luaX_set_field(L, -1, "ZMQ_RECONNECT_STOP_AFTER_DISCONNECT", ZMQ_RECONNECT_STOP_AFTER_DISCONNECT);
 #endif
 #ifdef ZMQ_ZERO_COPY_RECV
     luaX_set_field(L, -1, "ZMQ_ZERO_COPY_RECV", ZMQ_ZERO_COPY_RECV);
@@ -751,6 +850,10 @@ namespace dromozoa {
       case ZMQ_USE_FD:
         return getsockopt_option_int;
 #endif
+#ifdef ZMQ_PRIORITY
+      case ZMQ_PRIORITY:
+        return getsockopt_option_int;
+#endif
 #ifdef ZMQ_RATE
       case ZMQ_RATE:
         return getsockopt_option_int;
@@ -777,6 +880,10 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_RECONNECT_IVL_MAX
       case ZMQ_RECONNECT_IVL_MAX:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_RECONNECT_STOP
+      case ZMQ_RECONNECT_STOP:
         return getsockopt_option_int;
 #endif
 #ifdef ZMQ_RECOVERY_IVL
@@ -875,6 +982,42 @@ namespace dromozoa {
       case ZMQ_OUT_BATCH_SIZE:
         return getsockopt_option_int;
 #endif
+#ifdef ZMQ_TOPICS_COUNT
+      case ZMQ_TOPICS_COUNT:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_MODE
+      case ZMQ_NORM_MODE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_UNICAST_NACK
+      case ZMQ_NORM_UNICAST_NACK:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_BUFFER_SIZE
+      case ZMQ_NORM_BUFFER_SIZE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_SEGMENT_SIZE
+      case ZMQ_NORM_SEGMENT_SIZE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_BLOCK_SIZE
+      case ZMQ_NORM_BLOCK_SIZE:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_NUM_PARITY
+      case ZMQ_NORM_NUM_PARITY:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_NUM_AUTOPARITY
+      case ZMQ_NORM_NUM_AUTOPARITY:
+        return getsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_PUSH
+      case ZMQ_NORM_PUSH:
+        return getsockopt_option_int;
+#endif
       default:
         return getsockopt_option_unknown;
     }
@@ -893,6 +1036,10 @@ namespace dromozoa {
 #ifdef ZMQ_BINDTODEVICE
       case ZMQ_BINDTODEVICE:
         return setsockopt_option_character_string;
+#endif
+#ifdef ZMQ_BUSY_POLL
+      case ZMQ_BUSY_POLL:
+        return setsockopt_option_int;
 #endif
 #ifdef ZMQ_CONNECT_ROUTING_ID
       case ZMQ_CONNECT_ROUTING_ID:
@@ -922,6 +1069,14 @@ namespace dromozoa {
       case ZMQ_CURVE_SERVERKEY:
         return setsockopt_option_binary_data_or_Z85_text_string;
 #endif
+#ifdef ZMQ_DISCONNECT_MSG
+      case ZMQ_DISCONNECT_MSG:
+        return setsockopt_option_binary_data;
+#endif
+#ifdef ZMQ_HICCUP_MSG
+      case ZMQ_HICCUP_MSG:
+        return setsockopt_option_binary_data;
+#endif
 #ifdef ZMQ_GSSAPI_PLAINTEXT
       case ZMQ_GSSAPI_PLAINTEXT:
         return setsockopt_option_int;
@@ -949,6 +1104,10 @@ namespace dromozoa {
 #ifdef ZMQ_HANDSHAKE_IVL
       case ZMQ_HANDSHAKE_IVL:
         return setsockopt_option_int;
+#endif
+#ifdef ZMQ_HELLO_MSG
+      case ZMQ_HELLO_MSG:
+        return setsockopt_option_binary_data;
 #endif
 #ifdef ZMQ_HEARTBEAT_IVL
       case ZMQ_HEARTBEAT_IVL:
@@ -1010,6 +1169,10 @@ namespace dromozoa {
       case ZMQ_USE_FD:
         return setsockopt_option_int;
 #endif
+#ifdef ZMQ_PRIORITY
+      case ZMQ_PRIORITY:
+        return setsockopt_option_int;
+#endif
 #ifdef ZMQ_PROBE_ROUTER
       case ZMQ_PROBE_ROUTER:
         return setsockopt_option_int;
@@ -1036,6 +1199,10 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_RECONNECT_IVL_MAX
       case ZMQ_RECONNECT_IVL_MAX:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_RECONNECT_STOP
+      case ZMQ_RECONNECT_STOP:
         return setsockopt_option_int;
 #endif
 #ifdef ZMQ_RECOVERY_IVL
@@ -1150,6 +1317,14 @@ namespace dromozoa {
       case ZMQ_XPUB_WELCOME_MSG:
         return setsockopt_option_binary_data;
 #endif
+#ifdef ZMQ_XSUB_VERBOSE_UNSUBSCRIBE
+      case ZMQ_XSUB_VERBOSE_UNSUBSCRIBE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_ONLY_FIRST_SUBSCRIBE
+      case ZMQ_ONLY_FIRST_SUBSCRIBE:
+        return setsockopt_option_int;
+#endif
 #ifdef ZMQ_ZAP_DOMAIN
       case ZMQ_ZAP_DOMAIN:
         return setsockopt_option_character_string;
@@ -1208,6 +1383,38 @@ namespace dromozoa {
 #endif
 #ifdef ZMQ_OUT_BATCH_SIZE
       case ZMQ_OUT_BATCH_SIZE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_MODE
+      case ZMQ_NORM_MODE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_UNICAST_NACK
+      case ZMQ_NORM_UNICAST_NACK:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_BUFFER_SIZE
+      case ZMQ_NORM_BUFFER_SIZE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_SEGMENT_SIZE
+      case ZMQ_NORM_SEGMENT_SIZE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_BLOCK_SIZE
+      case ZMQ_NORM_BLOCK_SIZE:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_NUM_PARITY
+      case ZMQ_NORM_NUM_PARITY:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_NUM_AUTOPARITY
+      case ZMQ_NORM_NUM_AUTOPARITY:
+        return setsockopt_option_int;
+#endif
+#ifdef ZMQ_NORM_PUSH
+      case ZMQ_NORM_PUSH:
         return setsockopt_option_int;
 #endif
       default:

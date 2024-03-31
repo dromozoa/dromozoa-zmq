@@ -1,4 +1,4 @@
--- Copyright (C) 2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2018,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -33,7 +33,7 @@ assert(control:setsockopt(zmq.ZMQ_SUBSCRIBE, ""))
 
 local prefixes = { "X", "Y", "Z" }
 for i = 0, 9999 do
-  local msg = ("%s:%04d:%s"):format(prefixes[i % 3 + 1], i, name)
+  local msg = ("%s:%04d:%s"):format(prefixes[i % #prefixes + 1], i, name)
   assert(pub:send(msg))
   if verbose then
     io.stderr:write("send " .. msg .. "\n")

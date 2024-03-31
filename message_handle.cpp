@@ -1,4 +1,4 @@
-// Copyright (C) 2017-2019 Tomoyuki Fujimori <moyu@dromozoa.com>
+// Copyright (C) 2017-2019,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 //
 // This file is part of dromozoa-zmq.
 //
@@ -21,7 +21,7 @@
 
 #include "common.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   namespace {
     void free_calback(void* data, void*) {
       free(data);

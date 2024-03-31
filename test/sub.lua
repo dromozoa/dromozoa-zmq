@@ -1,4 +1,4 @@
--- Copyright (C) 2018 Tomoyuki Fujimori <moyu@dromozoa.com>
+-- Copyright (C) 2018,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 --
 -- This file is part of dromozoa-zmq.
 --
@@ -19,21 +19,23 @@ local zmq = require "dromozoa.zmq"
 
 local verbose = os.getenv "VERBOSE" == "1"
 
+local names = {...}
+
 local ctx = assert(zmq.context())
 
 local sub = assert(ctx:socket(zmq.ZMQ_SUB))
 assert(sub:connect "tcp://127.0.0.1:5556")
 assert(sub:setsockopt(zmq.ZMQ_SUBSCRIBE, "X"))
 
-local controls = { control }
+local controls = {}
 do
-  local control = assert(ctx:socket(zmq.ZMQ_PUB))
+  local control = assert(ctx:socket(zmq.ZMQ_REQ))
   assert(control:connect "tcp://127.0.0.1:5557")
   controls[#controls + 1] = control
 end
-for i = 1, #arg do
+for i = 1, #names do
   local control = assert(ctx:socket(zmq.ZMQ_PUB))
-  assert(control:connect("ipc://test-" .. arg[i] .. ".sock"))
+  assert(control:connect("ipc://test-" .. names[i] .. ".sock"))
   controls[#controls + 1] = control
 end
 
@@ -54,3 +56,4 @@ for i = 1, #controls do
   assert(control:send "TERMINATE")
   assert(control:close())
 end
+assert(ctx:term())
