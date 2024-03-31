@@ -34,7 +34,7 @@ assert(msg:get(zmq.ZMQ_MORE) == 0)
 if msg.gets then
   assert(msg:gets "Socket-Type" == "REP")
 end
-assert(msg:more() == 0)
+assert(not msg:more())
 
 assert(socket:disconnect "tcp://127.0.0.1:5555")
 assert(socket:close())

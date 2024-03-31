@@ -79,8 +79,12 @@ namespace dromozoa_zmq {
       }
     }
 
+    void impl_size(lua_State* L) {
+      luaX_push(L, zmq_msg_size(check_message(L, 1)));
+    }
+
     void impl_more(lua_State* L) {
-      luaX_push(L, zmq_msg_more(check_message(L, 1)));
+      luaX_push(L, zmq_msg_more(check_message(L, 1)) != 0);
     }
 
     void impl_set(lua_State* L) {
@@ -137,6 +141,7 @@ namespace dromozoa_zmq {
       luaX_set_field(L, -1, "send", impl_send);
       luaX_set_field(L, -1, "recv", impl_recv);
       luaX_set_field(L, -1, "close", impl_close);
+      luaX_set_field(L, -1, "size", impl_size);
       luaX_set_field(L, -1, "more", impl_more);
       luaX_set_field(L, -1, "set", impl_set);
       luaX_set_field(L, -1, "get", impl_get);
