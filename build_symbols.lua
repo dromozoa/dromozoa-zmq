@@ -95,7 +95,7 @@ out:write [[
 #include "common.hpp"
 #include "symbols.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   void initialize_symbols(lua_State* L) {
 ]]
 
@@ -172,7 +172,7 @@ out:write [[
 
 #include "common.hpp"
 
-namespace dromozoa {
+namespace dromozoa_zmq {
   enum getsockopt_option_enum {
     getsockopt_option_unknown,
 ]]
