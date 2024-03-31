@@ -55,6 +55,7 @@ namespace dromozoa_zmq {
       if (result == -1) {
         throw_failure();
       } else {
+        luaX_push_success(L);
         luaX_push(L, result);
       }
     }
@@ -65,6 +66,7 @@ namespace dromozoa_zmq {
       if (result == -1) {
         throw_failure();
       } else {
+        luaX_push_success(L);
         luaX_push(L, result);
       }
     }
@@ -81,16 +83,6 @@ namespace dromozoa_zmq {
       luaX_push(L, zmq_msg_more(check_message(L, 1)));
     }
 
-    void impl_get(lua_State* L) {
-      int property = luaX_check_integer<int>(L, 2);
-      int result = zmq_msg_get(check_message(L, 1), property);
-      if (result == -1) {
-        throw_failure();
-      } else {
-        luaX_push(L, result);
-      }
-    }
-
     void impl_set(lua_State* L) {
       int property = luaX_check_integer<int>(L, 2);
       int value = luaX_check_integer<int>(L, 3);
@@ -98,6 +90,16 @@ namespace dromozoa_zmq {
         throw_failure();
       } else {
         luaX_push_success(L);
+      }
+    }
+
+    void impl_get(lua_State* L) {
+      int property = luaX_check_integer<int>(L, 2);
+      int result = zmq_msg_get(check_message(L, 1), property);
+      if (result == -1) {
+        throw_failure();
+      } else {
+        luaX_push(L, result);
       }
     }
 
@@ -136,8 +138,8 @@ namespace dromozoa_zmq {
       luaX_set_field(L, -1, "recv", impl_recv);
       luaX_set_field(L, -1, "close", impl_close);
       luaX_set_field(L, -1, "more", impl_more);
-      luaX_set_field(L, -1, "get", impl_get);
       luaX_set_field(L, -1, "set", impl_set);
+      luaX_set_field(L, -1, "get", impl_get);
 #ifdef HAVE_ZMQ_MSG_GETS
       luaX_set_field(L, -1, "gets", impl_gets);
 #endif

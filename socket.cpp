@@ -81,6 +81,7 @@ namespace dromozoa_zmq {
       if (result == -1) {
         throw_failure();
       } else {
+        luaX_push_success(L);
         luaX_push(L, result);
       }
     }
