@@ -18,9 +18,9 @@
 #include "common.hpp"
 
 namespace dromozoa_zmq {
-  void push_error(lua_State* L) {
+  void push_error(lua_State*) {
     int code = zmq_errno();
-    luaX_push(L, luaX_nil, zmq_strerror(code), code);
+    luaX_throw_failure(zmq_strerror(code), code);
   }
 
   void throw_failure() {
