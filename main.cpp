@@ -116,6 +116,9 @@ namespace dromozoa_zmq {
     }
 #endif
 
+    void impl_poll(lua_State* L) {
+    }
+
     static const char* registry_key = "dromozoa.zmq.falure_policy";
 
     void impl_set_failure_policy(lua_State* L) {
@@ -133,6 +136,11 @@ namespace dromozoa_zmq {
     lua_getfield(L, LUA_REGISTRYINDEX, registry_key);
     luaX_string_reference failure_policy = luaX_to_string(L, -1);
     return failure_policy.size() == 5 && strncmp(failure_policy.data(), "error", 5) == 0;
+  }
+
+  void throw_failure() {
+    int code = zmq_errno();
+    luaX_throw_failure(zmq_strerror(code), code);
   }
 
   void initialize_main(lua_State* L) {

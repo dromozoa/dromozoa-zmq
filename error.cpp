@@ -18,8 +18,4 @@
 #include "common.hpp"
 
 namespace dromozoa_zmq {
-  void throw_failure() {
-    int code = zmq_errno();
-    luaX_throw_failure(zmq_strerror(code), code);
-  }
 }
