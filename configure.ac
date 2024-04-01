@@ -19,6 +19,7 @@ m4_include([dromozoa-zmq-version.m4])
 AC_INIT([dromozoa-zmq],[DROMOZOA_ZMQ_VERSION],[moyu@dromozoa.com],[],[https://github.com/dromozoa/dromozoa-zmq/])
 AM_INIT_AUTOMAKE
 LT_INIT
+gl_LD_VERSION_SCRIPT
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
