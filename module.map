@@ -1,6 +1,6 @@
 {
   global:
-    luaopen_dromozoa_unix;
+    luaopen_dromozoa_zmq;
   local:
     *;
 };
