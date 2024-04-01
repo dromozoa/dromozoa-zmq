@@ -23,11 +23,6 @@ namespace dromozoa_zmq {
       check_message_handle(L, 1)->~message_handle();
     }
 
-    void impl_tostring(lua_State* L) {
-      zmq_msg_t* message = check_message(L, 1);
-      luaX_push(L, luaX_string_reference(static_cast<const char*>(zmq_msg_data(message)), zmq_msg_size(message)));
-    }
-
     void impl_call(lua_State* L) {
       scoped_ptr<message_handle_impl> impl;
       if (luaX_string_reference source = luaX_to_string(L, 2)) {
@@ -77,6 +72,11 @@ namespace dromozoa_zmq {
       } else {
         luaX_push_success(L);
       }
+    }
+
+    void impl_data(lua_State* L) {
+      zmq_msg_t* message = check_message(L, 1);
+      luaX_push(L, luaX_string_reference(static_cast<const char*>(zmq_msg_data(message)), zmq_msg_size(message)));
     }
 
     void impl_size(lua_State* L) {
@@ -134,13 +134,14 @@ namespace dromozoa_zmq {
       lua_pushvalue(L, -2);
       luaX_set_field(L, -2, "__index");
       luaX_set_field(L, -1, "__gc", impl_gc);
-      luaX_set_field(L, -1, "__tostring", impl_tostring);
+      luaX_set_field(L, -1, "__tostring", impl_data);
       lua_pop(L, 1);
 
       luaX_set_metafield(L, -1, "__call", impl_call);
       luaX_set_field(L, -1, "send", impl_send);
       luaX_set_field(L, -1, "recv", impl_recv);
       luaX_set_field(L, -1, "close", impl_close);
+      luaX_set_field(L, -1, "data", impl_data);
       luaX_set_field(L, -1, "size", impl_size);
       luaX_set_field(L, -1, "more", impl_more);
       luaX_set_field(L, -1, "set", impl_set);
