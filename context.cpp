@@ -41,7 +41,7 @@ namespace dromozoa_zmq {
 
     void impl_term(lua_State* L) {
       if (check_context_handle(L, 1)->term() == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -49,7 +49,7 @@ namespace dromozoa_zmq {
 
     void impl_shutdown(lua_State* L) {
       if (zmq_ctx_shutdown(check_context(L, 1)) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -59,7 +59,7 @@ namespace dromozoa_zmq {
       int name = luaX_check_integer<int>(L, 2);
       int value = luaX_check_integer<int>(L, 3);
       if (zmq_ctx_set(check_context(L, 1), name, value) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -69,7 +69,7 @@ namespace dromozoa_zmq {
       int name = luaX_check_integer<int>(L, 2);
       int result = zmq_ctx_get(check_context(L, 1), name);
       if (result == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push(L, result);
       }
@@ -80,7 +80,7 @@ namespace dromozoa_zmq {
       if (void* handle = zmq_socket(check_context(L, 1), type)) {
         new_socket(L, handle);
       } else {
-        push_error(L);
+        throw_failure();
       }
     }
   }
@@ -106,8 +106,8 @@ namespace dromozoa_zmq {
       luaX_set_field(L, -1, "share", impl_share);
       luaX_set_field(L, -1, "term", impl_term);
       luaX_set_field(L, -1, "shutdown", impl_shutdown);
-      luaX_set_field(L, -1, "get", impl_get);
       luaX_set_field(L, -1, "set", impl_set);
+      luaX_set_field(L, -1, "get", impl_get);
       luaX_set_field(L, -1, "socket", impl_socket);
     }
     luaX_set_field(L, -2, "context");

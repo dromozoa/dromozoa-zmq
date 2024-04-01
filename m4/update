@@ -1,6 +1,6 @@
 #! /bin/sh -e
 
-# Copyright (C) 2017 Tomoyuki Fujimori <moyu@dromozoa.com>
+# Copyright (C) 2017,2024 Tomoyuki Fujimori <moyu@dromozoa.com>
 #
 # This file is part of dromozoa-zmq.
 #
@@ -21,3 +21,5 @@ for i in ax_*.m4
 do
   curl -L "https://git.savannah.gnu.org/gitweb/?p=autoconf-archive.git;a=blob_plain;f=m4/$i" >"$i"
 done
+
+curl -LO https://git.savannah.gnu.org/cgit/gnulib.git/plain/m4/ld-version-script.m4

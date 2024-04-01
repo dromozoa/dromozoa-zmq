@@ -27,7 +27,7 @@ namespace dromozoa_zmq {
 
     void impl_close(lua_State* L) {
       if (check_socket_handle(L, 1)->close() == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -36,7 +36,7 @@ namespace dromozoa_zmq {
     void impl_bind(lua_State* L) {
       const char* endpoint = luaL_checkstring(L, 2);
       if (zmq_bind(check_socket(L, 1), endpoint) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -45,7 +45,7 @@ namespace dromozoa_zmq {
     void impl_connect(lua_State* L) {
       const char* endpoint = luaL_checkstring(L, 2);
       if (zmq_connect(check_socket(L, 1), endpoint) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -54,7 +54,7 @@ namespace dromozoa_zmq {
     void impl_unbind(lua_State* L) {
       const char* endpoint = luaL_checkstring(L, 2);
       if (zmq_unbind(check_socket(L, 1), endpoint) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -63,7 +63,7 @@ namespace dromozoa_zmq {
     void impl_disconnect(lua_State* L) {
       const char* endpoint = luaL_checkstring(L, 2);
       if (zmq_disconnect(check_socket(L, 1), endpoint) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }
@@ -79,8 +79,9 @@ namespace dromozoa_zmq {
       int flags = luaX_opt_integer<int>(L, 5, 0);
       int result = zmq_send(check_socket(L, 1), buffer.data() + i, j - i, flags);
       if (result == -1) {
-        push_error(L);
+        throw_failure();
       } else {
+        luaX_push_success(L);
         luaX_push(L, result);
       }
     }
@@ -91,7 +92,7 @@ namespace dromozoa_zmq {
       std::vector<char> buffer(size);
       int result = zmq_recv(check_socket(L, 1), &buffer[0], size, flags);
       if (result == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push(L, luaX_string_reference(&buffer[0], result));
       }
@@ -101,7 +102,7 @@ namespace dromozoa_zmq {
       const char* endpoint = luaL_checkstring(L, 2);
       int events = luaX_opt_integer<int>(L, 3, ZMQ_EVENT_ALL);
       if (zmq_socket_monitor(check_socket(L, 1), endpoint, events) == -1) {
-        push_error(L);
+        throw_failure();
       } else {
         luaX_push_success(L);
       }

@@ -1,0 +1,6 @@
+{
+  global:
+    luaopen_dromozoa_unix;
+  local:
+    *;
+};

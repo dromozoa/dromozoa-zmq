@@ -91,7 +91,7 @@ namespace dromozoa_zmq {
           errno = EINVAL;
       }
       if (result == -1) {
-        push_error(L);
+        throw_failure();
       }
     }
   }
