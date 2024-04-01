@@ -39,8 +39,8 @@ assert(result == 1)
 assert(items[1].revents == 0)
 assert(items[2].revents == zmq.ZMQ_POLLIN)
 
-local msg = zmq.message()
-msg:recv(rep, zmq.ZMQ_DONTWAIT)
+local msg, size = zmq.message():recv(rep, zmq.ZMQ_DONTWAIT)
+assert(msg:size() == size)
 assert(tostring(msg) == "hello")
 
 items[1].events = 0
@@ -59,8 +59,8 @@ assert(result == 1)
 assert(items[1].revents == zmq.ZMQ_POLLIN)
 assert(items[2].revents == 0)
 
-local msg = zmq.message()
-msg:recv(req, zmq.ZMQ_DONTWAIT)
+local msg, size = zmq.message():recv(req, zmq.ZMQ_DONTWAIT)
+assert(msg:size() == size)
 assert(tostring(msg) == "world")
 
 req:close()

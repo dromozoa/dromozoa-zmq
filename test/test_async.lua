@@ -80,7 +80,9 @@ repeat
     end
     if unix.band(events, zmq.ZMQ_POLLIN) ~= 0 then
       local msg = zmq.message()
-      assert(msg:recv(rep, zmq.ZMQ_DONTWAIT) == 5)
+      local a, b = assert(msg:recv(rep, zmq.ZMQ_DONTWAIT))
+      assert(a == msg)
+      assert(b == 5)
       assert(tostring(msg) == "hello")
       assert(selector:del(rep_fd))
       assert(selector:add(req_fd, unix.SELECTOR_READ))
@@ -106,7 +108,9 @@ repeat
     end
     if unix.band(events, zmq.ZMQ_POLLIN) ~= 0 then
       local msg = zmq.message()
-      assert(msg:recv(req, zmq.ZMQ_DONTWAIT) == 5)
+      local a, b = assert(msg:recv(req, zmq.ZMQ_DONTWAIT))
+      assert(a == msg)
+      assert(b == 5)
       assert(tostring(msg) == "world")
       assert(selector:del(req_fd))
       done = true
