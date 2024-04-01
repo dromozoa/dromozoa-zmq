@@ -25,6 +25,7 @@ EXTRA_DIST = \
 	docs \
 	dromozoa-zmq-*.rockspec \
 	m4/update \
+	module.map \
 	test \
 	$(TESTS)
 TESTS = test.sh
@@ -35,6 +36,9 @@ noinst_HEADERS = common.hpp symbols.hpp
 
 zmq_la_CPPFLAGS = -I$(top_srcdir)/bind
 zmq_la_LDFLAGS = -module -avoid-version -shared
+if HAVE_LD_VERSION_SCRIPT
+zmq_la_LDFLAGS += -Wl,--version-script=module.map
+endif
 zmq_la_SOURCES = \
 	context.cpp \
 	context_handle.cpp \
