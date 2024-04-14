@@ -21,6 +21,72 @@ namespace dromozoa_zmq {
 #ifdef ZMQ_HAUSNUMERO
     luaX_set_field(L, -1, "ZMQ_HAUSNUMERO", ZMQ_HAUSNUMERO);
 #endif
+#ifdef ENOTSUP
+    luaX_set_field(L, -1, "ENOTSUP", ENOTSUP);
+#endif
+#ifdef EPROTONOSUPPORT
+    luaX_set_field(L, -1, "EPROTONOSUPPORT", EPROTONOSUPPORT);
+#endif
+#ifdef ENOBUFS
+    luaX_set_field(L, -1, "ENOBUFS", ENOBUFS);
+#endif
+#ifdef ENETDOWN
+    luaX_set_field(L, -1, "ENETDOWN", ENETDOWN);
+#endif
+#ifdef EADDRINUSE
+    luaX_set_field(L, -1, "EADDRINUSE", EADDRINUSE);
+#endif
+#ifdef EADDRNOTAVAIL
+    luaX_set_field(L, -1, "EADDRNOTAVAIL", EADDRNOTAVAIL);
+#endif
+#ifdef ECONNREFUSED
+    luaX_set_field(L, -1, "ECONNREFUSED", ECONNREFUSED);
+#endif
+#ifdef EINPROGRESS
+    luaX_set_field(L, -1, "EINPROGRESS", EINPROGRESS);
+#endif
+#ifdef ENOTSOCK
+    luaX_set_field(L, -1, "ENOTSOCK", ENOTSOCK);
+#endif
+#ifdef EMSGSIZE
+    luaX_set_field(L, -1, "EMSGSIZE", EMSGSIZE);
+#endif
+#ifdef EAFNOSUPPORT
+    luaX_set_field(L, -1, "EAFNOSUPPORT", EAFNOSUPPORT);
+#endif
+#ifdef ENETUNREACH
+    luaX_set_field(L, -1, "ENETUNREACH", ENETUNREACH);
+#endif
+#ifdef ECONNABORTED
+    luaX_set_field(L, -1, "ECONNABORTED", ECONNABORTED);
+#endif
+#ifdef ECONNRESET
+    luaX_set_field(L, -1, "ECONNRESET", ECONNRESET);
+#endif
+#ifdef ENOTCONN
+    luaX_set_field(L, -1, "ENOTCONN", ENOTCONN);
+#endif
+#ifdef ETIMEDOUT
+    luaX_set_field(L, -1, "ETIMEDOUT", ETIMEDOUT);
+#endif
+#ifdef EHOSTUNREACH
+    luaX_set_field(L, -1, "EHOSTUNREACH", EHOSTUNREACH);
+#endif
+#ifdef ENETRESET
+    luaX_set_field(L, -1, "ENETRESET", ENETRESET);
+#endif
+#ifdef EFSM
+    luaX_set_field(L, -1, "EFSM", EFSM);
+#endif
+#ifdef ENOCOMPATPROTO
+    luaX_set_field(L, -1, "ENOCOMPATPROTO", ENOCOMPATPROTO);
+#endif
+#ifdef ETERM
+    luaX_set_field(L, -1, "ETERM", ETERM);
+#endif
+#ifdef EMTHREAD
+    luaX_set_field(L, -1, "EMTHREAD", EMTHREAD);
+#endif
 #ifdef ZMQ_IO_THREADS
     luaX_set_field(L, -1, "ZMQ_IO_THREADS", ZMQ_IO_THREADS);
 #endif

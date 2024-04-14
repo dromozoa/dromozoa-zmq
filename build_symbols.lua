@@ -102,7 +102,19 @@ namespace dromozoa_zmq {
 local buffer
 for line in io.lines(header_file) do
   local name = line:match "^#define (ZMQ_[%w_]+) "
-  if name and name ~= "ZMQ_EXPORT" then
+  if name == "ZMQ_EXPORT" then
+    name = nil
+  end
+
+  if not name then
+    local check
+    name, check = line:match "^#define (E[%w_]+) (%S*)"
+    if name then
+      assert(check == "(ZMQ_HAUSNUMERO")
+    end
+  end
+
+  if name then
     out:write(([[
 #ifdef %s
     luaX_set_field(L, -1, "%s", %s);
