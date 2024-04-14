@@ -15,6 +15,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dromozoa-zmq.  If not, see <http://www.gnu.org/licenses/>.
 
+local unix = require "dromozoa.unix"
 local zmq = require "dromozoa.zmq"
 
 local verbose = os.getenv "VERBOSE" == "1"
@@ -37,3 +38,42 @@ if verbose then
   io.stderr:write(version, "\n")
 end
 assert(major >= 4)
+
+if verbose then
+  io.stderr:write(([[
+EINTR
+  unix: %s
+  zmq: %s
+ETIMEDOUT
+  unix: %s
+  zmq: %s
+ETERM
+  unix: %s
+  zmq: %s
+]]):format(
+      unix.strerror(unix.EINTR),
+      zmq.strerror(unix.EINTR),
+      unix.strerror(zmq.ETIMEDOUT),
+      zmq.strerror(zmq.ETIMEDOUT),
+      unix.strerror(zmq.ETERM),
+      zmq.strerror(zmq.ETERM)))
+end
+
+assert(unix.EINTR)
+assert(unix.ETIMEDOUT)
+assert(zmq.ETIMEDOUT == unix.ETIMEDOUT)
+assert(zmq.ETERM)
+assert(zmq.strerror)
+assert(unix.strerror(unix.EINTR) == zmq.strerror(unix.EINTR))
+assert(unix.strerror(zmq.ETIMEDOUT) == zmq.strerror(zmq.ETIMEDOUT))
+
+if verbose then
+  io.stderr:write(([[
+errno
+  unix: %d
+  zmq: %d
+]]):format(unix.get_errno(), zmq.errno()))
+end
+
+assert(zmq.errno)
+assert(unix.get_errno(), zmq.errno())
